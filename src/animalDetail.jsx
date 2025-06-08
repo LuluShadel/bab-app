@@ -50,6 +50,12 @@ function AnimalDetails() {
         </div>
         <div>
     <h1 className='text-center font-bold text-[2em] mb-6'>{animal.name}</h1>
+     <div>{animal.adoption && (
+        <span className='bg-green-600 rounded-xl p-1 mr-2'>A l'adoption</span>
+      )}
+      {animal.rechercheFa && (
+        <span className='bg-pink-400 rounded-xl p-1'>Recherche FA</span>
+      )}</div>
     <ul className='flex flex-row gap-12'>
       <div>
       <li><span className='font-bold'>Sexe :</span> {animal.sexe}</li>

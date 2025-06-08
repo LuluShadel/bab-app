@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import supabase from './supabaseClient';
 import { Link } from 'react-router-dom';
+import AnimalForm from './animalForm';
 
 function Home() {
-  // animaux = liste des animaux 
-  const [animaux, setAnimaux] = useState([]);
+
+  const [animaux, setAnimaux] = useState([]);   // animaux = liste des animaux 
+   const [showForm, setShowForm] = useState(false); // gère la modal
 
   useEffect(() => {
     async function fetchAnimaux() {
@@ -21,6 +23,22 @@ function Home() {
     fetchAnimaux();
   }, []);
 
+ const handleAddAnimal = async (newAnimal) => {
+  console.log('NOUVEL ANIMAL :', newAnimal);
+  const { data, error } = await supabase
+    .from('animaux')
+    .insert([newAnimal]);
+
+  if (error) {
+    console.error('Erreur ajout:', error);
+  } else if (data) {
+    setAnimaux([...animaux, data[0]]);
+  }
+};
+
+  
+
+
   return (
     <div className='m-[15em]'>
       <h1 className='text-blue-600 font-bold mb-8 text-xl'>Liste des animaux</h1>
@@ -30,11 +48,11 @@ function Home() {
             <img src={item.img} alt={item.name} className='w-20 h-20 object-cover rounded-full shadow-md' />
             <div className='ml-4' >
             <div className='flex flex-row gap-6'>
-            <div>{item.name} {item.age}ans - {item.adoption && (
-        <span className='bg-green-600 rounded-xl p-1 mr-2'>{item.adoption}</span>
+            <div>{item.name} {item.ddn}- {item.adoption && (
+        <span className='bg-green-600 rounded-xl p-1 mr-2'>A l'adoption</span>
       )}
       {item.rechercheFa && (
-        <span className='bg-pink-400 rounded-xl p-1'>{item.rechercheFa}</span>
+        <span className='bg-pink-400 rounded-xl p-1'>Recherche FA</span>
       )}</div>
             </div>
              <div className='flex flex-row gap-3'>
@@ -51,6 +69,18 @@ function Home() {
             </li> 
         ))}
       </ul>
+      <button
+          onClick={() => setShowForm(true)}
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        >
+          Ajouter un nouvel animal
+        </button>
+        {showForm && (
+        <AnimalForm
+          onClose={() => setShowForm(false)}
+          onSubmit={handleAddAnimal}
+        />
+      )}
     </div>
   );
 }
