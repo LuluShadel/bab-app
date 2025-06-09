@@ -64,7 +64,7 @@ const AnimalForm = ({ onClose, onSubmit }) => {
           <input name="type" placeholder="Type" onChange={handleChange} className="border p-2 rounded" />
           <input name="race" placeholder="Race" onChange={handleChange} className="border p-2 rounded" />
           <input name="icad" placeholder="icad" onChange={handleChange} className="border p-2 rounded" />
-          <input name="ddn" placeholder="Date de naissance" type="date" onChange={handleChange} className="border p-2 rounded" />
+          <input name="ddn" placeholder="Date de naissance" onChange={handleChange} className="border p-2 rounded" />
           <input name="lieu" placeholder="FA ou Pension etc..." onChange={handleChange} className="border p-2 rounded" />
           <input name="dpt" placeholder="Département" onChange={handleChange} className="border p-2 rounded" />
           <input name="suivi" placeholder="Suivi fait par:" onChange={handleChange} className="border p-2 rounded" />

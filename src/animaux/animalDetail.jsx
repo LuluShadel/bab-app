@@ -145,8 +145,9 @@ const openEditModal = () => {
 )}
 
 {showEditModal && (
-  <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
-    <div className="bg-white p-6 rounded-xl w-[500px]">
+  <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50 px-4">
+    <div className="bg-white rounded-xl w-full max-w-[500px] max-h-[90vh] overflow-y-auto p-6">
+
       <h2 className="text-xl font-bold mb-4 text-center">Modifier {animal.name}</h2>
       <form
         onSubmit={async (e) => {
@@ -228,6 +229,17 @@ const openEditModal = () => {
             value={editedAnimal.lieu || ''}
             onChange={(e) =>
               setEditedAnimal({ ...editedAnimal, lieu: e.target.value })
+            }
+            className="border w-full px-2 py-1 rounded"
+          />
+        </div>
+        <div>
+          <label className="block font-semibold">Icad :</label>
+          <input
+            type="text"
+            value={editedAnimal.icad || ''}
+            onChange={(e) =>
+              setEditedAnimal({ ...editedAnimal, icad: e.target.value })
             }
             className="border w-full px-2 py-1 rounded"
           />
