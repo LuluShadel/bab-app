@@ -78,8 +78,8 @@ const handleSubmit = async (e) => {
 };            // Ferme la modal
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
-      <div className="bg-white p-6 rounded-xl w-[400px]">
+    <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50 px-4">
+    <div className="bg-white rounded-xl w-full max-w-[500px] max-h-[90vh] overflow-y-auto p-6">
         <h2 className="text-xl font-bold mb-4">Ajouter un animal</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
           <input name="name" placeholder="Nom" onChange={handleChange} className="border p-2 rounded" required />
