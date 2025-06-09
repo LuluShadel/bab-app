@@ -7,6 +7,9 @@ function ListeAnimals() {
 
   const [animaux, setAnimaux] = useState([]);   // animaux = liste des animaux 
    const [showForm, setShowForm] = useState(false); // gère la modal
+   const [filtreStatut, setFiltreStatut] = useState('all'); // va gérer le filtre par statut ( adoption, fa...)
+   const [rechercheNom, setRechercheNom] = useState(''); // va gérer la recherche par nom 
+   const [rechercheSuivi, setRechercheSuivi] = useState(''); // va gérer la recherche par modo ' suivi' 
 
   useEffect(() => {
     async function fetchAnimaux() {
@@ -36,7 +39,19 @@ function ListeAnimals() {
   }
 };
 
-  
+const animauxFiltres = animaux.filter((animal) => {
+  const correspondFiltre =
+    filtreStatut === 'all' ||
+    (filtreStatut === 'adoption' && animal.adoption) ||
+    (filtreStatut === 'rechercheFa' && animal.rechercheFa) ||
+    (filtreStatut === 'panierRetraite' && animal.panierRetraite) ||
+    (filtreStatut === 'requisition' && animal.requisition);
+
+  const correspondNom = animal.name.toLowerCase().includes(rechercheNom.toLowerCase());
+  const correspondSuivi = animal.suivi?.toLowerCase().includes(rechercheSuivi.toLowerCase());
+
+  return correspondFiltre && correspondNom && correspondSuivi;
+});
 
 
   return (
@@ -48,26 +63,52 @@ function ListeAnimals() {
         >
           Ajouter un nouvel animal
         </button>
+      <div className="flex flex-row flex-wrap gap-2 mb-4 justify-center">
+        <p>Filtrer par statut :</p>
+  <button onClick={() => setFiltreStatut('all')} className="px-3 py-1 bg-gray-300 rounded">Tous</button>
+  <button onClick={() => setFiltreStatut('adoption')} className="px-3 py-1 bg-green-300 rounded">À l'adoption</button>
+  <button onClick={() => setFiltreStatut('rechercheFa')} className="px-3 py-1 bg-pink-300 rounded">Recherche FA</button>
+  <button onClick={() => setFiltreStatut('panierRetraite')} className="px-3 py-1 bg-gray-300 rounded">Panier retraite</button>
+  <button onClick={() => setFiltreStatut('requisition')} className="px-3 py-1 bg-red-300 rounded">Sous réquisition</button>
+</div>
+<div className="mb-4 flex flex-col md:flex-row gap-4 w-full">
+  <input
+    type="text"
+    placeholder="Rechercher un animal par nom"
+    value={rechercheNom}
+    onChange={(e) => setRechercheNom(e.target.value)}
+    className="border border-gray-300 rounded px-3 py-1 w-full md:w-1/2"
+  />
+  <input
+    type="text"
+    placeholder="Rechercher par modérateur (suivi)"
+    value={rechercheSuivi}
+    onChange={(e) => setRechercheSuivi(e.target.value)}
+    className="border border-gray-300 rounded px-3 py-1 w-full md:w-1/2"
+  />
+</div>
+      
       <ul>
-        {animaux.map((item) => (
+        
+        {animauxFiltres.map((item) => (
           <li key={item.id} className='border-t-4 border-blue-500 p-4 flex flex-row items-center'>
             <img src={`https://cyrvizynjvgblsmyntmc.supabase.co/storage/v1/object/public/photos/${item.img}
-`} alt={item.name} className='w-20 h-20 object-cover rounded-full shadow-md' />
+`} alt={item.name} className='w-20 h-20 object-cover rounded-full shadow-md ' />
             <div className='ml-4' >
             <div className='flex flex-col gap-6'>
             <div className='flex flex-col' >{item.name} {item.ddn}
               <div className="inline-flex flex-wrap items-center gap-2 whitespace-nowrap">
       {item.adoption && (
-        <span className='bg-green-600 rounded-xl p-1 mr-2'>A l'adoption</span>
+        <span className='bg-green-300 rounded-xl p-1 mr-2'>A l'adoption</span>
       )}
       {item.rechercheFa && (
-        <span className='bg-pink-400 rounded-xl p-1 mr-2'>Recherche FA</span>
+        <span className='bg-pink-300 rounded-xl p-1 mr-2'>Recherche FA</span>
       )}
       {item.panierRetraite && (
-        <span className='bg-gray-400 text-white rounded-xl p-1 mr-2'>Panier Retraite</span>
+        <span className='bg-gray-300 rounded-xl p-1 mr-2'>Panier Retraite</span>
       )}
       {item.requisition && (
-        <span className='bg-red-400 text-white rounded-xl p-1 mr-2'>Sous réquisition</span>
+        <span className='bg-red-300 rounded-xl p-1 mr-2'>Sous réquisition</span>
       )}
       </div>
       </div>
