@@ -52,78 +52,74 @@ const openEditModal = () => {
 };
 
   return (
-  <div className="p-[1em] md:p-[5em] flex flex-col items-center justify-center md:gap-[8em] bg-blue-200">
-    <div className='flex flex-col items-center justify-center md:gap-[8em]'>
-    <div className='bg-blue-100 rounded-b-xl'>
-      <img src={animal.img} alt={animal.name} className="w-40 h-40 rounded-t-xl  " />
-      
-      <div className="mt-2 mb-2 flex justify-center gap-4 w-40 ">
-        {animal.okChien ? (
-          <FaDog className="text-green-500 text-2xl" />
-        ) : (
-          <FaDog className="text-red-500 text-2xl" />
+  <div className="md:p-[8em] p-4 md:p-12 bg-blue-200">
+  {/* Conteneur principal en colonne sur mobile, ligne sur ordi */}
+  <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-8">
+    
+    {/* IMAGE + icônes */}
+    <div className="flex flex-col items-center">
+      <div className='bg-blue-100 rounded-b-xl'>
+        <img src={animal.img} alt={animal.name} className="md:w-60 md:h-60 w-40 h-40 rounded-t-xl" />
+        <div className="mt-2 mb-2 flex justify-center items-center gap-4 md:w-60 w-40">
+          <FaDog className={`text-2xl ${animal.okChien ? "text-green-500" : "text-red-500"}`} />
+          <FaCat className={`text-2xl ${animal.okChat ? "text-green-500" : "text-red-500"}`} />
+          <FaChild className={`text-2xl ${animal.okChild ? "text-green-500" : "text-red-500"}`} />
+        </div>
+      </div>
+    </div>
+
+    {/* INFOS principales */}
+    <div className="flex flex-col items-center md:items-start text-center md:text-left">
+      <h1 className='font-bold text-2xl mb-4'>{animal.name}</h1>
+
+      {/* Tags */}
+      <div className="flex flex-wrap justify-center md:justify-start gap-2 mb-4">
+        {animal.adoption && (
+          <span className='bg-green-600 text-white rounded-xl px-2 py-1 text-sm'>À l'adoption</span>
         )}
-        {animal.okChat ? (
-          <FaCat className="text-green-500 text-2xl" />
-        ) : (
-          <FaCat className="text-red-500 text-2xl" />
+        {animal.rechercheFa && (
+          <span className='bg-pink-400 text-white rounded-xl px-2 py-1 text-sm'>Recherche FA</span>
         )}
-        {animal.okChild ? (
-          <FaChild className="text-green-500 text-2xl" />
-        ) : (
-          <FaChild className="text-red-500 text-2xl" />
+        {animal.panierRetraite && (
+          <span className='bg-gray-500 text-white rounded-xl px-2 py-1 text-sm'>Panier retraite</span>
+        )}
+        {animal.requisition && (
+          <span className='bg-red-500 text-white rounded-xl px-2 py-1 text-sm'>Sous réquisition</span>
         )}
       </div>
-      <div>
-        </div>
+
+      {/* Liste infos */}
+      <ul className="flex flex-col md:flex-row gap-8 text-sm">
+        <div>
+          <li><strong>Sexe :</strong> {animal.sexe}</li>
+          <li><strong>Type :</strong> {animal.type}</li>
+          <li><strong>Race :</strong> {animal.race}</li>
         </div>
         <div>
-    <h1 className='text-center font-bold text-[2em] mb-6'>{animal.name}</h1>
-     <div className='flex flex-row items-center justify-center'>{animal.adoption && (
-        <span className='bg-green-600 rounded-xl p-1 mr-2'>A l'adoption</span>
-      )}
-      {animal.rechercheFa && (
-        <span className='bg-pink-400 rounded-xl p-1 mr-2'>Recherche FA</span>
-      )}
-      {animal.panierRetraite && (
-        <span className='bg-gray-400 text-white rounded-xl p-1 mr-2'>Panier retraite</span>
-      )}
-      {animal.requisition && (
-        <span className='bg-red-400 text-white rounded-xl p-1 mr-2'>Sous requisition</span>
-      )}
-      
-      </div>
-    <ul className='flex flex-row gap-12 justify-center items-center'>
-      <div>
-      <li><span className='font-bold'>Sexe :</span> {animal.sexe}</li>
-       <li><span className='font-bold'>Type :</span> {animal.type}</li>
-       <li><span className='font-bold'>Race :</span> {animal.race}</li>
-       </div>
-       <div>
-        <li><span className='font-bold'>Date de naissance :</span> {animal.ddn}</li>
-      <li><span className='font-bold'> Lieu :</span> {animal.lieu}</li>
-       <li><span className='font-bold'>Departement :</span> {animal.dpt}</li>
-       </div>
-    </ul>
-    </div>
-    <div>
-      <ul>
-        <li onClick={openEditModal} className="cursor-pointer text-blue-600">
-  Éditer fiche
-</li>
-       <li 
-  className='text-italic text-red-500 cursor-pointer'
-  onClick={() => setShowConfirmSupp(true)}
->
-  Supprimer la fiche
-</li>
-    
+          <li><strong>Date de naissance :</strong> {animal.ddn}</li>
+          <li><strong>Lieu :</strong> {animal.lieu}</li>
+          <li><strong>Département :</strong> {animal.dpt}</li>
+        </div>
       </ul>
     </div>
-</div>
-    <div className="w-full mt-8">
-      <SousHeaderAnimal />
+
+    {/* ACTIONS */}
+    <div className="flex flex-col items-center md:items-end gap-4 mt-4 md:mt-0">
+      <button onClick={openEditModal} className="text-blue-600 hover:underline">Éditer fiche</button>
+      <button
+        onClick={() => setShowConfirmSupp(true)}
+        className="text-red-500 hover:underline italic"
+      >
+        Supprimer la fiche
+      </button>
     </div>
+  </div>
+
+  {/* Sous-header */}
+  <div className="w-full mt-8">
+    <SousHeaderAnimal />
+  </div>
+
     {showConfirmSupp && (
   <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
     <div className="bg-white p-6 rounded-xl w-[400px] text-center">
@@ -231,6 +227,17 @@ const openEditModal = () => {
             value={editedAnimal.lieu || ''}
             onChange={(e) =>
               setEditedAnimal({ ...editedAnimal, lieu: e.target.value })
+            }
+            className="border w-full px-2 py-1 rounded"
+          />
+        </div>
+        <div>
+          <label className="block font-semibold">Suivi par :</label>
+          <input
+            type="text"
+            value={editedAnimal.suivi || ''}
+            onChange={(e) =>
+              setEditedAnimal({ ...editedAnimal, suivi: e.target.value })
             }
             className="border w-full px-2 py-1 rounded"
           />

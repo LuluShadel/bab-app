@@ -17,6 +17,7 @@ const AnimalForm = ({ onClose, onSubmit }) => {
     rechercheFa:false,
     panierRetraite:false,
     requisition:false,
+    suivi: '',
   });
 
   const handleChange = (e) => {
@@ -47,6 +48,7 @@ const AnimalForm = ({ onClose, onSubmit }) => {
     rechercheFa: formData.rechercheFa,
     panierRetraite: formData.panierRetraite,
     requisition: formData.requisition,
+    suivi: formData.suivi,
   };
 
   onSubmit(newAnimal);  // Envoie un objet propre à la fonction handleAddAnimal
@@ -65,6 +67,7 @@ const AnimalForm = ({ onClose, onSubmit }) => {
           <input name="ddn" placeholder="Date de naissance" type="date" onChange={handleChange} className="border p-2 rounded" />
           <input name="lieu" placeholder="FA ou Pension etc..." onChange={handleChange} className="border p-2 rounded" />
           <input name="dpt" placeholder="Département" onChange={handleChange} className="border p-2 rounded" />
+          <input name="suivi" placeholder="Suivi fait par:" onChange={handleChange} className="border p-2 rounded" />
           <div className="flex gap-4">
             <label><input type="checkbox" name="okChien" onChange={handleChange} /> OK chien</label>
             <label><input type="checkbox" name="okChat" onChange={handleChange} /> OK chat</label>
