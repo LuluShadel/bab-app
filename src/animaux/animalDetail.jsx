@@ -2,6 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import supabase from '../supabaseClient';
 import { FaCat, FaChild, FaDog } from 'react-icons/fa';
+import SousHeaderAnimal from './sous-header';
 
 function AnimalDetails() {
   const { id } = useParams();
@@ -51,7 +52,8 @@ const openEditModal = () => {
 };
 
   return (
-  <div className="p-[5em] flex flex-row items-center justify-center gap-[8em] bg-blue-200">
+  <div className="p-[1em] md:p-[5em] flex flex-col items-center justify-center md:gap-[8em] bg-blue-200">
+    <div className='flex flex-col items-center justify-center md:gap-[8em]'>
     <div className='bg-blue-100 rounded-b-xl'>
       <img src={animal.img} alt={animal.name} className="w-40 h-40 rounded-t-xl  " />
       
@@ -77,7 +79,7 @@ const openEditModal = () => {
         </div>
         <div>
     <h1 className='text-center font-bold text-[2em] mb-6'>{animal.name}</h1>
-     <div>{animal.adoption && (
+     <div className='flex flex-row items-center justify-center'>{animal.adoption && (
         <span className='bg-green-600 rounded-xl p-1 mr-2'>A l'adoption</span>
       )}
       {animal.rechercheFa && (
@@ -91,7 +93,7 @@ const openEditModal = () => {
       )}
       
       </div>
-    <ul className='flex flex-row gap-12'>
+    <ul className='flex flex-row gap-12 justify-center items-center'>
       <div>
       <li><span className='font-bold'>Sexe :</span> {animal.sexe}</li>
        <li><span className='font-bold'>Type :</span> {animal.type}</li>
@@ -115,8 +117,12 @@ const openEditModal = () => {
 >
   Supprimer la fiche
 </li>
-        <li>Ajouter un rendez vous</li>
+    
       </ul>
+    </div>
+</div>
+    <div className="w-full mt-8">
+      <SousHeaderAnimal />
     </div>
     {showConfirmSupp && (
   <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">

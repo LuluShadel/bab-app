@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 
+//poir ajouter un animal
 const AnimalForm = ({ onClose, onSubmit }) => {
   const [formData, setFormData] = useState({
     name: '',
     sexe: '',
     type: '',
+    icad:'',
     race: '',
     ddn: '',
     dpt: '',
@@ -33,6 +35,7 @@ const AnimalForm = ({ onClose, onSubmit }) => {
     name: formData.name,
     sexe: formData.sexe,
     type: formData.type,
+    icad: formData.icad,
     race: formData.race,
     ddn: formData.ddn || null, 
     dpt: formData.dpt, 
@@ -58,6 +61,7 @@ const AnimalForm = ({ onClose, onSubmit }) => {
           <input name="sexe" placeholder="Sexe" onChange={handleChange} className="border p-2 rounded" />
           <input name="type" placeholder="Type" onChange={handleChange} className="border p-2 rounded" />
           <input name="race" placeholder="Race" onChange={handleChange} className="border p-2 rounded" />
+          <input name="icad" placeholder="icad" onChange={handleChange} className="border p-2 rounded" />
           <input name="ddn" placeholder="Date de naissance" type="date" onChange={handleChange} className="border p-2 rounded" />
           <input name="lieu" placeholder="FA ou Pension etc..." onChange={handleChange} className="border p-2 rounded" />
           <input name="dpt" placeholder="Département" onChange={handleChange} className="border p-2 rounded" />

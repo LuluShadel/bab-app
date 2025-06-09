@@ -44,19 +44,19 @@ function SousHeaderAnimal() {
         {activeTab === "description" && (
           <div>
             <h3 className="text-lg font-bold mb-2">Description de l'animal</h3>
-            <p>Ici tu mets la description détaillée de l'animal.</p>
+            <p>module à venir</p>
           </div>
         )}
         {activeTab === "suiviVeto" && (
           <div>
             <h3 className="text-lg font-bold mb-2">Suivi vétérinaire</h3>
-            <p>Ici tu mets toutes les infos et suivi vétérinaire de l’animal.</p>
+           <p>module à venir</p>
           </div>
         )}
         {activeTab === "historique" && (
           <div>
             <h3 className="text-lg font-bold mb-2">Historique</h3>
-            <p>Ici tu mets l'historique des actions ou événements liés à l’animal.</p>
+           <p>module à venir</p>
           </div>
         )}
       </div>

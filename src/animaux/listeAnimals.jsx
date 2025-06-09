@@ -53,8 +53,10 @@ function ListeAnimals() {
           <li key={item.id} className='border-t-4 border-blue-500 p-4 flex flex-row items-center'>
             <img src={item.img} alt={item.name} className='w-20 h-20 object-cover rounded-full shadow-md' />
             <div className='ml-4' >
-            <div className='flex flex-row gap-6'>
-            <div>{item.name} {item.ddn}- {item.adoption && (
+            <div className='flex flex-col gap-6'>
+            <div className='flex flex-col' >{item.name} {item.ddn}
+              <div className="inline-flex flex-wrap items-center gap-2 whitespace-nowrap">
+      {item.adoption && (
         <span className='bg-green-600 rounded-xl p-1 mr-2'>A l'adoption</span>
       )}
       {item.rechercheFa && (
@@ -67,6 +69,7 @@ function ListeAnimals() {
         <span className='bg-red-400 text-white rounded-xl p-1 mr-2'>Sous réquisition</span>
       )}
       </div>
+      </div>
             </div>
              <div className='flex flex-row gap-3'>
       <p> <span className='font-bold'>Icad :</span> {item.icad}</p>
@@ -74,6 +77,7 @@ function ListeAnimals() {
       <p><span className='font-bold'>Race :</span>  {item.race}</p>
              </div>
              <Link to={`/animal/${item.id}`}>
+            <p className='border border-dotted border-blue-500 p-1'>Suivi effectué par : {item.suivi}</p>
   <button className="bg-blue-500 text-white px-4 py-1 rounded mt-2 hover:bg-blue-600">
     Voir la fiche
   </button>
