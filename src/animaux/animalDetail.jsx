@@ -339,7 +339,51 @@ const openEditModal = () => {
     />
     Sous requisition
   </label>
+  
 </div>
+<label className="inline-flex items-center">
+  <span className="mr-2">Stérilisation :</span>
+  <select
+    value={editedAnimal.sterilisation ? 'true' : 'false'}
+    onChange={(e) =>
+      setEditedAnimal({
+        ...editedAnimal,
+        sterilisation: e.target.value === 'true',
+      })
+    }
+    className="border p-1 rounded"
+  >
+    <option value="false">À faire</option>
+    <option value="true">Fait</option>
+  </select>
+</label>
+<label className="flex flex-col mt-4">
+  Description de l'animal :
+  <textarea
+    name="description"
+    value={editedAnimal.description || ''}
+    onChange={(e) =>
+      setEditedAnimal({ ...editedAnimal, description: e.target.value })
+    }
+    className="border p-2 rounded mt-1"
+    rows={3}
+    placeholder="Décrire son caractère, son histoire, etc."
+  />
+</label>
+
+<label className="flex flex-col mt-4">
+  Besoins spécifiques :
+  <textarea
+    name="besoin"
+    value={editedAnimal.besoin || ''}
+    onChange={(e) =>
+      setEditedAnimal({ ...editedAnimal, besoin: e.target.value })
+    }
+    className="border p-2 rounded mt-1"
+    rows={3}
+    placeholder="Besoin d'un jardin, éducation spécifique, etc."
+  />
+</label>
 
         <div className="flex justify-end gap-4 pt-4">
           <button

@@ -20,6 +20,14 @@ const AnimalForm = ({ onClose, onSubmit }) => {
     requisition:false,
     suivi: '',
     img:null,
+    sterilisation:false,
+    categorisation:"",
+    vermifuge:"",
+    vaccin:"",
+    description:"",
+    besoin:"",
+
+
   });
 
   const handleChange = (e) => {
@@ -71,6 +79,12 @@ const handleSubmit = async (e) => {
     requisition: formData.requisition,
     suivi: formData.suivi,
     img: imagePath,
+    sterilisation: formData.sterilisation,
+    categorisation: formData.categorisation,
+    vermifuge: formData.vermifuge,
+    vaccin: formData.vaccin,
+    description: formData.description,
+    besoin : formData.besoin,
   };
 
   onSubmit(newAnimal);
@@ -131,6 +145,56 @@ const handleSubmit = async (e) => {
     Sous requisition
   </label>
 </div>
+<label className="ml-4">
+  Stérilisation :
+  <select
+    value={formData.sterilisation}
+    onChange={(e) =>
+      setFormData({ ...formData, sterilisation: e.target.value === 'true' })
+    }
+    className="ml-2 border p-1 rounded"
+  >
+    <option value="false">À faire</option>
+    <option value="true">Fait</option>
+  </select>
+</label>
+<label className="ml-4">
+  Catégorisation :
+  <select
+    value={formData.categorisation}
+    onChange={(e) =>
+      setFormData({ ...formData, categorisation: e.target.value })
+    }
+    className="ml-2 border p-1 rounded"
+  >
+    <option value="Categorie-1">Catégorie 1</option>
+    <option value="Categorie-2">Catégorie 2</option>
+    <option value="Pas-de-categorie">Pas de catégorie</option>
+  </select>
+</label>
+<label className="flex flex-col">
+  Description de l'animal :
+  <textarea
+    name="description"
+    value={formData.description}
+    onChange={handleChange}
+    className="border p-2 rounded mt-1"
+    rows={3}
+    placeholder="Décrire son caractère, son histoire, etc."
+  />
+</label>
+
+<label className="flex flex-col mt-4">
+  Besoins spécifiques :
+  <textarea
+    name="besoin"
+    value={formData.besoin}
+    onChange={handleChange}
+    className="border p-2 rounded mt-1"
+    rows={3}
+    placeholder="Besoin d'un jardin, éducation spécifique, etc."
+  />
+</label>
 <input
   type="file"
   accept="image/*"
