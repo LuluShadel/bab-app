@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import supabase from '../supabaseClient';
 
 //poir ajouter un animal
 const AnimalForm = ({ onClose, onSubmit }) => {
@@ -18,6 +19,7 @@ const AnimalForm = ({ onClose, onSubmit }) => {
     panierRetraite:false,
     requisition:false,
     suivi: '',
+    img:null,
   });
 
   const handleChange = (e) => {
@@ -28,18 +30,37 @@ const AnimalForm = ({ onClose, onSubmit }) => {
     });
   };
 
- const handleSubmit = (e) => {
+const handleSubmit = async (e) => {
   e.preventDefault();
 
-  // Ne garde que les champs valides pour la base Supabase
+  let imagePath = null;
+
+  if (formData.img) {
+    const fileExt = formData.img.name.split('.').pop();
+    const fileName = `${Date.now()}.${fileExt}`;
+    const filePath = `animals/${fileName}`;
+
+    const { data, error } = await supabase
+      .storage
+      .from('photos')
+      .upload(filePath, formData.img);
+
+    if (error) {
+      console.error('Erreur upload image:', error.message);
+    } else {
+      imagePath = filePath;
+    }
+    console.log(data)
+  }
+
   const newAnimal = {
     name: formData.name,
     sexe: formData.sexe,
     type: formData.type,
     icad: formData.icad,
     race: formData.race,
-    ddn: formData.ddn || null, 
-    dpt: formData.dpt, 
+    ddn: formData.ddn || null,
+    dpt: formData.dpt,
     lieu: formData.lieu,
     okChien: formData.okChien,
     okChat: formData.okChat,
@@ -49,11 +70,13 @@ const AnimalForm = ({ onClose, onSubmit }) => {
     panierRetraite: formData.panierRetraite,
     requisition: formData.requisition,
     suivi: formData.suivi,
+    img: imagePath,
   };
 
-  onSubmit(newAnimal);  // Envoie un objet propre à la fonction handleAddAnimal
-  onClose();            // Ferme la modal
-};
+  onSubmit(newAnimal);
+  onClose();
+};            // Ferme la modal
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
       <div className="bg-white p-6 rounded-xl w-[400px]">
@@ -108,6 +131,11 @@ const AnimalForm = ({ onClose, onSubmit }) => {
     Sous requisition
   </label>
 </div>
+<input
+  type="file"
+  accept="image/*"
+  onChange={(e) => setFormData({ ...formData, img: e.target.files[0] })}
+/>
           <div className="flex justify-end gap-3 mt-2">
             <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-300 rounded">Annuler</button>
             <button type="submit" className="px-4 py-2 bg-green-500 text-white rounded">Ajouter</button>

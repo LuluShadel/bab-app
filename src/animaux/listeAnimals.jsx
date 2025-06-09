@@ -51,7 +51,8 @@ function ListeAnimals() {
       <ul>
         {animaux.map((item) => (
           <li key={item.id} className='border-t-4 border-blue-500 p-4 flex flex-row items-center'>
-            <img src={item.img} alt={item.name} className='w-20 h-20 object-cover rounded-full shadow-md' />
+            <img src={`https://cyrvizynjvgblsmyntmc.supabase.co/storage/v1/object/public/photos/${item.img}
+`} alt={item.name} className='w-20 h-20 object-cover rounded-full shadow-md' />
             <div className='ml-4' >
             <div className='flex flex-col gap-6'>
             <div className='flex flex-col' >{item.name} {item.ddn}

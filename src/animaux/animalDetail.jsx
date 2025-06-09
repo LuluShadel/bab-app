@@ -59,7 +59,8 @@ const openEditModal = () => {
     {/* IMAGE + icônes */}
     <div className="flex flex-col items-center">
       <div className='bg-blue-100 rounded-b-xl'>
-        <img src={animal.img} alt={animal.name} className="md:w-60 md:h-60 w-40 h-40 rounded-t-xl" />
+        <img src={`https://cyrvizynjvgblsmyntmc.supabase.co/storage/v1/object/public/photos/${animal.img}
+`} alt={animal.name} className="md:w-60 md:h-60 w-40 h-40 rounded-t-xl" />
         <div className="mt-2 mb-2 flex justify-center items-center gap-4 md:w-60 w-40">
           <FaDog className={`text-2xl ${animal.okChien ? "text-green-500" : "text-red-500"}`} />
           <FaCat className={`text-2xl ${animal.okChat ? "text-green-500" : "text-red-500"}`} />
