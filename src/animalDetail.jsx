@@ -1,12 +1,16 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import supabase from './supabaseClient';
 import { FaCat, FaChild, FaDog } from 'react-icons/fa';
 
 function AnimalDetails() {
   const { id } = useParams();
-  const [animal, setAnimal] = useState(null);
+  const [animal, setAnimal] = useState(null); // affiche l'animal cliqué 
+  const [showConfirmSupp, setShowConfirmSupp] = useState(false); // modal pour confirmer la suppression
+const navigate = useNavigate();
 
+
+// afficher les données de l'animal 
   useEffect(() => {
     async function fetchAnimal() {
       const { data, error } = await supabase
@@ -22,6 +26,20 @@ function AnimalDetails() {
   }, [id]);
 
   if (!animal) return <p>Chargement...</p>;
+
+  // Suppression de la fiche 
+  const handleDelete = async () => {
+  const { error } = await supabase
+    .from('animaux')
+    .delete()
+    .eq('id', id);
+
+  if (!error) {
+    navigate('/'); // Redirige après suppression 
+  } else {
+    console.error('Erreur lors de la suppression :', error);
+  }
+};
 
   return (
   <div className="p-[5em] flex flex-row items-center justify-center gap-[8em] bg-blue-200">
@@ -72,9 +90,37 @@ function AnimalDetails() {
     <div>
       <ul>
         <li>Editer fiche</li>
+       <li 
+  className='text-italic text-red-500 cursor-pointer'
+  onClick={() => setShowConfirmSupp(true)}
+>
+  Supprimer la fiche
+</li>
         <li>Ajouter un rendez vous</li>
       </ul>
     </div>
+    {showConfirmSupp && (
+  <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
+    <div className="bg-white p-6 rounded-xl w-[400px] text-center">
+      <h2 className="text-xl font-bold mb-4">Confirmation</h2>
+      <p className="mb-6">Êtes-vous sûre de vouloir supprimer <strong>{animal.name}</strong> définitivement ?</p>
+      <div className="flex justify-center gap-4">
+        <button 
+          onClick={() => setShowConfirmSupp(false)} 
+          className="px-4 py-2 bg-gray-300 rounded"
+        >
+          Annuler
+        </button>
+        <button 
+          onClick={handleDelete} 
+          className="px-4 py-2 bg-red-600 text-white rounded"
+        >
+          Supprimer
+        </button>
+      </div>
+    </div>
+  </div>
+)}
   </div>
 );
 }
