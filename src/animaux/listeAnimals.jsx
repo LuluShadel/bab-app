@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import supabase from './supabaseClient';
+import supabase from '../supabaseClient';
 import { Link } from 'react-router-dom';
 import AnimalForm from './animalForm';
 
-function Home() {
+function ListeAnimals() {
 
   const [animaux, setAnimaux] = useState([]);   // animaux = liste des animaux 
    const [showForm, setShowForm] = useState(false); // gère la modal
@@ -40,8 +40,14 @@ function Home() {
 
 
   return (
-    <div className='m-[15em]'>
+    <div className='flex flex-col items-start mx-auto w-full max-w-4xl px-4 mt-12'>
       <h1 className='text-blue-600 font-bold mb-8 text-xl'>Liste des animaux</h1>
+      <button
+          onClick={() => setShowForm(true)}
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mb-12"
+        >
+          Ajouter un nouvel animal
+        </button>
       <ul>
         {animaux.map((item) => (
           <li key={item.id} className='border-t-4 border-blue-500 p-4 flex flex-row items-center'>
@@ -69,12 +75,7 @@ function Home() {
             </li> 
         ))}
       </ul>
-      <button
-          onClick={() => setShowForm(true)}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-        >
-          Ajouter un nouvel animal
-        </button>
+      
         {showForm && (
         <AnimalForm
           onClose={() => setShowForm(false)}
@@ -85,4 +86,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default ListeAnimals;

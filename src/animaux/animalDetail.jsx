@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import supabase from './supabaseClient';
+import supabase from '../supabaseClient';
 import { FaCat, FaChild, FaDog } from 'react-icons/fa';
 
 function AnimalDetails() {
@@ -177,6 +177,112 @@ const openEditModal = () => {
             className="border w-full px-2 py-1 rounded"
           />
         </div>
+          <div>
+          <label className="block font-semibold">Type :</label>
+          <input
+            type="text"
+            value={editedAnimal.type || ''}
+            onChange={(e) =>
+              setEditedAnimal({ ...editedAnimal, type: e.target.value })
+            }
+            className="border w-full px-2 py-1 rounded"
+          />
+        </div>
+          <div>
+          <label className="block font-semibold">Sexe :</label>
+          <input
+            type="text"
+            value={editedAnimal.sexe || ''}
+            onChange={(e) =>
+              setEditedAnimal({ ...editedAnimal, sexe: e.target.value })
+            }
+            className="border w-full px-2 py-1 rounded"
+          />
+        </div>
+          <div>
+          <label className="block font-semibold">Département :</label>
+          <input
+            type="text"
+            value={editedAnimal.dpt || ''}
+            onChange={(e) =>
+              setEditedAnimal({ ...editedAnimal, dpt: e.target.value })
+            }
+            className="border w-full px-2 py-1 rounded"
+          />
+        </div>
+          <div>
+          <label className="block font-semibold">Lieu :</label>
+          <input
+            type="text"
+            value={editedAnimal.lieu || ''}
+            onChange={(e) =>
+              setEditedAnimal({ ...editedAnimal, lieu: e.target.value })
+            }
+            className="border w-full px-2 py-1 rounded"
+          />
+        </div>
+        <div className="flex flex-row gap-2">
+  <label className="inline-flex items-center">
+    <input
+      type="checkbox"
+      checked={!!editedAnimal.okChien}
+      onChange={(e) =>
+        setEditedAnimal({ ...editedAnimal, okChien: e.target.checked })
+      }
+      className="mr-2"
+    />
+    OK Chien
+  </label>
+
+  <label className="inline-flex items-center">
+    <input
+      type="checkbox"
+      checked={!!editedAnimal.okChat}
+      onChange={(e) =>
+        setEditedAnimal({ ...editedAnimal, okChat: e.target.checked })
+      }
+      className="mr-2"
+    />
+    OK Chat
+  </label>
+
+  <label className="inline-flex items-center">
+    <input
+      type="checkbox"
+      checked={!!editedAnimal.okChild}
+      onChange={(e) =>
+        setEditedAnimal({ ...editedAnimal, okChild: e.target.checked })
+      }
+      className="mr-2"
+    />
+    OK Enfant
+  </label>
+</div>
+<div className="flex flex-row gap-2">
+  <label className="inline-flex items-center">
+    <input
+      type="checkbox"
+      checked={!!editedAnimal.adoption}
+      onChange={(e) =>
+        setEditedAnimal({ ...editedAnimal, adoption: e.target.checked })
+      }
+      className="mr-2"
+    />
+    A l'adoption
+  </label>
+
+  <label className="inline-flex items-center">
+    <input
+      type="checkbox"
+      checked={!!editedAnimal.rechercheFa}
+      onChange={(e) =>
+        setEditedAnimal({ ...editedAnimal, rechercheFa: e.target.checked })
+      }
+      className="mr-2"
+    />
+    En recherche FA
+  </label>
+</div>
 
         <div className="flex justify-end gap-4 pt-4">
           <button
@@ -197,6 +303,7 @@ const openEditModal = () => {
     </div>
   </div>
 )}
+
   </div>
 );
 }
