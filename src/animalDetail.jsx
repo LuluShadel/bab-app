@@ -7,7 +7,10 @@ function AnimalDetails() {
   const { id } = useParams();
   const [animal, setAnimal] = useState(null); // affiche l'animal cliqué 
   const [showConfirmSupp, setShowConfirmSupp] = useState(false); // modal pour confirmer la suppression
+  const [showEditModal, setShowEditModal] = useState(false); // modal pour éditer la fiche
+const [editedAnimal, setEditedAnimal] = useState({}); // modifs faite sur le fiche 
 const navigate = useNavigate();
+
 
 
 // afficher les données de l'animal 
@@ -39,6 +42,12 @@ const navigate = useNavigate();
   } else {
     console.error('Erreur lors de la suppression :', error);
   }
+};
+
+// Edition de la fiche 
+const openEditModal = () => {
+  setEditedAnimal(animal); // Préremplir avec les infos existantes
+  setShowEditModal(true);
 };
 
   return (
@@ -89,7 +98,9 @@ const navigate = useNavigate();
     </div>
     <div>
       <ul>
-        <li>Editer fiche</li>
+        <li onClick={openEditModal} className="cursor-pointer text-blue-600">
+  Éditer fiche
+</li>
        <li 
   className='text-italic text-red-500 cursor-pointer'
   onClick={() => setShowConfirmSupp(true)}
@@ -118,6 +129,71 @@ const navigate = useNavigate();
           Supprimer
         </button>
       </div>
+    </div>
+  </div>
+)}
+
+{showEditModal && (
+  <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
+    <div className="bg-white p-6 rounded-xl w-[500px]">
+      <h2 className="text-xl font-bold mb-4 text-center">Modifier {animal.name}</h2>
+      <form
+        onSubmit={async (e) => {
+          e.preventDefault();
+          const { error } = await supabase
+            .from('animaux')
+            .update(editedAnimal)
+            .eq('id', id);
+
+          if (!error) {
+            setShowEditModal(false);
+            setAnimal(editedAnimal); // Mise à jour visuelle immédiate
+          } else {
+            alert("Erreur lors de la mise à jour : " + error.message);
+          }
+        }}
+        className="space-y-4"
+      >
+        <div>
+          <label className="block font-semibold">Nom :</label>
+          <input
+            type="text"
+            value={editedAnimal.name || ''}
+            onChange={(e) =>
+              setEditedAnimal({ ...editedAnimal, name: e.target.value })
+            }
+            className="border w-full px-2 py-1 rounded"
+          />
+        </div>
+
+        <div>
+          <label className="block font-semibold">Race :</label>
+          <input
+            type="text"
+            value={editedAnimal.race || ''}
+            onChange={(e) =>
+              setEditedAnimal({ ...editedAnimal, race: e.target.value })
+            }
+            className="border w-full px-2 py-1 rounded"
+          />
+        </div>
+
+        <div className="flex justify-end gap-4 pt-4">
+          <button
+            type="button"
+            onClick={() => setShowEditModal(false)}
+            className="px-4 py-2 bg-gray-300 rounded"
+          >
+            Annuler
+          </button>
+          <button
+            type="submit"
+            className="px-4 py-2 bg-blue-600 text-white rounded"
+          >
+            Enregistrer
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 )}
