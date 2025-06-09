@@ -15,7 +15,7 @@ export default function Header() {
         {/* Menu desktop */}
         <ul className="hidden md:flex space-x-6 text-blue-700 font-medium">
           <li><Link to="/" className="hover:text-blue-900 transition">Accueil</Link></li>
-          <li><Link to="/listeAnimals" className="hover:text-blue-900 transition">Animaux</Link></li>
+          <li><Link to="animaux/listeAnimals" className="hover:text-blue-900 transition">Animaux</Link></li>
           <li><Link to="*" className="hover:text-blue-900 transition">Signalement</Link></li>
           <li><Link to="*" className="hover:text-blue-900 transition">Trésorerie</Link></li>
           <li><Link to="*" className="hover:text-blue-900 transition">Communication</Link></li>

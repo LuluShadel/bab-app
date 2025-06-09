@@ -13,6 +13,8 @@ const AnimalForm = ({ onClose, onSubmit }) => {
     okChild: false,
     adoption:false,
     rechercheFa:false,
+    panierRetraite:false,
+    requisition:false,
   });
 
   const handleChange = (e) => {
@@ -40,6 +42,8 @@ const AnimalForm = ({ onClose, onSubmit }) => {
     okChild: formData.okChild,
     adoption: formData.adoption,
     rechercheFa: formData.rechercheFa,
+    panierRetraite: formData.panierRetraite,
+    requisition: formData.requisition,
   };
 
   onSubmit(newAnimal);  // Envoie un objet propre à la fonction handleAddAnimal
@@ -79,6 +83,22 @@ const AnimalForm = ({ onClose, onSubmit }) => {
       onChange={(e) => setFormData({ ...formData, rechercheFa: e.target.checked })}
     />
     Recherche FA
+  </label>
+  <label className="ml-4">
+    <input
+      type="checkbox"
+      checked={formData.panierRetraite}
+      onChange={(e) => setFormData({ ...formData, panierRetraite: e.target.checked })}
+    />
+    Panier retraite
+  </label>
+  <label className="ml-4">
+    <input
+      type="checkbox"
+      checked={formData.requisition}
+      onChange={(e) => setFormData({ ...formData, requisition: e.target.checked })}
+    />
+    Sous requisition
   </label>
 </div>
           <div className="flex justify-end gap-3 mt-2">

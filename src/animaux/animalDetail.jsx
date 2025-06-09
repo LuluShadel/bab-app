@@ -81,8 +81,16 @@ const openEditModal = () => {
         <span className='bg-green-600 rounded-xl p-1 mr-2'>A l'adoption</span>
       )}
       {animal.rechercheFa && (
-        <span className='bg-pink-400 rounded-xl p-1'>Recherche FA</span>
-      )}</div>
+        <span className='bg-pink-400 rounded-xl p-1 mr-2'>Recherche FA</span>
+      )}
+      {animal.panierRetraite && (
+        <span className='bg-gray-400 text-white rounded-xl p-1 mr-2'>Panier retraite</span>
+      )}
+      {animal.requisition && (
+        <span className='bg-red-400 text-white rounded-xl p-1 mr-2'>Sous requisition</span>
+      )}
+      
+      </div>
     <ul className='flex flex-row gap-12'>
       <div>
       <li><span className='font-bold'>Sexe :</span> {animal.sexe}</li>
@@ -281,6 +289,28 @@ const openEditModal = () => {
       className="mr-2"
     />
     En recherche FA
+  </label>
+  <label className="inline-flex items-center">
+    <input
+      type="checkbox"
+      checked={!!editedAnimal.panierRetraite}
+      onChange={(e) =>
+        setEditedAnimal({ ...editedAnimal, panierRetraite: e.target.checked })
+      }
+      className="mr-2"
+    />
+    Panier retraite
+  </label>
+  <label className="inline-flex items-center">
+    <input
+      type="checkbox"
+      checked={!!editedAnimal.requisition}
+      onChange={(e) =>
+        setEditedAnimal({ ...editedAnimal, requisition: e.target.checked })
+      }
+      className="mr-2"
+    />
+    Sous requisition
   </label>
 </div>
 

@@ -58,8 +58,15 @@ function ListeAnimals() {
         <span className='bg-green-600 rounded-xl p-1 mr-2'>A l'adoption</span>
       )}
       {item.rechercheFa && (
-        <span className='bg-pink-400 rounded-xl p-1'>Recherche FA</span>
-      )}</div>
+        <span className='bg-pink-400 rounded-xl p-1 mr-2'>Recherche FA</span>
+      )}
+      {item.panierRetraite && (
+        <span className='bg-gray-400 text-white rounded-xl p-1 mr-2'>Panier Retraite</span>
+      )}
+      {item.requisition && (
+        <span className='bg-red-400 text-white rounded-xl p-1 mr-2'>Sous réquisition</span>
+      )}
+      </div>
             </div>
              <div className='flex flex-row gap-3'>
       <p> <span className='font-bold'>Icad :</span> {item.icad}</p>
