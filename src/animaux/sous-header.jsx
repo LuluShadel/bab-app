@@ -1,6 +1,7 @@
 import { useState } from "react";
+import DescriptionAnimal from "./description";
 
-function SousHeaderAnimal() {
+const SousHeaderAnimal = ({ animal }) =>  {
   const [activeTab, setActiveTab] = useState("description");
 
   return (
@@ -44,7 +45,7 @@ function SousHeaderAnimal() {
         {activeTab === "description" && (
           <div>
             <h3 className="text-lg font-bold mb-2">Description de l'animal</h3>
-            <p>module à venir</p>
+            <DescriptionAnimal animal={animal}/>
           </div>
         )}
         {activeTab === "suiviVeto" && (
@@ -56,7 +57,7 @@ function SousHeaderAnimal() {
         {activeTab === "historique" && (
           <div>
             <h3 className="text-lg font-bold mb-2">Historique</h3>
-           <p>module à venir</p>
+            <p>Ici tu mets l'historique des actions ou événements liés à l’animal.</p>
           </div>
         )}
       </div>

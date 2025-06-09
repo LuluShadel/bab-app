@@ -119,7 +119,7 @@ const openEditModal = () => {
 
   {/* Sous-header */}
   <div className="w-full mt-8">
-    <SousHeaderAnimal />
+    <SousHeaderAnimal animal={animal}/>
   </div>
 
     {showConfirmSupp && (
