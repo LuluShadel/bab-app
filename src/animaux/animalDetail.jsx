@@ -91,6 +91,7 @@ const openEditModal = () => {
       {/* Liste infos */}
       <ul className="flex flex-col md:flex-row gap-8 text-sm">
         <div>
+           <li className="border border-dotted border-blue-500 p-1"><strong>Suivi par :</strong> {animal.suivi}</li>
           <li><strong>Sexe :</strong> {animal.sexe}</li>
           <li><strong>Type :</strong> {animal.type}</li>
           <li><strong>Race :</strong> {animal.race}</li>
