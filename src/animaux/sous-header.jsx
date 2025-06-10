@@ -1,5 +1,6 @@
 import { useState } from "react";
 import DescriptionAnimal from "./description";
+import VetoAnimaux from "./veto";
 
 const SousHeaderAnimal = ({ animal }) =>  {
   const [activeTab, setActiveTab] = useState("description");
@@ -29,6 +30,16 @@ const SousHeaderAnimal = ({ animal }) =>  {
           Suivi vétérinaire
         </button>
         <button
+          onClick={() => setActiveTab("documents")}
+          className={`pb-2 font-semibold text-gray-600 transition-colors duration-300 ${
+            activeTab === "documents"
+              ? "text-blue-600 border-b-4 border-blue-600"
+              : "hover:text-blue-500 hover:border-b-4 hover:border-blue-400"
+          }`}
+        >
+          Documents
+        </button>
+        <button
           onClick={() => setActiveTab("historique")}
           className={`pb-2 font-semibold text-gray-600 transition-colors duration-300 ${
             activeTab === "historique"
@@ -51,13 +62,19 @@ const SousHeaderAnimal = ({ animal }) =>  {
         {activeTab === "suiviVeto" && (
           <div>
             <h3 className="text-lg font-bold mb-2">Suivi vétérinaire</h3>
-           <p>module à venir</p>
+            <VetoAnimaux animal={animal}/>
+          </div>
+        )}
+        {activeTab === "documents" && (
+          <div>
+            <h3 className="text-lg font-bold mb-2">Documents</h3>
+            <p>Module à venir</p>
           </div>
         )}
         {activeTab === "historique" && (
           <div>
             <h3 className="text-lg font-bold mb-2">Historique</h3>
-            <p>Ici tu mets l'historique des actions ou événements liés à l’animal.</p>
+            <p>Module à venir</p>
           </div>
         )}
       </div>
