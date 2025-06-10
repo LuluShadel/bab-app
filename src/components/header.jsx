@@ -1,11 +1,17 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FaBars, FaTimes } from 'react-icons/fa'
+import supabase from '../supabaseClient'
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   const toggleMenu = () => setMenuOpen(!menuOpen)
+
+  // deconnexion 
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+  };
 
   return (
     <header className="bg-blue-100 shadow-md">
@@ -19,6 +25,7 @@ export default function Header() {
           <li><Link to="*" className="hover:text-blue-900 transition">Signalement</Link></li>
           <li><Link to="*" className="hover:text-blue-900 transition">Trésorerie</Link></li>
           <li><Link to="*" className="hover:text-blue-900 transition">Communication</Link></li>
+          <button onClick={handleLogout}>Déconnexion</button>
         </ul>
 
         {/* Bouton mobile */}
@@ -35,6 +42,7 @@ export default function Header() {
           <li><Link to="*" onClick={toggleMenu}>Signalement</Link></li>
           <li><Link to="*" onClick={toggleMenu}>Trésorerie</Link></li>
           <li><Link to="*" onClick={toggleMenu}>Communication</Link></li>
+          
         </ul>
       )}
     </header>
