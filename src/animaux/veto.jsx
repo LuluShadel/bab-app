@@ -143,9 +143,175 @@ const supprimerPesee = async (id) => {
   }
 };
 
+// vaccin 
+function VaccinInfo({ dateDernierVaccin }) {
+  if (!dateDernierVaccin) return null;
+
+  const formatDate = (isoDate) =>
+    new Date(isoDate).toLocaleDateString("fr-FR");
+
+  const dernierVaccin = new Date(dateDernierVaccin);
+  const prochainVaccin = new Date(dernierVaccin);
+  prochainVaccin.setFullYear(prochainVaccin.getFullYear() + 1);
+
+  const today = new Date();
+  const tempsRestant = (prochainVaccin - today) / (1000 * 60 * 60 * 24);
+
+  const estBientot = tempsRestant <= 30 && tempsRestant > 0;
+  const estDepasse = tempsRestant <= 0;
+
+  return (
+    <div className="mt-4 space-y-2">
+      {estDepasse && (
+        <p className="text-red-700 text-2xl font-extrabold">
+          ⚠️ Attention : date de vaccin dépassée !
+        </p>
+      )}
+      <p>
+        <span className="font-semibold">Dernier vaccin :</span>{" "}
+        {formatDate(dernierVaccin)}
+      </p>
+      <p
+        className={
+          estDepasse
+            ? "text-red-700 font-bold"
+            : estBientot
+            ? "text-red-500 font-bold"
+            : ""
+        }
+      >
+        <span className="font-semibold">Prochain vaccin :</span>{" "}
+        {formatDate(prochainVaccin)}
+      </p>
+    </div>
+  );
+}
+
+// modif vaccin 
+const updateVaccinDate = async (newDate) => {
+  const { error } = await supabase
+    .from('animaux')
+    .update({ vaccin: newDate })
+    .eq('id', animal.id);
+
+  if (!error) {
+    // Recharge les données de l’animal si besoin
+    animal.vaccin = newDate; // mise à jour locale si tu n’as pas de re-fetch
+  } else {
+    console.error("Erreur lors de la mise à jour du vaccin :", error);
+  }
+};
+
+function FormUpdateVaccin({ currentDate, onUpdate }) {
+  const [newDate, setNewDate] = useState(currentDate ? currentDate.split("T")[0] : "");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (newDate) {
+      onUpdate(newDate);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="mt-2 mb-12 flex items-center gap-2">
+        <p>Mettre à jour la dernière date de vaccin :
+      </p>
+      <input
+        type="date"
+        value={newDate}
+        onChange={(e) => setNewDate(e.target.value)}
+        className="border px-2 py-1 rounded"
+      />
+      
+      <button
+        type="submit"
+        className="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700"
+      >
+        Mettre à jour
+      </button>
+    </form>
+  );
+}
+
+// vermifuge 
+function VermifugeInfo({ dateDernierVermifuge }) {
+  if (!dateDernierVermifuge) return null;
+
+  const formatDate = (isoDate) =>
+    new Date(isoDate).toLocaleDateString("fr-FR");
+
+  const dernierVermifuge = new Date(dateDernierVermifuge);
+  const prochainVermifuge = new Date(dernierVermifuge);
+  prochainVermifuge.setMonth(prochainVermifuge.getMonth() + 6);
+
+  const today = new Date();
+  const tempsRestant = (prochainVermifuge - today) / (1000 * 60 * 60 * 24);
+
+  const estBientot = tempsRestant <= 30 && tempsRestant > 0;
+
+  return (
+    <div className="mt-4 space-y-2">
+      <p>
+        <span className="font-semibold">Dernier vermifuge :</span>{" "}
+        {formatDate(dernierVermifuge)}
+      </p>
+      <p className={estBientot ? "text-red-500 font-bold" : ""}>
+        <span className="font-semibold">Prochain vermifuge :</span>{" "}
+        {formatDate(prochainVermifuge)}
+      </p>
+    </div>
+  );
+}
+
+function FormUpdateVermifuge({ currentDate, onUpdate }) {
+  const [newDate, setNewDate] = useState(currentDate ? currentDate.split("T")[0] : "");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (newDate) {
+      onUpdate(newDate);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="mt-2 mb-12 flex items-center gap-2">
+        <p>Mettre à jour la dernière prise de vermifuge :</p>
+      <input
+        type="date"
+        value={newDate}
+        onChange={(e) => setNewDate(e.target.value)}
+        className="border px-2 py-1 rounded"
+      />
+      <button
+        type="submit"
+        className="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700"
+      >
+        Mettre à jour
+      </button>
+    </form>
+  );
+}
+
+const updateVermifugeDate = async (newDate) => {
+  const { error } = await supabase
+    .from("animaux")
+    .update({ vermifuge: newDate })
+    .eq("id", animal.id);
+
+  if (!error) {
+    animal.vermifuge = newDate; // mise à jour locale
+  } else {
+    console.error("Erreur mise à jour vermifuge :", error);
+  }
+};
+
   return (
     <div className="p-4">
       <h2 className="text-xl font-bold mb-4">Courbe de poids</h2>
+      <VaccinInfo dateDernierVaccin={animal.vaccin} />
+      <FormUpdateVaccin currentDate={animal.vaccin} onUpdate={updateVaccinDate} />
+      <VermifugeInfo dateDernierVermifuge={animal.vermifuge} />
+<FormUpdateVermifuge currentDate={animal.vermifuge} onUpdate={updateVermifugeDate} />
       <CourbePoids data={pesees} />
       <AjouterPesee animalId={animalId} onAjout={fetchPesees} />
       <ListePesees pesees={pesees} onDelete={supprimerPesee} />
