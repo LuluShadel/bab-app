@@ -77,6 +77,8 @@ function CourbePoids({ data }) {
     }
   };
 
+  
+
   return (
     <div className="my-4 flex flex-col sm:flex-row items-start sm:items-center gap-2">
       <input
@@ -103,11 +105,50 @@ function CourbePoids({ data }) {
   );
 }
 
+// supprimer une pessée
+  function ListePesees({ pesees, onDelete }) {
+  const formatDate = (isoDate) =>
+    new Date(isoDate).toLocaleDateString("fr-FR");
+
+  return (
+    <div className="mt-6">
+      <h3 className="font-semibold mb-2">Historique des pesées :</h3>
+      <ul className="space-y-2">
+        {pesees.map((pesee) => (
+          <li
+            key={pesee.id}
+            className="flex justify-between items-center border p-2 rounded"
+          >
+            <span>
+              {formatDate(pesee.date)} — {pesee.poids} kg
+            </span>
+            <button
+              onClick={() => onDelete(pesee.id)}
+              className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+            >
+              Supprimer
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+const supprimerPesee = async (id) => {
+  const { error } = await supabase.from("pesees").delete().eq("id", id);
+  if (!error) {
+    fetchPesees(); // rafraîchir la liste
+  } else {
+    console.error("Erreur lors de la suppression :", error);
+  }
+};
+
   return (
     <div className="p-4">
       <h2 className="text-xl font-bold mb-4">Courbe de poids</h2>
       <CourbePoids data={pesees} />
       <AjouterPesee animalId={animalId} onAjout={fetchPesees} />
+      <ListePesees pesees={pesees} onDelete={supprimerPesee} />
     </div>
   );
 }
