@@ -3,7 +3,8 @@ import supabase from "../supabaseClient";
   import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from 'recharts';
 
 function VetoAnimaux({ animal }) {
-    const animalId = animal.id
+    const [animalData, setAnimalData] = useState(animal);
+const animalId = animalData.id;
   const [pesees, setPesees] = useState([]);
 
 
@@ -194,10 +195,10 @@ const updateVaccinDate = async (newDate) => {
     .update({ vaccin: newDate })
     .eq('id', animal.id);
 
-  if (!error) {
-    // Recharge les données de l’animal si besoin
-    animal.vaccin = newDate; // mise à jour locale si tu n’as pas de re-fetch
-  } else {
+ if (!error) {
+  setAnimalData((prev) => ({ ...prev, vaccin: newDate }));
+}
+   else {
     console.error("Erreur lors de la mise à jour du vaccin :", error);
   }
 };
@@ -299,8 +300,8 @@ const updateVermifugeDate = async (newDate) => {
     .eq("id", animal.id);
 
   if (!error) {
-    animal.vermifuge = newDate; // mise à jour locale
-  } else {
+  setAnimalData((prev) => ({ ...prev, vermifuge: newDate }));
+} else {
     console.error("Erreur mise à jour vermifuge :", error);
   }
 };
@@ -369,15 +370,15 @@ const updateDonneeMedical = async (newText) => {
     .eq("id", animal.id);
 
   if (!error) {
-    animal.donnee_medical = newText; // mise à jour locale
-  } else {
+  setAnimalData((prev) => ({ ...prev, donnee_medical: newText }));
+}else {
     console.error("Erreur mise à jour problème médical :", error);
   }
 };
 
   return (
     <div className="p-4">
-      <h2 className="text-xl font-bold mb-4">Courbe de poids</h2>
+      
       <VaccinInfo dateDernierVaccin={animal.vaccin} />
       <FormUpdateVaccin currentDate={animal.vaccin} onUpdate={updateVaccinDate} />
       <VermifugeInfo dateDernierVermifuge={animal.vermifuge} />
@@ -386,6 +387,7 @@ const updateDonneeMedical = async (newText) => {
   contenu={animal.donnee_medical}
   onUpdate={updateDonneeMedical}
 />
+    <h2 className="text-xl font-bold mb-4">Courbe de poids</h2>
       <CourbePoids data={pesees} />
       <AjouterPesee animalId={animalId} onAjout={fetchPesees} />
       <ListePesees pesees={pesees} onDelete={supprimerPesee} />
