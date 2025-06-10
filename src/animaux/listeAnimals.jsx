@@ -10,6 +10,7 @@ function ListeAnimals() {
    const [filtreStatut, setFiltreStatut] = useState('all'); // va gérer le filtre par statut ( adoption, fa...)
    const [rechercheNom, setRechercheNom] = useState(''); // va gérer la recherche par nom 
    const [rechercheSuivi, setRechercheSuivi] = useState(''); // va gérer la recherche par modo ' suivi' 
+   const [role, setRole] = useState(null); // gère le role de l'utilisateur modi ou fa
 
   useEffect(() => {
     async function fetchAnimaux() {
@@ -25,6 +26,26 @@ function ListeAnimals() {
 
     fetchAnimaux();
   }, []);
+
+  useEffect(() => {
+  const fetchRole = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (user) {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('roles')
+        .eq('id', user.id)
+        .single();
+
+      if (!error && data) {
+        setRole(data.roles);
+      }
+    }
+  };
+
+  fetchRole();
+}, []);
 
  const handleAddAnimal = async (newAnimal) => {
   console.log('NOUVEL ANIMAL :', newAnimal);
@@ -57,12 +78,14 @@ const animauxFiltres = animaux.filter((animal) => {
   return (
     <div className='flex flex-col items-start mx-auto w-full max-w-4xl px-4 mt-12'>
       <h1 className='text-blue-600 font-bold mb-8 text-xl'>Liste des animaux</h1>
-      <button
-          onClick={() => setShowForm(true)}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mb-12"
-        >
-          Ajouter un nouvel animal
-        </button>
+      {(role === 'modo' || role === 'admin') && (
+  <button
+    onClick={() => setShowForm(true)}
+    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mb-12"
+  >
+    Ajouter un nouvel animal
+  </button>
+)}
       <div className="flex flex-row flex-wrap gap-2 mb-4 justify-center">
         <p>Filtrer par statut :</p>
   <button onClick={() => setFiltreStatut('all')} className="px-3 py-1 bg-gray-300 rounded">Tous</button>
