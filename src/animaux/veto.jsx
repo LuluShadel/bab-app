@@ -305,6 +305,76 @@ const updateVermifugeDate = async (newDate) => {
   }
 };
 
+// problème medical 
+function ProblemeMedical({ contenu, onUpdate }) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [texte, setTexte] = useState(contenu || "");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await onUpdate(texte);
+    setIsEditing(false);
+  };
+
+  return (
+    <div className="mt-6 mb-12">
+      <h3 className="font-semibold text-lg mb-2">Problème médical</h3>
+
+      {!isEditing ? (
+        <div className="bg-gray-100 p-3 rounded mb-2 whitespace-pre-wrap">
+          {texte || "Aucun problème médical renseigné."}
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit} className="mb-2">
+          <textarea
+            value={texte}
+            onChange={(e) => setTexte(e.target.value)}
+            rows={5}
+            className="w-full border px-2 py-1 rounded"
+          />
+          <div className="mt-2">
+            <button
+              type="submit"
+              className="bg-green-600 text-white px-4 py-1 rounded mr-2"
+            >
+              Enregistrer
+            </button>
+            <button
+              type="button"
+              onClick={() => setIsEditing(false)}
+              className="bg-gray-500 text-white px-3 py-1 rounded"
+            >
+              Annuler
+            </button>
+          </div>
+        </form>
+      )}
+
+      {!isEditing && (
+        <button
+          onClick={() => setIsEditing(true)}
+          className="text-blue-600 underline text-sm"
+        >
+          Ajouter une donnée médical 
+        </button>
+      )}
+    </div>
+  );
+}
+
+const updateDonneeMedical = async (newText) => {
+  const { error } = await supabase
+    .from("animaux")
+    .update({ donnee_medical: newText })
+    .eq("id", animal.id);
+
+  if (!error) {
+    animal.donnee_medical = newText; // mise à jour locale
+  } else {
+    console.error("Erreur mise à jour problème médical :", error);
+  }
+};
+
   return (
     <div className="p-4">
       <h2 className="text-xl font-bold mb-4">Courbe de poids</h2>
@@ -312,6 +382,10 @@ const updateVermifugeDate = async (newDate) => {
       <FormUpdateVaccin currentDate={animal.vaccin} onUpdate={updateVaccinDate} />
       <VermifugeInfo dateDernierVermifuge={animal.vermifuge} />
 <FormUpdateVermifuge currentDate={animal.vermifuge} onUpdate={updateVermifugeDate} />
+<ProblemeMedical
+  contenu={animal.donnee_medical}
+  onUpdate={updateDonneeMedical}
+/>
       <CourbePoids data={pesees} />
       <AjouterPesee animalId={animalId} onAjout={fetchPesees} />
       <ListePesees pesees={pesees} onDelete={supprimerPesee} />
