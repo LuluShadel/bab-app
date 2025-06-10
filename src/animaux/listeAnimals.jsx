@@ -141,8 +141,9 @@ const animauxFiltres = animaux.filter((animal) => {
       <p><span className='font-bold'>Type :</span> {item.type}</p>
       <p><span className='font-bold'>Race :</span>  {item.race}</p>
              </div>
-             <Link to={`/animal/${item.id}`}>
+             
             <p className='border border-dotted border-blue-500 p-1'>Suivi effectué par : {item.suivi}</p>
+            <Link to={`/animal/${item.id}`}>
   <button className="bg-blue-500 text-white px-4 py-1 rounded mt-2 hover:bg-blue-600">
     Voir la fiche
   </button>

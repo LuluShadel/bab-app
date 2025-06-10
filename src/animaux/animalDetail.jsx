@@ -10,9 +10,29 @@ function AnimalDetails() {
   const [showConfirmSupp, setShowConfirmSupp] = useState(false); // modal pour confirmer la suppression
   const [showEditModal, setShowEditModal] = useState(false); // modal pour éditer la fiche
 const [editedAnimal, setEditedAnimal] = useState({}); // modifs faite sur le fiche 
+ const [role, setRole] = useState(null); // gère le role de l'utilisateur ( modo ou fa) 
 const navigate = useNavigate();
 
+// gère le role 
+ useEffect(() => {
+  const fetchRole = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
 
+    if (user) {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('roles')
+        .eq('id', user.id)
+        .single();
+
+      if (!error && data) {
+        setRole(data.roles);
+      }
+    }
+  };
+
+  fetchRole();
+}, []);
 
 // afficher les données de l'animal 
   useEffect(() => {
@@ -50,6 +70,9 @@ const openEditModal = () => {
   setEditedAnimal(animal); // Préremplir avec les infos existantes
   setShowEditModal(true);
 };
+
+
+
 
   return (
   <div className="md:p-[8em] p-4 md:p-12 bg-blue-200">
@@ -108,12 +131,14 @@ const openEditModal = () => {
     {/* ACTIONS */}
     <div className="flex flex-col items-center md:items-end gap-4 mt-4 md:mt-0">
       <button onClick={openEditModal} className="text-blue-600 hover:underline">Éditer fiche</button>
+      {(role === 'modo') && (
       <button
         onClick={() => setShowConfirmSupp(true)}
         className="text-red-500 hover:underline italic"
       >
         Supprimer la fiche
       </button>
+      )}
     </div>
   </div>
 
@@ -245,6 +270,20 @@ const openEditModal = () => {
             className="border w-full px-2 py-1 rounded"
           />
         </div>
+         <div>
+  <label className="block font-semibold">Catégorisation :</label>
+  <select
+    value={editedAnimal.categorisation || ''}
+    onChange={(e) =>
+      setEditedAnimal({ ...editedAnimal, categorisation: e.target.value })
+    }
+    className="border w-full px-2 py-1 rounded"
+  >
+    <option value="Categorie-1">Catégorie 1</option>
+    <option value="Categorie-2">Catégorie 2</option>
+    <option value="Pas-de-categorie">Pas de catégorie</option>
+  </select>
+</div>
         <div>
           <label className="block font-semibold">Suivi par :</label>
           <input
