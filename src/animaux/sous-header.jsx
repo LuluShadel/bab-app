@@ -2,6 +2,7 @@ import { useState } from "react";
 import DescriptionAnimal from "./description";
 import VetoAnimaux from "./veto";
 import DocumentsAnimaux from "./documentAnimaux";
+import HistoriqueAnimal from "./historiqueAnimal";
 
 const SousHeaderAnimal = ({ animal }) =>  {
   const [activeTab, setActiveTab] = useState("description");
@@ -75,7 +76,7 @@ const SousHeaderAnimal = ({ animal }) =>  {
         {activeTab === "historique" && (
           <div>
             <h3 className="text-lg font-bold mb-2">Historique</h3>
-            <p>Module à venir</p>
+            <HistoriqueAnimal animal={animal} />
           </div>
         )}
       </div>
