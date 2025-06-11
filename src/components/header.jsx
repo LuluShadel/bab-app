@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { FaBars, FaTimes } from 'react-icons/fa'
 import supabase from '../supabaseClient'
 
 export default function Header() {
-  const [menuOpen, setMenuOpen] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false) // responsive
+  const [role, setRole] = useState(null); // gère le role de l'utilisateur ( modo ou fa) 
 
   const toggleMenu = () => setMenuOpen(!menuOpen)
 
@@ -12,6 +13,27 @@ export default function Header() {
   const handleLogout = async () => {
     await supabase.auth.signOut();
   };
+
+  // gère le role 
+   useEffect(() => {
+    const fetchRole = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+  
+      if (user) {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('roles')
+          .eq('id', user.id)
+          .single();
+  
+        if (!error && data) {
+          setRole(data.roles);
+        }
+      }
+    };
+  
+    fetchRole();
+  }, []);
 
   return (
     <header className="bg-blue-100 shadow-md">
@@ -22,9 +44,16 @@ export default function Header() {
         <ul className="hidden md:flex space-x-6 text-blue-700 font-medium">
           <li><Link to="/" className="hover:text-blue-900 transition">Accueil</Link></li>
           <li><Link to="animaux/listeAnimals" className="hover:text-blue-900 transition">Animaux</Link></li>
+           {(role === 'modo') && (
           <li><Link to="*" className="hover:text-blue-900 transition">Signalement</Link></li>
+           )}
+            {(role === 'modo') && (
           <li><Link to="*" className="hover:text-blue-900 transition">Trésorerie</Link></li>
+            )}
+             {(role === 'modo') && (
           <li><Link to="*" className="hover:text-blue-900 transition">Communication</Link></li>
+             )}
+           
           <button onClick={handleLogout}>Déconnexion</button>
         </ul>
 

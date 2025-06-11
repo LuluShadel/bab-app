@@ -78,7 +78,7 @@ const animauxFiltres = animaux.filter((animal) => {
   return (
     <div className='flex flex-col items-start mx-auto w-full max-w-4xl px-4 mt-12'>
       <h1 className='text-blue-600 font-bold mb-8 text-xl'>Liste des animaux</h1>
-      {(role === 'modo' || role === 'admin') && (
+      {(role === 'modo') && (
   <button
     onClick={() => setShowForm(true)}
     className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mb-12"
@@ -86,6 +86,7 @@ const animauxFiltres = animaux.filter((animal) => {
     Ajouter un nouvel animal
   </button>
 )}
+ {(role === 'modo') && (
       <div className="flex flex-row flex-wrap gap-2 mb-4 justify-center">
         <p>Filtrer par statut :</p>
   <button onClick={() => setFiltreStatut('all')} className="px-3 py-1 bg-gray-300 rounded">Tous</button>
@@ -94,6 +95,8 @@ const animauxFiltres = animaux.filter((animal) => {
   <button onClick={() => setFiltreStatut('panierRetraite')} className="px-3 py-1 bg-gray-300 rounded">Panier retraite</button>
   <button onClick={() => setFiltreStatut('requisition')} className="px-3 py-1 bg-red-300 rounded">Sous réquisition</button>
 </div>
+ )}
+  {(role === 'modo') && (
 <div className="mb-4 flex flex-col md:flex-row gap-4 w-full">
   <input
     type="text"
@@ -110,6 +113,7 @@ const animauxFiltres = animaux.filter((animal) => {
     className="border border-gray-300 rounded px-3 py-1 w-full md:w-1/2"
   />
 </div>
+  )}
       
       <ul>
         
