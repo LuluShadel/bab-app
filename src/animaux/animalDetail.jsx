@@ -131,7 +131,9 @@ const openEditModal = () => {
 
     {/* ACTIONS */}
     <div className="flex flex-col items-center md:items-end gap-4 mt-4 md:mt-0">
+       {(role === 'modo') && (
       <button onClick={openEditModal} className="text-blue-600 hover:underline">Éditer fiche</button>
+       )}
       {(role === 'modo') && (
       <button
         onClick={() => setShowConfirmSupp(true)}
