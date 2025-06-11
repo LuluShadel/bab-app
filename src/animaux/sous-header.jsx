@@ -1,6 +1,7 @@
 import { useState } from "react";
 import DescriptionAnimal from "./description";
 import VetoAnimaux from "./veto";
+import DocumentsAnimaux from "./documentAnimaux";
 
 const SousHeaderAnimal = ({ animal }) =>  {
   const [activeTab, setActiveTab] = useState("description");
@@ -68,7 +69,7 @@ const SousHeaderAnimal = ({ animal }) =>  {
         {activeTab === "documents" && (
           <div>
             <h3 className="text-lg font-bold mb-2">Documents</h3>
-            <p>Module à venir</p>
+            <DocumentsAnimaux animal = {animal} />
           </div>
         )}
         {activeTab === "historique" && (

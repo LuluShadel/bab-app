@@ -124,6 +124,7 @@ const openEditModal = () => {
           <li><strong>Date de naissance :</strong> {animal.ddn}</li>
           <li><strong>Lieu :</strong> {animal.lieu}</li>
           <li><strong>Département :</strong> {animal.dpt}</li>
+          <li><strong>Nom de la personne en charge de l'animal :</strong>{animal.nomFa}</li>
         </div>
       </ul>
     </div>
@@ -244,6 +245,17 @@ const openEditModal = () => {
             value={editedAnimal.dpt || ''}
             onChange={(e) =>
               setEditedAnimal({ ...editedAnimal, dpt: e.target.value })
+            }
+            className="border w-full px-2 py-1 rounded"
+          />
+        </div>
+        <div>
+          <label className="block font-semibold">Nom de la personne en charge de l'animal :</label>
+          <input
+            type="text"
+            value={editedAnimal.nomFa || ''}
+            onChange={(e) =>
+              setEditedAnimal({ ...editedAnimal, nomFa: e.target.value })
             }
             className="border w-full px-2 py-1 rounded"
           />

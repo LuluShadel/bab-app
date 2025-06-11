@@ -11,6 +11,7 @@ const AnimalForm = ({ onClose, onSubmit }) => {
     race: '',
     ddn: '',
     dpt: '',
+    nomFa: '',
     okChien: false,
     okChat: false,
     okChild: false,
@@ -69,6 +70,7 @@ const handleSubmit = async (e) => {
     race: formData.race,
     ddn: formData.ddn || null,
     dpt: formData.dpt,
+    nomFa: formData.nomFa,
     lieu: formData.lieu,
     okChien: formData.okChien,
     okChat: formData.okChat,
@@ -103,6 +105,7 @@ const handleSubmit = async (e) => {
           <input name="icad" placeholder="icad" onChange={handleChange} className="border p-2 rounded" />
           <input name="ddn" placeholder="Date de naissance" onChange={handleChange} className="border p-2 rounded" />
           <input name="lieu" placeholder="FA ou Pension etc..." onChange={handleChange} className="border p-2 rounded" />
+          <input name="nomFa" placeholder="Nom de la personne en charge" onChange={handleChange} className="border p-2 rounded" />
           <input name="dpt" placeholder="Département" onChange={handleChange} className="border p-2 rounded" />
           <input name="suivi" placeholder="Suivi fait par:" onChange={handleChange} className="border p-2 rounded" />
           <div className="flex gap-4">
