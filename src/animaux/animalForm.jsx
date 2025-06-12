@@ -83,8 +83,8 @@ const handleSubmit = async (e) => {
     img: imagePath,
     sterilisation: formData.sterilisation,
     categorisation: formData.categorisation,
-    vermifuge: formData.vermifuge,
-    vaccin: formData.vaccin,
+    vermifuge: formData.vermifuge || null,
+vaccin: formData.vaccin || null,
     description: formData.description,
     besoin : formData.besoin,
   };
