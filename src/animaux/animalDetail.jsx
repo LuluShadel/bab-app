@@ -1,5 +1,5 @@
-import { useParams, useNavigate, useCallback } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState, useCallback } from 'react';
 import supabase from '../supabaseClient';
 import { FaCat, FaChild, FaDog } from 'react-icons/fa';
 import SousHeaderAnimal from './sous-header';
