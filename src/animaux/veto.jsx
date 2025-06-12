@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import supabase from "../supabaseClient";
   import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from 'recharts';
 
@@ -36,21 +36,21 @@ function CourbePoids({ data }) {
 }
 
   // recuperer les poids 
-  const fetchPesees = async () => {
+  const fetchPesees = useCallback(async () => {
     const { data, error } = await supabase
-      .from('pesees')
-      .select('*')
-      .eq('animal_id', animalId)
-      .order('date', { ascending: true });
+      .from("pesees")
+      .select("*")
+      .eq("animal_id", animalId)
+      .order("date", { ascending: true });
 
     if (!error) {
       setPesees(data);
     }
-  };
+  }, [animalId]);
 
   useEffect(() => {
     fetchPesees();
-  }, [animalId]);
+  }, [fetchPesees]);
 
 
   // ajouter pesée 
