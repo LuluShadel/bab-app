@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import supabase from "../supabaseClient";
 
 function HistoriqueAnimal({ animal }) {
@@ -6,12 +6,12 @@ function HistoriqueAnimal({ animal }) {
   const [historique, setHistorique] = useState([]);
   const [texte, setTexte] = useState("");
   const [date, setDate] = useState("");
-  const [role, setRole] = useState(null); // rôle FA ou modo
+  const [role, setRole] = useState(null);
 
   const formatDate = (isoDate) =>
     new Date(isoDate).toLocaleDateString("fr-FR");
 
-  const fetchHistorique = async () => {
+  const fetchHistorique = useCallback(async () => {
     const { data, error } = await supabase
       .from("historique")
       .select("*")
@@ -20,9 +20,9 @@ function HistoriqueAnimal({ animal }) {
 
     if (!error) setHistorique(data);
     else console.error("Erreur récupération historique :", error);
-  };
+  }, [animalId]);
 
-  const fetchRole = async () => {
+  const fetchRole = useCallback(async () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (user) {
       const { data, error } = await supabase
@@ -33,12 +33,12 @@ function HistoriqueAnimal({ animal }) {
 
       if (!error && data) setRole(data.roles);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchHistorique();
     fetchRole();
-  }, [animalId]);
+  }, [fetchHistorique, fetchRole]);
 
   const ajouterEntree = async () => {
     if (!texte || !date) return;

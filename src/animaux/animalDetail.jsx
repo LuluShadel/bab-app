@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useCallback } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import supabase from '../supabaseClient';
 import { FaCat, FaChild, FaDog } from 'react-icons/fa';
@@ -34,20 +34,20 @@ const navigate = useNavigate();
   fetchRole();
 }, []);
 
-// afficher les données de l'animal 
-  useEffect(() => {
-    async function fetchAnimal() {
-      const { data, error } = await supabase
-        .from('animaux')
-        .select('*')
-        .eq('id', id)
-        .single();
+  const fetchAnimal = useCallback(async () => {
+    const { data, error } = await supabase
+      .from("animaux")
+      .select("*")
+      .eq("id", id)
+      .single();
 
-      if (!error) setAnimal(data);
-    }
-
-    fetchAnimal();
+    if (!error) setAnimal(data);
+    else console.error("Erreur récupération animal :", error);
   }, [id]);
+
+  useEffect(() => {
+    fetchAnimal();
+  }, [fetchAnimal]);
 
   if (!animal) return <p>Chargement...</p>;
 
@@ -75,7 +75,7 @@ const openEditModal = () => {
 
 
   return (
-  <div className="md:p-[8em] p-4 md:p-12 bg-blue-200">
+  <div className=" p-4 md:p-12 bg-blue-200">
   {/* Conteneur principal en colonne sur mobile, ligne sur ordi */}
   <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-8">
     

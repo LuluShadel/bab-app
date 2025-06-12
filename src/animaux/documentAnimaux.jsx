@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import supabase from "../supabaseClient";
 
 function DocumentsAnimaux({ animal }) {
@@ -26,19 +26,19 @@ function DocumentsAnimaux({ animal }) {
     fetchRole();
   }, []);
 
-  const fetchDocuments = async () => {
-    const { data, error } = await supabase
-      .from("documents")
-      .select("*")
-      .eq("animal_id", animalId);
+const fetchDocuments = useCallback(async () => {
+  const { data, error } = await supabase
+    .from("documents")
+    .select("*")
+    .eq("animal_id", animalId);
 
-    if (!error) setDocuments(data);
-    else console.error("Erreur documents :", error);
-  };
+  if (!error) setDocuments(data);
+  else console.error("Erreur documents :", error);
+}, [animalId]);
 
-  useEffect(() => {
-    fetchDocuments();
-  }, [animalId]);
+useEffect(() => {
+  fetchDocuments();
+}, [fetchDocuments]);
 
   const handleUpload = async () => {
     if (!fichier || !nom) return;
