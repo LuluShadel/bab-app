@@ -3,18 +3,13 @@
   "name": "Brigade Animale Bénévole",
   "icons": [
     {
-      "src": "logo192.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "logo512.png",
-      "type": "image/png",
+      "src": "logoBAB.webp",
+      "type": "image/webp",
       "sizes": "512x512"
     }
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#1e3a8a",
+  "theme_color": "#ffffff",
   "background_color": "#ffffff"
 }
