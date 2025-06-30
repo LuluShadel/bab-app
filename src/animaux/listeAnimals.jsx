@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import supabase from '../supabaseClient';
 import { FaDog, FaCat, FaChild } from 'react-icons/fa';
+import { FaMars, FaVenus } from 'react-icons/fa';
 import AnimalForm from './animalForm';
 
 function ListeAnimals() {
@@ -94,6 +95,19 @@ function calculerAge(ddn) {
 }
 
 
+// calcul jours pension 
+function joursDepuis(dateString) {
+  if (!dateString) return null;
+
+  const dateEntree = new Date(dateString);
+  const aujourdHui = new Date();
+
+  const diffMs = aujourdHui - dateEntree;
+  const diffJours = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+  return diffJours;
+}
+
   return (
     <div className='flex flex-col items-start m-12 bg-bgBlue'>
       <h1 className='text-blue-600 font-bold mb-8 text-xl'>Liste des animaux</h1>
@@ -137,12 +151,53 @@ function calculerAge(ddn) {
       <ul className='flex md:flex-row md:flex-wrap md:gap-[40px]'>
         
         {animauxFiltres.map((item) => (
-          <li key={item.id} className='w-[20em] h-[26em] rounded-[16px] bg-white'>
-            <img src={`https://cyrvizynjvgblsmyntmc.supabase.co/storage/v1/object/public/photos/${item.img}
-`} alt={item.name} className='w-[330px] h-[231px] object-cover rounded-[16px]' />
+          <li key={item.id} className="w-[20em] h-[26em] rounded-[16px] bg-white overflow-hidden shadow-md">
+  <div className="relative">
+    <img
+      src={`https://cyrvizynjvgblsmyntmc.supabase.co/storage/v1/object/public/photos/${item.img}`}
+      alt={item.name}
+      className="w-full h-[231px] object-cover rounded-[16px]"
+    />
+
+    {/* Badge Adoption */}
+    {item.adoption && (
+      <span className="absolute top-2 left-2 bg-primaryYellow text-black text-xs font-bold px-2 py-1 rounded shadow">
+        Adoption
+      </span>
+    )}
+
+    {/* Badge Recherche FA */}
+    {item.rechercheFa && (
+      <span className="absolute top-2 left-2 translate-y-[30px] bg-primaryYellow text-black text-xs font-bold px-2 py-1 rounded shadow">
+        Recherche FA
+      </span>
+    )}
+    {/* Badge Pension*/}
+  {item.pension && (
+  <span className="absolute bottom-2 right-2 bg-gray-300 text-gray-800 text-xs font-medium px-2 py-1 rounded shadow">
+    En pension depuis {joursDepuis(item.pension)} jour{joursDepuis(item.pension) > 1 ? 's' : ''}
+  </span>
+)}
+{/* Badge Sous réquisition */}
+{item.requisition && (
+  <span className="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded shadow">
+    Sous réquisition
+  </span>
+)}
+  </div>
             <div className='p-6 flex flex-col gap-4' >
           
+          <div className='flex flex-row gap-4'>
             <h2 className='' >{item.name}</h2>
+            <div className="flex items-center gap-2">
+  {item.sexe === 'Femelle' && (
+    <FaVenus className="text-pink-500 text-lg" title="Femelle" />
+  )}
+  {item.sexe === 'Mâle' && (
+    <FaMars className="text-blue-500 text-lg" title="Mâle" />
+  )}
+</div>
+            </div>
             <div className='flex fles-row gap-4'>
             <p>{item.race}</p>
             <p>{calculerAge(item.ddn)}</p>
