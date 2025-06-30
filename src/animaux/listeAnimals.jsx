@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import supabase from '../supabaseClient';
-import { Link } from 'react-router-dom';
+import { FaDog, FaCat, FaChild } from 'react-icons/fa';
 import AnimalForm from './animalForm';
 
 function ListeAnimals() {
@@ -75,8 +75,27 @@ const animauxFiltres = animaux.filter((animal) => {
 });
 
 
+// calcule age 
+function calculerAge(ddn) {
+  if (!ddn) return 'Inconnu';
+
+  const naissance = new Date(ddn);
+  if (isNaN(naissance)) return 'Inconnu'; // Si la date est invalide
+
+  const aujourdHui = new Date();
+  let age = aujourdHui.getFullYear() - naissance.getFullYear();
+  const mois = aujourdHui.getMonth() - naissance.getMonth();
+
+  if (mois < 0 || (mois === 0 && aujourdHui.getDate() < naissance.getDate())) {
+    age--;
+  }
+
+  return age + ' ans';
+}
+
+
   return (
-    <div className='flex flex-col items-start mx-auto w-full max-w-4xl px-4 mt-12'>
+    <div className='flex flex-col items-start m-12 bg-bgBlue'>
       <h1 className='text-blue-600 font-bold mb-8 text-xl'>Liste des animaux</h1>
       {(role === 'modo') && (
   <button
@@ -115,43 +134,52 @@ const animauxFiltres = animaux.filter((animal) => {
 </div>
   )}
       
-      <ul>
+      <ul className='flex md:flex-row md:flex-wrap md:gap-[40px]'>
         
         {animauxFiltres.map((item) => (
-          <li key={item.id} className='border-t-4 border-blue-500 p-4 flex flex-row items-center'>
+          <li key={item.id} className='w-[20em] h-[26em] rounded-[16px] bg-white'>
             <img src={`https://cyrvizynjvgblsmyntmc.supabase.co/storage/v1/object/public/photos/${item.img}
-`} alt={item.name} className='w-20 h-20 object-cover rounded-full shadow-md ' />
-            <div className='ml-4' >
-            <div className='flex flex-col gap-6'>
-            <div className='flex flex-col' >{item.name} {item.ddn}
-              <div className="inline-flex flex-wrap items-center gap-2 whitespace-nowrap">
-      {item.adoption && (
-        <span className='bg-green-300 rounded-xl p-1 mr-2'>A l'adoption</span>
-      )}
-      {item.rechercheFa && (
-        <span className='bg-pink-300 rounded-xl p-1 mr-2'>Recherche FA</span>
-      )}
-      {item.panierRetraite && (
-        <span className='bg-gray-300 rounded-xl p-1 mr-2'>Panier Retraite</span>
-      )}
-      {item.requisition && (
-        <span className='bg-red-300 rounded-xl p-1 mr-2'>Sous réquisition</span>
-      )}
-      </div>
-      </div>
+`} alt={item.name} className='w-[330px] h-[231px] object-cover rounded-[16px]' />
+            <div className='p-6 flex flex-col gap-4' >
+          
+            <h2 className='' >{item.name}</h2>
+            <div className='flex fles-row gap-4'>
+            <p>{item.race}</p>
+            <p>{calculerAge(item.ddn)}</p>
             </div>
-             <div className='flex flex-row gap-3'>
-      <p> <span className='font-bold'>Icad :</span> {item.icad}</p>
-      <p><span className='font-bold'>Type :</span> {item.type}</p>
-      <p><span className='font-bold'>Race :</span>  {item.race}</p>
-             </div>
-             
-            <p className='border border-dotted border-blue-500 p-1'>Suivi effectué par : {item.suivi}</p>
-            <Link to={`/animal/${item.id}`}>
-  <button className="bg-blue-500 text-white px-4 py-1 rounded mt-2 hover:bg-blue-600">
-    Voir la fiche
-  </button>
-</Link>
+           <div className="flex flex-wrap gap-2 mt-2">
+  {['okChien', 'okChat', 'okChild'].map((cle) => {
+    const valeur = item[cle];
+
+    const couleurs = {
+      true: 'bg-[#217a4b] text-white',
+      false: 'bg-[#ca3405] text-white',
+      null: 'bg-[#db7c00] text-white',
+    };
+
+       const textes = {
+      true: 'Oui',
+      false: 'Non',
+      null: 'Inconnu',
+    };
+
+    const icones = {
+      okChien: <FaDog className="inline mr-1" />,
+      okChat: <FaCat className="inline mr-1" />,
+      okChild: <FaChild className="inline mr-1" />,
+    };
+
+    return (
+      <span
+        key={cle}
+        className={`flex items-center gap-1 px-2 py-1 rounded-[4px] text-sm font-medium ${couleurs[valeur === null ? 'null' : valeur]}`}
+      >
+        {icones[cle]}  {textes[valeur === null ? 'null' : valeur]}
+      </span>
+    );
+  })}
+</div>
+      
             </div>
             </li> 
         ))}
@@ -163,6 +191,7 @@ const animauxFiltres = animaux.filter((animal) => {
           onSubmit={handleAddAnimal}
         />
       )}
+     
     </div>
   );
 }
