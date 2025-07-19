@@ -64,11 +64,13 @@ function App() {
   return (
     <Router>
       <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="animaux/ListeAnimals" element={<ListeAnimals />} />
-        <Route path="/animal/:id" element={<AnimalDetails />} />
-      </Routes>
+       <div className="ml-12">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="animaux/ListeAnimals" element={<ListeAnimals />} />
+          <Route path="/animal/:id" element={<AnimalDetails />} />
+        </Routes>
+      </div>
     </Router>
   );
 }
