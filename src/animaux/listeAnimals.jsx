@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import supabase from '../supabaseClient';
 import { FaDog, FaCat, FaChild } from 'react-icons/fa';
-import { FaMars, FaVenus, FaSearch } from 'react-icons/fa';
+import { FaMars, FaVenus, FaSearch,   } from 'react-icons/fa';
+
+import { MdKeyboardArrowDown, MdKeyboardArrowUp } from 'react-icons/md';
 import AnimalForm from './animalForm';
 
 function ListeAnimals() {
@@ -16,11 +18,18 @@ function ListeAnimals() {
    const [filtreEspece, setFiltreEspece] = useState('all'); // gère l'espèce
 const [filtreGenre, setFiltreGenre] = useState('all'); // gère le genre 
 const [filtreSterilise, setFiltreSterilise] = useState('all'); // gère si stérilisé
+
+
+// dans les filtres 
 const optionsSterilise = [ // gère le booléen de la stérilisation
   { label: 'Oui', value: true },
   { label: 'Non', value: false },
   { label: 'Inconnu', value: null }
 ];
+
+const [ageMin, setAgeMin] = useState(0); // gère l'age du slider 
+const [ageMax, setAgeMax] = useState(20);
+
 
   useEffect(() => {
     async function fetchAnimaux() {
@@ -79,19 +88,35 @@ const animauxFiltres = animaux.filter((animal) => {
   const correspondGenre = filtreGenre === 'all' || animal.sexe === filtreGenre;
  const correspondSterilise =
   filtreSterilise === 'all' || animal.sterilisation === filtreSterilise;
+  const ageAnimal = calculerAge(animal.ddn); // retourne un nombre
+const correspondAge = ageAnimal >= ageMin && ageAnimal <= ageMax;
 
-  return correspondNom  && correspondEspece && correspondGenre && correspondSterilise;
+  return correspondAge && correspondNom  && correspondEspece && correspondGenre && correspondSterilise;
 
   
 });
 
+// calcul nombre de filtre actif 
+const nbFiltresActifs =
+  (filtreEspece !== 'all' ? 1 : 0) +
+  (filtreGenre !== 'all' ? 1 : 0) +
+  (filtreSterilise !== 'all' ? 1 : 0);
+
+  // vider les filtres 
+  const handleResetFiltres = () => {
+  setFiltreEspece('all');
+  setFiltreGenre('all');
+  setFiltreSterilise('all');
+  setRechercheNom('');
+};
+
 
 // calcule age 
 function calculerAge(ddn) {
-  if (!ddn) return 'Inconnu';
+  if (!ddn) return null;
 
   const naissance = new Date(ddn);
-  if (isNaN(naissance)) return 'Inconnu'; // Si la date est invalide
+  if (isNaN(naissance)) return null;
 
   const aujourdHui = new Date();
   let age = aujourdHui.getFullYear() - naissance.getFullYear();
@@ -101,7 +126,7 @@ function calculerAge(ddn) {
     age--;
   }
 
-  return age + ' ans';
+  return age; // retourne un nombre
 }
 
 
@@ -136,18 +161,15 @@ function calculerAge(ddn) {
   {/* Bouton Filtres */}
   <button
     onClick={() => setShowFilters(!showFilters)}
-    className="bg-primaryYellow text-black px-4 py-2 rounded-lg shadow hover:bg-yellow-500 transition"
+    className=" flex flex-row items-center justify-between bg-primaryYellow text-black px-4 w-[320px] py-2 text-left rounded-lg shadow hover:bg-yellow-500 transition"
   >
-    Filtres (3) <span className="ml-1">{showFilters ? '▲' : '▼'}</span>
+    Filtres ({nbFiltresActifs}) <span className="ml-1 ">{showFilters ? <MdKeyboardArrowDown /> : < MdKeyboardArrowUp />}</span>
   </button>
 
   {/* Panneau déroulant filtres */}
   {showFilters && (
-  <div className="absolute right-0 mt-2 w-[320px] bg-white rounded-lg shadow-lg border border-gray-200 z-50">
-    {/* Header */}
-    <div className="px-4 py-3 border-b bg-primaryYellow rounded-t-lg font-semibold flex items-center justify-between">
-      <span>Filtres</span>
-    </div>
+  <div className="absolute right-0  w-[320px] bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+   
 
     {/* Contenu filtres */}
     <div className="p-4 space-y-6 text-sm text-gray-800">
@@ -236,9 +258,70 @@ function calculerAge(ddn) {
         </div>
       </div>
 
+     <div>
+  <p className="font-semibold mb-2">Âge</p>
+
+  <div className="flex justify-between text-sm text-gray-600 mb-1">
+    <span>{ageMin} ans</span>
+    <span>{ageMax} ans</span>
+  </div>
+
+  {/* Container */}
+  <div className="relative h-6">
+    {/* Barre de fond */}
+    <div className="absolute top-1/2 left-0 right-0 h-2 bg-blue-100 rounded-full transform -translate-y-1/2"></div>
+
+    {/* Barre active bleue entre les deux curseurs */}
+    <div
+      className="absolute top-1/2 h-2 bg-blue-400 rounded-full transform -translate-y-1/2 z-10"
+      style={{
+        left: `${(ageMin / 20) * 100}%`,
+        width: `${((ageMax - ageMin) / 20) * 100}%`,
+      }}
+    />
+
+    {/* Curseur min */}
+    <input
+      type="range"
+      min="0"
+      max="20"
+      value={ageMin}
+      onChange={(e) => {
+        const val = Math.min(Number(e.target.value), ageMax - 1);
+        setAgeMin(val);
+      }}
+      className="absolute w-full pointer-events-none appearance-none z-20 h-2 bg-transparent [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-primaryYellow [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:pointer-events-auto"
+    />
+
+    {/* Curseur max */}
+    <input
+      type="range"
+      min="0"
+      max="20"
+      value={ageMax}
+      onChange={(e) => {
+        const val = Math.max(Number(e.target.value), ageMin + 1);
+        setAgeMax(val);
+      }}
+      className="absolute w-full pointer-events-none appearance-none z-20 h-2 bg-transparent [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-primaryYellow [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:pointer-events-auto"
+    />
+  </div>
+</div>
+
+
+
     </div>
+    <div className="flex justify-between border-t px-4 py-3">
+  <button
+    onClick={handleResetFiltres}
+    className="text-gray-500 hover:underline"
+  >
+    Réinitialiser
+  </button>
+</div>
   </div>
 )}
+
 
 </div>
   </div>
@@ -285,7 +368,7 @@ function calculerAge(ddn) {
             </div>
             <div className='flex fles-row gap-4'>
             <p>{item.race}</p>
-            <p>{calculerAge(item.ddn)}</p>
+            <p>{calculerAge(item.ddn)} ans</p>
             </div>
            <div className="flex flex-wrap gap-2 mt-2">
   {['okChien', 'okChat', 'okChild'].map((cle) => {
