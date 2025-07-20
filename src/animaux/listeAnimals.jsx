@@ -12,7 +12,7 @@ function ListeAnimals() {
    const [showForm, setShowForm] = useState(false); // gère la modal
   const [showFilters, setShowFilters] = useState(false); // gère l'ouverture du paneau filtre 
    const [rechercheNom, setRechercheNom] = useState(''); // va gérer la recherche par nom 
-   const [role, setRole] = useState(null); // gère le role de l'utilisateur modi ou fa
+  //const [role, setRole] = useState(null); // gère le role de l'utilisateur modi ou fa
 
    // filtre 
    const [filtreEspece, setFiltreEspece] = useState('all'); // gère l'espèce
@@ -46,25 +46,7 @@ const [ageMax, setAgeMax] = useState(20);
     fetchAnimaux();
   }, []);
 
-  useEffect(() => {
-  const fetchRole = async () => {
-    const { data: { user } } = await supabase.auth.getUser();
-
-    if (user) {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('roles')
-        .eq('id', user.id)
-        .single();
-
-      if (!error && data) {
-        setRole(data.roles);
-      }
-    }
-  };
-
-  fetchRole();
-}, []);
+  
 
  const handleAddAnimal = async (newAnimal) => {
   console.log('NOUVEL ANIMAL :', newAnimal);

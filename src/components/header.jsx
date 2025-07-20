@@ -1,41 +1,35 @@
-import { useState, useEffect } from 'react'
+import { useState} from 'react'
+import supabase from '../supabaseClient'
 import { Link, useLocation } from 'react-router-dom'
 import {
-  FaDog, FaHome, FaCog, FaSignOutAlt,
-  FaClipboardList, FaUserFriends, FaUserMd, FaBook, FaTimes, FaBars, FaHandshake
+  FaCog, FaSignOutAlt,
+    FaTimes, FaBars, FaHandshake
 } from 'react-icons/fa'
-import supabase from '../supabaseClient'
+
+// import svg 
+import { ReactComponent as DashboardIcon } from '../svg/dashboard.svg';
+import { ReactComponent as FaIcon } from '../svg/FA.svg';
+import { ReactComponent as AnimauxIcon } from '../svg/Animaux.svg';
+import { ReactComponent as VetIcon } from '../svg/Veto.svg';
+import { ReactComponent as RefIcon } from '../svg/referentiel.svg';
+import { ReactComponent as BenevolesIcon } from '../svg/benevoles.svg';
 
 export default function Sidebar() {
   const [menuOpen, setMenuOpen] = useState(false)
-  const [role, setRole] = useState(null)
+ 
   const location = useLocation()
 
   const toggleMenu = () => setMenuOpen(!menuOpen)
   const handleLogout = async () => await supabase.auth.signOut()
 
-  useEffect(() => {
-    const fetchRole = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (user) {
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('roles')
-          .eq('id', user.id)
-          .single()
-        if (!error && data) setRole(data.roles)
-      }
-    }
-    fetchRole()
-  }, [])
 
   const links = [
-    { to: '/', label: 'Tableau de board', icon: <FaHome /> },
-    { to: '/animaux/listeAnimals', label: 'Animaux', icon: <FaDog /> },
-       { to: '/fa', label: 'Familles d’accueil', icon: <FaUserFriends /> },
-    { to: '/benevole', label: 'Bénévole', icon:  <FaHandshake /> },
-    { to: '/veterinaires', label: 'Vétérinaires', icon: <FaUserMd /> },
-    { to: '/referentiel', label: 'Référentiel', icon: <FaBook /> },
+    { to: '/', label: 'Tableau de board', icon: <DashboardIcon /> },
+    { to: '/animaux/listeAnimals', label: 'Animaux', icon: <AnimauxIcon /> },
+       { to: '/fa', label: 'Familles d’accueil', icon: <FaIcon /> },
+    { to: '/benevole', label: 'Bénévole', icon:  <BenevolesIcon /> },
+    { to: '/veterinaires', label: 'Vétérinaires', icon: <VetIcon/> },
+    { to: '/referentiel', label: 'Référentiel', icon: <RefIcon /> },
     
   ]
 
@@ -57,8 +51,8 @@ export default function Sidebar() {
                 <Link
                   key={link.label}
                   to={link.to}
-                  className={`flex items-center px-4 py-3 space-x-4 hover:bg-blue-800 transition-all ${
-                    isActive ? 'bg-yellow-400 text-blue-900 font-semibold' : ''
+                  className={`flex items-center px-4 py-3 space-x-4 hover:bg-blue-800 hover:text-white transition-all ${
+                    isActive ? 'bg-yellow-400 text-blue-900 font-semibold rounded-l-full' : ''
                   }`}
                 >
                   <span className="text-lg">{link.icon}</span>
