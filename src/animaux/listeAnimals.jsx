@@ -3,7 +3,7 @@ import supabase from '../supabaseClient';
 import { FaDog, FaCat, FaChild } from 'react-icons/fa';
 import { FaMars, FaVenus, FaSearch,   } from 'react-icons/fa';
 
-import { MdKeyboardArrowDown, MdKeyboardArrowUp } from 'react-icons/md';
+import { MdKeyboardArrowDown, MdKeyboardArrowUp, MdKeyboardArrowRight  } from 'react-icons/md';
 import AnimalForm from './animalForm';
 
 function ListeAnimals() {
@@ -29,6 +29,8 @@ const optionsSterilise = [ // gère le booléen de la stérilisation
 
 const [ageMin, setAgeMin] = useState(0); // gère l'age du slider 
 const [ageMax, setAgeMax] = useState(20);
+
+const [filtreStatuts, setFiltreStatuts] = useState([]); // gère le statut actuel
 
 
   useEffect(() => {
@@ -66,14 +68,22 @@ const animauxFiltres = animaux.filter((animal) => {
  
   const correspondNom = animal.name.toLowerCase().includes(rechercheNom.toLowerCase());
 
+  // type
    const correspondEspece = filtreEspece === 'all' || animal.type === filtreEspece;
+   // sexe
   const correspondGenre = filtreGenre === 'all' || animal.sexe === filtreGenre;
+  //sterilisation
  const correspondSterilise =
   filtreSterilise === 'all' || animal.sterilisation === filtreSterilise;
   const ageAnimal = calculerAge(animal.ddn); // retourne un nombre
 const correspondAge = ageAnimal >= ageMin && ageAnimal <= ageMax;
 
-  return correspondAge && correspondNom  && correspondEspece && correspondGenre && correspondSterilise;
+// filtre pour le statut actuel 
+const correspondStatut =
+  filtreStatuts.length === 0 ||
+  filtreStatuts.every((key) => animal[key] === true);
+
+  return correspondAge && correspondNom  && correspondEspece && correspondGenre && correspondSterilise &&correspondStatut;
 
   
 });
@@ -111,6 +121,15 @@ function calculerAge(ddn) {
   return age; // retourne un nombre
 }
 
+// filtre statut axtuelle 
+const optionsStatut = [
+  { label: 'En famille d’accueil', key: 'EnFamilleAccueil' },
+  { label: 'En pension', key: 'pension' },
+  { label: 'Panier retraite', key: 'panierRetraite' },
+  { label: 'Sous réquisition', key: 'requisition' }
+];
+
+
 
 
 
@@ -123,7 +142,7 @@ function calculerAge(ddn) {
       className="flex items-center gap-2 bg-primaryYellow text-black px-4 py-2 rounded-full hover:bg-white hover:text-black hover:border hover:border-black transition"
     >
       Ajouter un animal
-      <span className="text-sm">{'>'}</span>
+      < MdKeyboardArrowRight className='text-sm font-bold' />
     </button>
 
     {/* Champ de recherche */}
@@ -140,6 +159,9 @@ function calculerAge(ddn) {
     </div>
 
    <div className="relative">
+
+
+
   {/* Bouton Filtres */}
   <button
     onClick={() => setShowFilters(!showFilters)}
@@ -289,6 +311,34 @@ function calculerAge(ddn) {
     />
   </div>
 </div>
+<div>
+  <p className="font-semibold mb-2">Statut Actuel</p>
+  <div className="space-y-2 max-h-32 overflow-y-auto pr-2">
+    {optionsStatut.map(({ label, key }) => (
+      <label key={key} className="flex items-center gap-2 text-sm cursor-pointer">
+        <input
+          type="checkbox"
+          checked={filtreStatuts.includes(key)}
+          onChange={() => {
+            if (filtreStatuts.includes(key)) {
+              setFiltreStatuts(filtreStatuts.filter((s) => s !== key));
+            } else {
+              setFiltreStatuts([...filtreStatuts, key]);
+            }
+          }}
+          className="peer hidden"
+        />
+        <span className="relative w-5 h-5 border-2 border-primaryYellow rounded-md flex items-center justify-center
+          before:content-[''] before:w-3 before:h-3
+          before:rounded-sm before:bg-primaryYellow
+          before:scale-0 peer-checked:before:scale-100
+          transition-all duration-150"
+        />
+        {label}
+      </label>
+    ))}
+  </div>
+</div>
 
 
 
@@ -307,6 +357,11 @@ function calculerAge(ddn) {
 
 </div>
   </div>
+
+
+
+
+
 
 
   {/* card animal*/ }
