@@ -4,6 +4,7 @@ import supabase from '../supabaseClient'
 
 // import pour les onglet 
 import AnimalProfil from './animalDetails/animalProfil'
+import AnimalHistoire from './animalDetails/animalHistoire'
 
 // Import des svg
 import { ReactComponent as MaleIcon } from '../svg/Male.svg'
@@ -80,18 +81,7 @@ export default function AnimalDetails() {
          {/* Affichage dynamique selon l’onglet actif */}
   {ongletActif === 'Profil' && <AnimalProfil animal={animal} />}
 
-  {ongletActif === 'Histoire' && (
-    <>
-      <h2 className="text-lg font-bold mb-2">Mon histoire</h2>
-      <p className="mb-4">{animal.histoire}</p>
-
-      <h2 className="text-lg font-bold mb-2">Mes besoins</h2>
-      <p className="mb-4">{animal.besoins}</p>
-
-      <h2 className="text-lg font-bold mb-2">Mes ententes</h2>
-      <p>{animal.ententes}</p>
-    </>
-  )}
+   {ongletActif === 'Histoire' && <AnimalHistoire animal={animal} />}
 
   {ongletActif === 'Santé' && <p>Santé à venir...</p>}
   {ongletActif === 'Documents' && <p>Documents à venir...</p>}
