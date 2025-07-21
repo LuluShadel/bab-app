@@ -1,12 +1,21 @@
 export default function AnimalProfil({ animal }) {
+
+    // convertir booléa en text
   const boolToText = (val) =>
     val === true ? 'Oui' : val === false ? 'Non' : 'Inconnu';
+
+    // mettre la date en fr
+  const formatDateFr = (date) => {  
+  if (!date) return '—';
+  const d = new Date(date);
+  return d.toLocaleDateString('fr-FR');
+};
 
   const infos = [
     { label: 'Type', value: animal.type },
     { label: 'Race', value: animal.race },
     { label: 'Genre', value: animal.sexe },
-    { label: 'Date de naissance', value: animal.ddn },
+    { label: 'Date de naissance', value: formatDateFr(animal.ddn) },
     { label: 'N° Icad', value: animal.icad },
     { label: 'Stérilisé', value: boolToText(animal.sterilisation) },
     { label: 'Catégorisé', value: animal.categorisation },
