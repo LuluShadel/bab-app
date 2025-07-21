@@ -6,6 +6,7 @@ import supabase from '../supabaseClient'
 import AnimalProfil from './animalDetails/animalProfil'
 import AnimalHistoire from './animalDetails/animalHistoire'
 import AnimalSante from './animalDetails/animalSante'
+import AnimalDoc from './animalDetails/animalDoc'
 
 // Import des svg
 import { ReactComponent as MaleIcon } from '../svg/Male.svg'
@@ -86,7 +87,7 @@ export default function AnimalDetails() {
 
  
    {ongletActif === 'Santé' && <AnimalSante animal={animal} />}
-  {ongletActif === 'Documents' && <p>Documents à venir...</p>}
+  {ongletActif === 'Documents' && <AnimalDoc animal={animal} />}
   {ongletActif === 'Historique' && <p>Historique à venir...</p>}
 
         </div>
