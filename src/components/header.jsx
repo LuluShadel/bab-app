@@ -3,7 +3,7 @@ import supabase from '../supabaseClient'
 import { Link, useLocation } from 'react-router-dom'
 import {
   FaCog, FaSignOutAlt,
-    FaTimes, FaBars, FaHandshake
+    FaTimes, FaBars
 } from 'react-icons/fa'
 
 // import svg 

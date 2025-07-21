@@ -1,7 +1,14 @@
 import { useEffect, useState } from 'react';
 import supabase from '../supabaseClient';
-import { FaDog, FaCat, FaChild } from 'react-icons/fa';
-import { FaMars, FaVenus, FaSearch,   } from 'react-icons/fa';
+
+// import des svg 
+import { ReactComponent as CatIcon } from '../svg/Cat.svg';
+import { ReactComponent as DogIcon } from '../svg/Dog.svg';
+import { ReactComponent as ChildIcon } from '../svg/Child.svg';
+import { ReactComponent as FemelleIcon } from '../svg/Femelle.svg';
+import { ReactComponent as MaleIcon } from '../svg/Male.svg';
+import { ReactComponent as SearchIcon } from '../svg/Search.svg';
+
 
 import { MdKeyboardArrowDown, MdKeyboardArrowUp, MdKeyboardArrowRight  } from 'react-icons/md';
 import AnimalForm from './animalForm';
@@ -31,6 +38,7 @@ const [ageMin, setAgeMin] = useState(0); // gère l'age du slider
 const [ageMax, setAgeMax] = useState(20);
 
 const [filtreStatuts, setFiltreStatuts] = useState([]); // gère le statut actuel
+const [filtreBesoins, setFiltreBesoins] = useState([]); // gère le besoin actuel
 
 
   useEffect(() => {
@@ -83,7 +91,12 @@ const correspondStatut =
   filtreStatuts.length === 0 ||
   filtreStatuts.every((key) => animal[key] === true);
 
-  return correspondAge && correspondNom  && correspondEspece && correspondGenre && correspondSterilise &&correspondStatut;
+  // filtre pour le besoin actuel 
+const correspondBesoin =
+  filtreBesoins.length === 0 ||
+  filtreBesoins.every((key) => animal[key] === true);
+
+  return correspondAge && correspondNom  && correspondEspece && correspondGenre && correspondSterilise &&correspondStatut && correspondBesoin;
 
   
 });
@@ -92,13 +105,17 @@ const correspondStatut =
 const nbFiltresActifs =
   (filtreEspece !== 'all' ? 1 : 0) +
   (filtreGenre !== 'all' ? 1 : 0) +
-  (filtreSterilise !== 'all' ? 1 : 0);
+  (filtreSterilise !== 'all' ? 1 : 0)+
+  (filtreStatuts.length > 0 ? 1 : 0)+
+  (filtreBesoins.length > 0 ? 1 : 0);
 
   // vider les filtres 
   const handleResetFiltres = () => {
   setFiltreEspece('all');
   setFiltreGenre('all');
   setFiltreSterilise('all');
+  setFiltreStatuts([]);
+  setFiltreBesoins([]);
   setRechercheNom('');
 };
 
@@ -129,6 +146,13 @@ const optionsStatut = [
   { label: 'Sous réquisition', key: 'requisition' }
 ];
 
+// filtre besoins axtuelle 
+const optionsStatutBesoin = [
+  { label: 'Recherche famille d\'accueil', key: 'rechercheFa' },
+  { label: 'Recherche covoiturage', key: 'rechercheCovoit' },
+  { label: 'Recherche adoptant ', key: 'adoption' },
+];
+
 
 
 
@@ -155,7 +179,7 @@ const optionsStatut = [
         className="outline-none border-none bg-transparent flex-grow"
       />
       
-      <FaSearch />
+      <SearchIcon/>
     </div>
 
    <div className="relative">
@@ -311,6 +335,8 @@ const optionsStatut = [
     />
   </div>
 </div>
+
+{/*Statut actuel*/}
 <div>
   <p className="font-semibold mb-2">Statut Actuel</p>
   <div className="space-y-2 max-h-32 overflow-y-auto pr-2">
@@ -324,6 +350,37 @@ const optionsStatut = [
               setFiltreStatuts(filtreStatuts.filter((s) => s !== key));
             } else {
               setFiltreStatuts([...filtreStatuts, key]);
+            }
+          }}
+          className="peer hidden"
+        />
+        <span className="relative w-5 h-5 border-2 border-primaryYellow rounded-md flex items-center justify-center
+          before:content-[''] before:w-3 before:h-3
+          before:rounded-sm before:bg-primaryYellow
+          before:scale-0 peer-checked:before:scale-100
+          transition-all duration-150"
+        />
+        {label}
+      </label>
+    ))}
+  </div>
+</div>
+
+
+{/*Besoin actuel*/}
+<div>
+  <p className="font-semibold mb-2">Besoins en cours</p>
+  <div className="space-y-2 max-h-32 overflow-y-auto pr-2">
+    {optionsStatutBesoin.map(({ label, key }) => (
+      <label key={key} className="flex items-center gap-2 text-sm cursor-pointer">
+        <input
+          type="checkbox"
+          checked={filtreBesoins.includes(key)}
+          onChange={() => {
+            if (filtreBesoins.includes(key)) {
+              setFiltreBesoins(filtreBesoins.filter((s) => s !== key));
+            } else {
+              setFiltreBesoins([...filtreBesoins, key]);
             }
           }}
           className="peer hidden"
@@ -393,13 +450,13 @@ const optionsStatut = [
             <h2 className='' >{item.name}</h2>
             <div className="flex items-center gap-2">
   {item.sexe === 'Femelle' && (
-  <FaVenus
+  <FemelleIcon
     className="text-white bg-pink-500 text-lg p-[1.5px] rounded-sm shadow-md "
     title="Femelle"
   />
 )}
   {item.sexe === 'Mâle' && (
-    <FaMars className="text-white bg-blue-500 text-lg p-[1.5px] rounded-sm shadow-md" title="Mâle" />
+    <MaleIcon className="text-white bg-blue-500 text-lg p-[1.5px] rounded-sm shadow-md" title="Mâle" />
   )}
 </div>
             </div>
@@ -424,9 +481,9 @@ const optionsStatut = [
     };
 
     const icones = {
-      okChien: <FaDog className="inline mr-1" />,
-      okChat: <FaCat className="inline mr-1" />,
-      okChild: <FaChild className="inline mr-1" />,
+      okChien: <DogIcon />,
+      okChat: <CatIcon />,
+      okChild: <ChildIcon />,
     };
 
     return (
