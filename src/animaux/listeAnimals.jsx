@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import supabase from '../supabaseClient';
+import { Link } from 'react-router-dom';
 
 // import des svg 
 import { ReactComponent as CatIcon } from '../svg/Cat.svg';
@@ -11,12 +12,12 @@ import { ReactComponent as SearchIcon } from '../svg/Search.svg';
 
 
 import { MdKeyboardArrowDown, MdKeyboardArrowUp, MdKeyboardArrowRight  } from 'react-icons/md';
-import AnimalForm from './animalForm';
+
 
 function ListeAnimals() {
 
   const [animaux, setAnimaux] = useState([]);   // animaux = liste des animaux 
-   const [showForm, setShowForm] = useState(false); // gère la modal
+
   const [showFilters, setShowFilters] = useState(false); // gère l'ouverture du paneau filtre 
    const [rechercheNom, setRechercheNom] = useState(''); // va gérer la recherche par nom 
   //const [role, setRole] = useState(null); // gère le role de l'utilisateur modi ou fa
@@ -58,18 +59,7 @@ const [filtreBesoins, setFiltreBesoins] = useState([]); // gère le besoin actue
 
   
 
- const handleAddAnimal = async (newAnimal) => {
-  console.log('NOUVEL ANIMAL :', newAnimal);
-  const { data, error } = await supabase
-    .from('animaux')
-    .insert([newAnimal]);
 
-  if (error) {
-    console.error('Erreur ajout:', error);
-  } else if (data) {
-    setAnimaux([...animaux, data[0]]);
-  }
-};
 
 const animauxFiltres = animaux.filter((animal) => {
 
@@ -162,7 +152,7 @@ const optionsStatutBesoin = [
   <div className="flex flex-wrap justify-between items-center gap-4 w-full mb-6 ">
     {/* Bouton Ajouter un animal */}
     <button
-      onClick={() => setShowForm(true)}
+    
       className="flex items-center gap-2 bg-primaryYellow text-black px-4 py-2 rounded-full hover:bg-white hover:text-black hover:border hover:border-black transition"
     >
       Ajouter un animal
@@ -422,11 +412,12 @@ const optionsStatutBesoin = [
 
 
   {/* card animal*/ }
-      
+        
       <ul className='flex md:flex-row md:flex-wrap md:gap-6'>
         
         {animauxFiltres.map((item) => (
           <li key={item.id} className="w-[20em] h-[26em] rounded-[16px] bg-white overflow-hidden shadow-md">
+            <Link to={`/animal/${item.id}`} className="block hover:opacity-90 transition">
   <div className="relative">
     <img
       src={`https://cyrvizynjvgblsmyntmc.supabase.co/storage/v1/object/public/photos/${item.img}`}
@@ -498,16 +489,14 @@ const optionsStatutBesoin = [
 </div>
       
             </div>
+             </Link>
             </li> 
+           
         ))}
       </ul>
       
-        {showForm && (
-        <AnimalForm
-          onClose={() => setShowForm(false)}
-          onSubmit={handleAddAnimal}
-        />
-      )}
+      
+        
      
     </div>
   );
