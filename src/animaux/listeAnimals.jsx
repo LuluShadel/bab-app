@@ -456,7 +456,7 @@ const optionsStatutBesoin = [
             <p>{calculerAge(item.ddn)} ans</p>
             </div>
            <div className="flex flex-wrap gap-2 mt-2">
-  {['okChien', 'okChat', 'okChild'].map((cle) => {
+  {['okChien', 'okChat', 'okChild', ].map((cle) => {
     const valeur = item[cle];
 
     const couleurs = {

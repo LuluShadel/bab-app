@@ -94,7 +94,7 @@ export default function AnimalDoc({ animal }) {
   };
 
   return (
-    <div className="bg-white rounded-xl p-6 shadow-inner overflow-auto max-h-[60vh]">
+    <div className="bg-white mt-12 p-6  overflow-auto max-h-[60vh]">
       <div className="flex justify-between items-center border-b pb-2 mb-4">
         <div className="flex gap-12 text-sm font-semibold text-primaryBlue px-2">
           <span>Date</span>
