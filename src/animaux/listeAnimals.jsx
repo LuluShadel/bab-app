@@ -261,8 +261,7 @@ const renderEntenteButtons = (type, emoji) => (
 
   {/* Panneau déroulant filtres */}
   {showFilters && (
-  <div className="absolute right-0  w-[320px] bg-white rounded-lg shadow-lg border border-gray-200 z-50">
-   
+  <div className="absolute right-0 w-[320px] bg-white rounded-lg shadow-lg border border-gray-200 z-50 max-h-[80vh] overflow-y-auto scrollbar-custom">
 
     {/* Contenu filtres */}
     <div className="p-4 space-y-6 text-sm text-gray-800">

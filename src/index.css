@@ -25,3 +25,24 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+.scrollbar-custom::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-track {
+  background: #dbeafe; /* Bleu clair (track) */
+  border-radius: 9999px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  background-color: #ffc013; /* Jaune */
+  border-radius: 9999px;
+}
+
+/* Pour Firefox */
+.scrollbar-custom {
+  scrollbar-width: thin;
+  scrollbar-color: #ffc013 #dbeafe;
+}
