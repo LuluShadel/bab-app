@@ -169,6 +169,7 @@ const optionsStatutBesoin = [
   { label: 'Suivi médical', key: 'santeFragile' },
   { label: 'Jardin ', key: 'jardin' },
   { label: 'Lieu sans escalier ', key: 'escalier' },
+  { label: 'Présence congénères ', key: 'congenere ' },
 ];
 
 
@@ -580,12 +581,20 @@ const renderEntenteButtons = (type, emoji) => (
       className="w-full h-[231px] object-cover rounded-[16px]"
     />
 
-    {/* Badge Recherche FA */}
-    {item.rechercheFa && (
-      <span className="absolute top-2 left-2 translate-y-[5px] bg-white text-black text-xs font-bold px-2 py-1 rounded-xl shadow">
-        Recherche FA
-      </span>
-    )}
+
+{/* Conteneur des badges recherche FA et covoit */}
+<div className="absolute top-2 left-2 flex flex-col gap-1 z-10">
+  {item.rechercheFa && (
+    <span className="bg-white text-black text-xs font-bold px-2 py-1 rounded-xl shadow text-center">
+      Recherche FA
+    </span>
+  )}
+  {item.rechercheCovoit && (
+    <span className="bg-white text-black text-xs font-bold px-2 py-1 rounded-xl shadow">
+      Recherche covoiturage
+    </span>
+  )}
+</div>
     
   
 
