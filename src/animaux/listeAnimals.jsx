@@ -133,6 +133,8 @@ const nbFiltresActifs =
   setFiltreStatuts([]);
   setFiltreBesoins([]);
   setRechercheNom('');
+  setFiltreLieu('');
+  setFiltresEntente('')
 };
 
 
@@ -169,7 +171,7 @@ const optionsStatutBesoin = [
   { label: 'Suivi médical', key: 'santeFragile' },
   { label: 'Jardin ', key: 'jardin' },
   { label: 'Lieu sans escalier ', key: 'escalier' },
-  { label: 'Présence congénères ', key: 'congenere ' },
+  { label: 'Présence congénères ', key: 'congenere' },
 ];
 
 
@@ -572,7 +574,7 @@ const renderEntenteButtons = (type, emoji) => (
       <ul className='flex md:flex-row md:flex-wrap md:gap-6'>
         
         {animauxFiltres.map((item) => (
-          <li key={item.id} className="w-[20em] h-[26em] rounded-[16px] bg-white overflow-hidden shadow-md">
+          <li key={item.id} className="w-[20em] h-[27em] rounded-[16px] bg-white overflow-hidden shadow-md">
             <Link to={`/animal/${item.id}`} className="block hover:opacity-90 transition">
   <div className="relative">
     <img
@@ -599,7 +601,7 @@ const renderEntenteButtons = (type, emoji) => (
   
 
   </div>
-            <div className='p-6 flex flex-col gap-4' >
+            <div className='px-6 py-2 flex flex-col gap-2' >
           
           <div className='flex flex-row gap-4'>
             <h2 className='' >{item.name}</h2>
@@ -650,6 +652,18 @@ const renderEntenteButtons = (type, emoji) => (
       </span>
     );
   })}
+  <div className="flex flex-wrap gap-2 mt-2">
+  {optionsStatutBesoin.map(({ label, key }) =>
+    item[key.trim()] ? (
+      <span
+        key={key}
+        className="border border-gray-400 text-gray-700 text-xs font-medium px-2 py-1 rounded-full"
+      >
+        {label}
+      </span>
+    ) : null
+  )}
+</div>
 </div>
       
             </div>

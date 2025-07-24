@@ -32,7 +32,7 @@ code {
 }
 
 .scrollbar-custom::-webkit-scrollbar-track {
-  background: #dbeafe; /* Bleu clair (track) */
+  background: #ffffff; /* Bleu clair (track) */
   border-radius: 9999px;
 }
 
@@ -44,5 +44,5 @@ code {
 /* Pour Firefox */
 .scrollbar-custom {
   scrollbar-width: thin;
-  scrollbar-color: #ffc013 #dbeafe;
+  scrollbar-color: #ffc013 #ffffff;
 }
