@@ -38,6 +38,7 @@ const optionsSterilise = [ // gère le booléen de la stérilisation
 const [ageMin, setAgeMin] = useState(0); // gère l'age du slider 
 const [ageMax, setAgeMax] = useState(20);
 
+const [filtreLieu, setFiltreLieu] = useState(""); // gère le lieu de vie 
 const [filtreStatuts, setFiltreStatuts] = useState([]); // gère le statut actuel
 const [filtreBesoins, setFiltreBesoins] = useState([]); // gère le besoin actuel
 const [filtresEntente, setFiltresEntente] = useState({ // gère le filtre sur les ententes 
@@ -106,7 +107,12 @@ const correspondBesoin =
   filtreBesoins.length === 0 ||
   filtreBesoins.every((key) => animal[key] === true);
 
-  return correspondAge && correspondNom  && correspondEspece && correspondGenre && correspondSterilise &&correspondStatut && correspondBesoin &&  correspondEntente;
+  // filtre pour le lieu de vie 
+  const correspondLieu =
+  !filtreLieu || (filtreLieu === "EnFamilleAccueil" && animal.EnFamilleAccueil === true) || (filtreLieu === "pension" && animal.pension === true);
+
+
+  return correspondLieu && correspondAge && correspondNom  && correspondEspece && correspondGenre && correspondSterilise &&correspondStatut && correspondBesoin &&  correspondEntente;
 
   
 });
@@ -148,19 +154,21 @@ function calculerAge(ddn) {
   return age; // retourne un nombre
 }
 
-// filtre statut axtuelle 
+// filtre statut 
 const optionsStatut = [
-  { label: 'En famille d’accueil', key: 'EnFamilleAccueil' },
-  { label: 'En pension', key: 'pension' },
-  { label: 'Panier retraite', key: 'panierRetraite' },
-  { label: 'Sous réquisition', key: 'requisition' }
+   { label: 'Panier retraite', key: 'panierRetraite' },
+  { label: 'Recherche de FA', key: 'rechercheFa' },
+  { label: 'Recherche de covoiturage', key: 'rechercheCovoit' },
+ 
+  { label: 'Catégorisé', key: 'categorise' }
 ];
 
-// filtre besoins axtuelle 
+// filtre conditions d'accueil
 const optionsStatutBesoin = [
-  { label: 'Recherche famille d\'accueil', key: 'rechercheFa' },
-  { label: 'Recherche covoiturage', key: 'rechercheCovoit' },
-  { label: 'Recherche adoptant ', key: 'adoption' },
+  { label: 'Besoins environnement calme', key: 'endroitCalme' },
+  { label: 'Suivi médical', key: 'santeFragile' },
+  { label: 'Jardin ', key: 'jardin' },
+  { label: 'Lieu sans escalier ', key: 'escalier' },
 ];
 
 
@@ -409,27 +417,25 @@ const renderEntenteButtons = (type, emoji) => (
   ))}
 </div>
 
-{/*Statut actuel*/}
+{/* Lieu de vie */}
 <div>
-  <p className="font-semibold mb-2">Statut Actuel</p>
-  <div className="space-y-2 max-h-32 overflow-y-auto pr-2">
-    {optionsStatut.map(({ label, key }) => (
+  <p className="font-semibold mb-2">Lieu de vie</p>
+  <div className="space-y-2">
+    {[
+      { label: "En famille d'accueil", key: "EnFamilleAccueil" },
+      { label: "En pension", key: "pension" },
+    ].map(({ label, key }) => (
       <label key={key} className="flex items-center gap-2 text-sm cursor-pointer">
         <input
-          type="checkbox"
-          checked={filtreStatuts.includes(key)}
-          onChange={() => {
-            if (filtreStatuts.includes(key)) {
-              setFiltreStatuts(filtreStatuts.filter((s) => s !== key));
-            } else {
-              setFiltreStatuts([...filtreStatuts, key]);
-            }
-          }}
+          type="radio"
+          name="lieuDeVie"
+          checked={filtreLieu === key}
+          onChange={() => setFiltreLieu(filtreLieu === key ? "" : key)}
           className="peer hidden"
         />
-        <span className="relative w-5 h-5 border-2 border-primaryYellow rounded-md flex items-center justify-center
+        <span className="relative w-5 h-5 border-2 border-primaryYellow rounded-full flex items-center justify-center
           before:content-[''] before:w-3 before:h-3
-          before:rounded-sm before:bg-primaryYellow
+          before:rounded-full before:bg-primaryYellow
           before:scale-0 peer-checked:before:scale-100
           transition-all duration-150"
         />
@@ -439,10 +445,76 @@ const renderEntenteButtons = (type, emoji) => (
   </div>
 </div>
 
-
-{/*Besoin actuel*/}
+{/*Statut  */}
 <div>
-  <p className="font-semibold mb-2">Besoins en cours</p>
+  <p className="font-semibold mb-2">Statut</p>
+
+  {/* Radios exclusifs */}
+  <div className="space-y-2 mb-4">
+    {[
+      { label: "À l'adoption", key: "adoption" },
+      { label: "Sous réquisition", key: "requisition" },
+    ].map(({ label, key }) => (
+      <label key={key} className="flex items-center gap-2 text-sm cursor-pointer">
+        <input
+          type="radio"
+          name="lieuRadio"
+          checked={filtreStatuts.includes(key)}
+          onChange={() => {
+            setFiltreStatuts(
+              filtreStatuts.includes(key)
+                ? [] // décocher si déjà actif
+                : [key] // n'autorise qu'un seul
+            );
+          }}
+          className="peer hidden"
+        />
+        <span className="relative w-5 h-5 border-2 border-primaryYellow rounded-full flex items-center justify-center
+          before:content-[''] before:w-3 before:h-3
+          before:rounded-full before:bg-primaryYellow
+          before:scale-0 peer-checked:before:scale-100
+          transition-all duration-150"
+        />
+        {label}
+      </label>
+    ))}
+  </div>
+
+  {/* Checkboxes pour le reste */}
+  <div className="space-y-2 max-h-32 overflow-y-auto pr-2 scrollbar-custom">
+    {optionsStatut
+      .filter(({ key }) => key !== "adoption" && key !== "requisition")
+      .map(({ label, key }) => (
+        <label key={key} className="flex items-center gap-2 text-sm cursor-pointer">
+          <input
+            type="checkbox"
+            checked={filtreStatuts.includes(key)}
+            onChange={() => {
+              if (filtreStatuts.includes(key)) {
+                setFiltreStatuts(filtreStatuts.filter((s) => s !== key));
+              } else {
+                setFiltreStatuts([...filtreStatuts, key]);
+              }
+            }}
+            className="peer hidden"
+          />
+          <span className="relative w-5 h-5 border-2 border-primaryYellow rounded-md flex items-center justify-center
+            before:content-[''] before:w-3 before:h-3
+            before:rounded-sm before:bg-primaryYellow
+            before:scale-0 peer-checked:before:scale-100
+            transition-all duration-150"
+          />
+          {label}
+        </label>
+      ))}
+  </div>
+</div>
+
+
+
+{/*Conditions d'accueil*/}
+<div>
+  <p className="font-semibold mb-2">Conditions d'accueil</p>
   <div className="space-y-2 max-h-32 overflow-y-auto pr-2">
     {optionsStatutBesoin.map(({ label, key }) => (
       <label key={key} className="flex items-center gap-2 text-sm cursor-pointer">
