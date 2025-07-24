@@ -7,7 +7,7 @@ module.exports = {
         bgBlue:'#ebf3ff',
         primaryBlue:'#122778',
         primaryYellow:'#ffc113',
-        primaryOrange:'#fca61c'
+        primaryOrange:'#fca61c',
       },
         sans: ['Roboto', 'sans-serif'],    // police par défaut
         rowdies: ['Rowdies', 'cursive'],   // pour les titres

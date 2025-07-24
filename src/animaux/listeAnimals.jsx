@@ -40,6 +40,12 @@ const [ageMax, setAgeMax] = useState(20);
 
 const [filtreStatuts, setFiltreStatuts] = useState([]); // gère le statut actuel
 const [filtreBesoins, setFiltreBesoins] = useState([]); // gère le besoin actuel
+const [filtresEntente, setFiltresEntente] = useState({ // gère le filtre sur les ententes 
+  chien: null,    // "ok", "non", "inconnu"
+  chat: null,
+  enfant: null,
+});
+
 
 
   useEffect(() => {
@@ -76,6 +82,20 @@ const animauxFiltres = animaux.filter((animal) => {
   const ageAnimal = calculerAge(animal.ddn); // retourne un nombre
 const correspondAge = ageAnimal >= ageMin && ageAnimal <= ageMax;
 
+ // ententes 
+const checkEntente = (valeurAnimal, filtre) => {
+  if (!filtre) return true;
+  if (filtre === "ok") return valeurAnimal === true;
+  if (filtre === "non") return valeurAnimal === false;
+  if (filtre === "inconnu") return valeurAnimal === null;
+  return true;
+};
+
+const correspondEntente =
+  checkEntente(animal.okChien, filtresEntente.chien) &&
+  checkEntente(animal.okChat, filtresEntente.chat) &&
+  checkEntente(animal.okChild, filtresEntente.enfant);
+
 // filtre pour le statut actuel 
 const correspondStatut =
   filtreStatuts.length === 0 ||
@@ -86,7 +106,7 @@ const correspondBesoin =
   filtreBesoins.length === 0 ||
   filtreBesoins.every((key) => animal[key] === true);
 
-  return correspondAge && correspondNom  && correspondEspece && correspondGenre && correspondSterilise &&correspondStatut && correspondBesoin;
+  return correspondAge && correspondNom  && correspondEspece && correspondGenre && correspondSterilise &&correspondStatut && correspondBesoin &&  correspondEntente;
 
   
 });
@@ -142,6 +162,61 @@ const optionsStatutBesoin = [
   { label: 'Recherche covoiturage', key: 'rechercheCovoit' },
   { label: 'Recherche adoptant ', key: 'adoption' },
 ];
+
+
+// filtre ententes 
+const toggleEntente = (type, valeur) => {
+  setFiltresEntente((prev) => ({
+    ...prev,
+    [type]: prev[type] === valeur ? null : valeur,
+  }));
+};
+
+const options = [
+  { key: "chien", emoji: <DogIcon/> },
+  { key: "chat", emoji: <CatIcon/> },
+  { key: "enfant", emoji: <ChildIcon/> },
+];
+
+const choix = [
+  {
+    value: "ok",
+    label: "Ok",
+    activeClass: "bg-[#247c4f] text-white",
+    inactiveClass: "border-[#247c4f]",
+  },
+  {
+    value: "non",
+    label: "Non",
+    activeClass: "bg-[#cc300f] text-white",
+    inactiveClass: "border-[#cc300f]",
+  },
+  {
+    value: "inconnu",
+    label: "Inconnu",
+    activeClass: "bg-[#dc7c00] text-white",
+    inactiveClass: "border-[#dc7c00]",
+  },
+];
+
+const renderEntenteButtons = (type, emoji) => (
+  <div className="flex gap-2 items-center">
+    {choix.map(({ value, label, activeClass, inactiveClass }) => {
+      const isActive = filtresEntente[type] === value;
+      return (
+        <button
+          key={value}
+          onClick={() => toggleEntente(type, value)}
+          className={`border px-2 py-1 rounded flex items-center gap-1 transition ${
+            isActive ? activeClass : inactiveClass
+          }`}
+        >
+          {emoji} {label}
+        </button>
+      );
+    })}
+  </div>
+);
 
 
 
@@ -284,7 +359,7 @@ const optionsStatutBesoin = [
     <span>{ageMax} ans</span>
   </div>
 
-  {/* Container */}
+  {/* Container age  */}
   <div className="relative h-6">
     {/* Barre de fond */}
     <div className="absolute top-1/2 left-0 right-0 h-2 bg-blue-100 rounded-full transform -translate-y-1/2"></div>
@@ -324,6 +399,15 @@ const optionsStatutBesoin = [
       className="absolute w-full pointer-events-none appearance-none z-20 h-2 bg-transparent [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-primaryYellow [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:pointer-events-auto"
     />
   </div>
+</div>
+
+
+{/* ententes */}
+<div className="flex flex-col gap-4">
+  <p className="font-semibold">Ententes</p>
+  {options.map(({ key, emoji }) => (
+    <div key={key}>{renderEntenteButtons(key, emoji)}</div>
+  ))}
 </div>
 
 {/*Statut actuel*/}
