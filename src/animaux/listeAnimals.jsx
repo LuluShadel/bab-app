@@ -11,6 +11,7 @@ import { ReactComponent as MaleIcon } from '../svg/Male.svg';
 import { ReactComponent as SearchIcon } from '../svg/Search.svg';
 
 
+
 import { MdKeyboardArrowDown, MdKeyboardArrowUp, MdKeyboardArrowRight  } from 'react-icons/md';
 
 
@@ -657,7 +658,7 @@ const renderEntenteButtons = (type, emoji) => (
     item[key.trim()] ? (
       <span
         key={key}
-        className="border border-gray-400 text-gray-700 text-xs font-medium px-2 py-1 rounded-full"
+        className="border border-gray-400 text-gray-700 text-xs font-medium px-2 py-1 rounded-[5px]"
       >
         {label}
       </span>

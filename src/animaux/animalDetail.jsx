@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import supabase from '../supabaseClient'
 
@@ -15,6 +15,7 @@ import { ReactComponent as FemelleIcon } from '../svg/Femelle.svg'
 import { ReactComponent as CatIcon } from '../svg/Cat.svg';
 import { ReactComponent as DogIcon } from '../svg/Dog.svg';
 import { ReactComponent as ChildIcon } from '../svg/Child.svg';
+import { ReactComponent as ArrowRight } from '../svg/Arrow-Right.svg';
 
 
 const onglets = ['Profil', 'Histoire', 'Santé', 'Documents', 'Historique']; // gère les onglets de la nav
@@ -38,8 +39,14 @@ export default function AnimalDetails() {
 
   return (
     <div className="flex px-12 py-8 gap-8 bg-bgBlue h-screen">
+    
       {/* Colonne gauche - Info texte et tabs */}
       <div className="flex flex-col w-2/3 bg-[#DCEAFF] rounded-2xl p-6 shadow">
+      <div className='flex flex-row gap-2 mb-2'>
+      <Link to="/animaux/listeAnimals" className='text-gray-600'>Animaux</Link>
+      <p><ArrowRight/></p>
+      <p>{animal.name}</p>
+      </div>
         {/* Titre + bouton modifier */}
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center gap-2">
