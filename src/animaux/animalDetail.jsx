@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import supabase from '../supabaseClient'
 
@@ -8,6 +8,7 @@ import AnimalHistoire from './animalDetails/animalHistoire'
 import AnimalSante from './animalDetails/animalSante'
 import AnimalDoc from './animalDetails/animalDoc'
 import AnimalHistorique from './animalDetails/animalHistorique'
+import ConfirmationModal from '../components/modalConfirm'
 
 // Import des svg
 import { ReactComponent as MaleIcon } from '../svg/Male.svg'
@@ -21,10 +22,36 @@ import { ReactComponent as ArrowRight } from '../svg/Arrow-Right.svg';
 const onglets = ['Profil', 'Histoire', 'Santé', 'Documents', 'Historique']; // gère les onglets de la nav
 
 
+
+
+
+
 export default function AnimalDetails() {
   const { id } = useParams()
+  const navigate = useNavigate();
   const [animal, setAnimal] = useState(null) // stock les données animal
   const [ongletActif, setOngletActif] = useState('Profil'); // gère l'onglet de la sous nav
+
+  //gère la modal archive
+const [showModal, setShowModal] = useState(false);
+
+// fonction pour passer archive de false à true 
+const archiverAnimal = async (animalId) => {
+  const { error } = await supabase
+    .from('animaux')
+    .update({ archive: true })
+    .eq('id', animalId);
+
+    setShowModal(false);
+
+  if (error) {
+    console.error('Erreur lors de l’archivage :', error);
+  } else {
+    navigate('/animaux/AnimauxArchive'); //  redirection après succès
+  }
+};
+
+
 
   useEffect(() => {
     const fetchAnimal = async () => {
@@ -48,7 +75,7 @@ export default function AnimalDetails() {
       <p>{animal.name}</p>
       </div>
         {/* Titre + bouton modifier */}
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-center mb-4 mt-2">
           <div className="flex items-center gap-2">
            <div >
   {animal.sexe === 'Femelle' && (
@@ -66,9 +93,28 @@ export default function AnimalDetails() {
           </h1>
           
 </div>
-          <button className="bg-primaryYellow px-4 py-2 rounded-full flex items-center gap-2 shadow text-sm font-medium">
-            Modifier 
-          </button>
+<div className="flex gap-6">
+  <button
+    onClick={() => setShowModal(true)}
+    className="underline px-4 py-2 flex items-center gap-2 text-sm font-medium"
+  >
+    Archiver
+  </button>
+
+  <button className="bg-primaryYellow px-4 py-2 rounded-full flex items-center gap-2 shadow text-sm font-medium">
+    Modifier
+  </button>
+</div>
+
+<ConfirmationModal
+  isOpen={showModal}
+  message="Êtes-vous sûr de vouloir archiver cet animal ?"
+  confirmText="Archiver"
+  cancelText="Annuler"
+ onConfirm={() => archiverAnimal(animal.id)} 
+  onCancel={() => setShowModal(false)}
+/>
+
         </div>
 
       

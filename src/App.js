@@ -7,6 +7,7 @@ import Home from './home';
 import AnimalDetails from './animaux/animalDetail';
 import ListeAnimals from './animaux/listeAnimals';
 import Header from './components/header';
+import ListeAnimalsArchive from './animaux/animalArchive/listeAnimalsArchive';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -68,6 +69,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="animaux/ListeAnimals" element={<ListeAnimals />} />
+          <Route path="animaux/AnimauxArchive" element={<ListeAnimalsArchive />} />
           <Route path="/animal/:id" element={<AnimalDetails />} />
         </Routes>
       </div>
