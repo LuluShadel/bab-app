@@ -26,7 +26,7 @@ export default function ConfirmationModal({
       >
         {children}
 
-        <div className="flex justify-center gap-4 mt-4">
+        <div className="flex justify-between gap-4 mt-4">
           <button
             onClick={onCancel}
             className="px-4 py-2 rounded-full border border-gray-300 hover:bg-gray-100 text-sm"

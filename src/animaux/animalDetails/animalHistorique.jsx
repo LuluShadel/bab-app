@@ -1,14 +1,21 @@
 import { useState, useEffect, useCallback } from "react";
 import supabase from "../../supabaseClient";
-import { FiTrash2, FiPlus } from "react-icons/fi";
+import { FiPlus } from "react-icons/fi";
+import ConfirmationModal from "../../components/modalConfirm";
+
+// import SVG
+import { ReactComponent as Delete } from '../../svg/Delete.svg';
 
 export default function AnimalHistorique({ animal }) {
   const animalId = animal.id;
   const [historiques, setHistoriques] = useState([]);
-  const [nouvelTexte, setNouvelTexte] = useState("");
-  const [nouvelleDate, setNouvelleDate] = useState("");
-  const [showModal, setShowModal] = useState(false);
-  const [selectedHistorique, setSelectedHistorique] = useState(null);
+
+    const [showModal, setShowModal] = useState(false); // modal d'ajout 
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false); // modal pour delete
+  const [eventDate, setEventDate] = useState("");
+  const [eventDescription, setEventDescription] = useState("");
+
+const [selectedItems, setSelectedItems] = useState([]);
 
   const fetchHistoriques = useCallback(async () => {
     const { data, error } = await supabase
@@ -25,37 +32,49 @@ export default function AnimalHistorique({ animal }) {
     fetchHistoriques();
   }, [fetchHistoriques]);
 
-  const handleAdd = async () => {
-    if (!nouvelTexte || !nouvelleDate) return;
+const handleSave = async () => {
+  if (!eventDate || !eventDescription) return;
 
-    const { error } = await supabase.from("historique").insert([
+  const { error } = await supabase
+    .from("historique")
+    .insert([
       {
         animal_id: animalId,
-        texte: nouvelTexte,
-        date: nouvelleDate,
-      },
+        date: eventDate,
+        texte: eventDescription
+      }
     ]);
 
-    if (!error) {
-      setNouvelTexte("");
-      setNouvelleDate("");
-      fetchHistoriques();
-    }
-  };
+  if (error) {
+    console.error("❌ Erreur lors de l’ajout :", error);
+  } else {
+   
+    // Nettoyage + fermeture
+    setEventDate("");
+    setEventDescription("");
+    setShowModal(false);
+    fetchHistoriques(); // refresh la liste
+  }
+};
 
-  const handleDelete = async () => {
-    if (!selectedHistorique) return;
-    const { error } = await supabase
-      .from("historique")
-      .delete()
-      .eq("id", selectedHistorique.id);
 
-    if (!error) {
-      setShowModal(false);
-      setSelectedHistorique(null);
-      fetchHistoriques();
-    }
-  };
+// supprimer les données 
+const handleDeleteSelected = async () => {
+  if (selectedItems.length === 0) return;
+
+  const { error } = await supabase
+    .from("historique")
+    .delete()
+    .in("id", selectedItems);
+
+  if (!error) {
+    setSelectedItems([]);
+    fetchHistoriques(); // recharge
+  } else {
+    console.error("Erreur suppression multiple :", error);
+  }
+};
+ 
 
   const formatDate = (dateStr) => {
     if (!dateStr) return "";
@@ -64,93 +83,128 @@ export default function AnimalHistorique({ animal }) {
   };
 
   return (
-    <div className="bg-white mt-12 p-6 overflow-auto max-h-[60vh] relative">
-      {/* Ajout historique */}
-      <div className="flex justify-between items-center border-b pb-2 mb-4">
-        <div className="text-sm font-semibold text-primaryBlue px-2">
-          Ajouter un historique
-        </div>
-        <div className="flex items-center gap-2 text-sm">
-          <input
-            type="date"
-            value={nouvelleDate}
-            onChange={(e) => setNouvelleDate(e.target.value)}
-            className="border-2 border-primaryYellow rounded-full px-4 py-2 text-sm"
-          />
-          <input
-            type="text"
-            placeholder="Texte"
-            value={nouvelTexte}
-            onChange={(e) => setNouvelTexte(e.target.value)}
-            className="border-2 border-primaryYellow rounded-full px-4 py-2 text-sm"
-          />
-          <button
-            onClick={handleAdd}
-            className="bg-primaryYellow text-sm px-3 py-1 rounded-full font-medium flex items-center gap-1 shadow"
-          >
-            Ajouter <FiPlus />
-          </button>
-        </div>
-      </div>
+   <div className="bg-white mt-2 p-6 relative h-[60vh] flex flex-col">
 
-      {/* Liste des historiques */}
-      <ul className="space-y-3">
-        {historiques.map((item) => (
+  {/* Barre d'action */}
+<div className={`mb-4 flex items-center justify-between rounded-xl px-4 py-2 shadow-sm transition 
+    ${selectedItems.length > 0 ? "bg-gray-100" : ""}`}>
+  {/* À gauche : suppression visible uniquement si des éléments sont sélectionnés */}
+  {selectedItems.length > 0 ? (
+    <button
+  onClick={() => setShowDeleteConfirm(true)}
+  className="flex items-center gap-1 text-sm text-black font-medium hover:underline"
+>
+  Supprimer
+  <Delete className="text-red-600" />
+</button>
+
+
+  ) : (
+    <span className="text-sm text-gray-500">{/* Espace vide pour équilibrer */}</span>
+  )}
+
+  <ConfirmationModal
+  isOpen={showDeleteConfirm}
+  onCancel={() => setShowDeleteConfirm(false)}
+  onConfirm={() => {
+    handleDeleteSelected();
+    setShowDeleteConfirm(false);
+  }}
+  confirmText="Supprimer"
+  cancelText="Annuler"
+>
+  <h2 className="font-bold text-primaryBlue text-lg">
+    Êtes-vous sûr de vouloir supprimer les éléments sélectionnés ?
+  </h2>
+</ConfirmationModal>
+
+  {/* À droite : bouton ajouter */}
+  <button
+    onClick={() => setShowModal(true)}
+    className="flex items-center gap-2 bg-primaryYellow text-black font-medium text-sm px-4 py-2 rounded-full hover:bg-yellow-400 transition"
+  >
+    Ajouter des documents
+    <FiPlus />
+  </button>
+</div>
+
+
+  {/* Liste scrollable */}
+  <div className="overflow-auto flex-1 pr-1 scrollbar-custom">
+    <ul className="space-y-3">
+      {/* En-tête */}
+      <li className="grid grid-cols-[120px_1fr] gap-4 px-2 pb-1 text-sm text-gray-600 font-semibold ">
+        <h2 className="text-primaryBlue">Date</h2>
+        <h2 className="text-primaryBlue">Contenu</h2>
+      </li>
+
+      {/* Lignes */}
+      {historiques.map((item) => {
+        const isSelected = selectedItems.includes(item.id);
+        return (
           <li
             key={item.id}
-            className="flex justify-between items-center border-b pb-2 text-sm text-primaryBlue"
+            className="grid grid-cols-[auto_1fr] items-center gap-4 border-t py-2 text-sm text-primaryBlue group"
           >
-            <div className="flex gap-12 px-2 overflow-hidden whitespace-nowrap text-ellipsis w-full">
-              <span className="min-w-[80px]">{formatDate(item.date)}</span>
-              <span className="truncate">{item.texte}</span>
+            <div className="relative w-6">
+              <input
+                type="checkbox"
+                checked={isSelected}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    setSelectedItems((prev) => [...prev, item.id]);
+                  } else {
+                    setSelectedItems((prev) => prev.filter((id) => id !== item.id));
+                  }
+                }}
+                className={`transition-opacity duration-200 ${
+                  isSelected ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+                }`}
+              />
             </div>
-            <button
-              onClick={() => {
-                setSelectedHistorique(item);
-                setShowModal(true);
-              }}
-              className="text-red-600 hover:text-red-800"
-              title="Supprimer"
-            >
-              <FiTrash2 size={18} />
-            </button>
+            <div className="grid grid-cols-[120px_1fr] gap-4 overflow-hidden">
+              <span>{formatDate(item.date)}</span>
+              <span className="break-words">{item.texte}</span>
+            </div>
           </li>
-        ))}
-      </ul>
+        );
+      })}
+    </ul>
+  </div>
 
-      {/* Modale confirmation suppression */}
-      {showModal && selectedHistorique && (
-        <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm text-sm">
-            <h3 className="font-semibold text-lg text-red-700 mb-4">
-              Attention !
-            </h3>
-            <p className="mb-4">
-              Vous allez supprimer l’historique suivant :
-              <br />
-              <span className="font-medium text-gray-800">
-                « {selectedHistorique.texte} »
-              </span>
-              <br />
-              Souhaitez-vous continuer ?
-            </p>
-            <div className="flex justify-end gap-3">
-              <button
-                onClick={() => setShowModal(false)}
-                className="px-4 py-1 rounded-full border text-gray-700 hover:bg-gray-100"
-              >
-                Annuler
-              </button>
-              <button
-                onClick={handleDelete}
-                className="px-4 py-1 rounded-full bg-red-600 text-white hover:bg-red-700"
-              >
-                Supprimer
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+  {/* Modal */}
+  <ConfirmationModal
+    isOpen={showModal}
+    onCancel={() => setShowModal(false)}
+    onConfirm={handleSave}
+    confirmText="Enregistrer"
+    cancelText="Annuler"
+  >
+    <h2 className="font-bold text-primaryBlue text-lg">Ajouter un événement</h2>
+
+    <div className="text-left space-y-4">
+      <div>
+        <label className="block text-sm font-medium">Date</label>
+        <input
+          type="date"
+          value={eventDate}
+          onChange={(e) => setEventDate(e.target.value)}
+          className="w-full border border-gray-300 rounded px-2 py-1 mt-1"
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium">Description</label>
+        <textarea
+          value={eventDescription}
+          onChange={(e) => setEventDescription(e.target.value)}
+          className="w-full border border-gray-300 rounded px-2 py-1 mt-1"
+          rows={4}
+          placeholder="Décrivez l'événement"
+        />
+      </div>
     </div>
+  </ConfirmationModal>
+</div>
+
   );
 }
