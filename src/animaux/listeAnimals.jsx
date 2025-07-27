@@ -9,6 +9,7 @@ import { ReactComponent as ChildIcon } from '../svg/Child.svg';
 import { ReactComponent as FemelleIcon } from '../svg/Femelle.svg';
 import { ReactComponent as MaleIcon } from '../svg/Male.svg';
 import { ReactComponent as SearchIcon } from '../svg/Search.svg';
+import { ReactComponent as Archive } from '../svg/Archive.svg';
 
 
 
@@ -566,7 +567,7 @@ const renderEntenteButtons = (type, emoji) => (
       className="flex items-center gap-2 underline  text-black  hover:text-gray-700 transition"
     >
       Voir les animaux archiver 
-      < MdKeyboardArrowRight className='text-sm font-bold' />
+     <Archive />
     </Link>
 
 

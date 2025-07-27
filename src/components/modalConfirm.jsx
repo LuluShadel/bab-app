@@ -1,22 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react'
+
 
 export default function ConfirmationModal({
   isOpen,
-  message,
   onConfirm,
   onCancel,
   confirmText = "Confirmer",
   cancelText = "Annuler",
+  children, 
 }) {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    if (isOpen) {
-      // démarre l'animation juste après le montage
-      setTimeout(() => setShow(true), 10);
-    } else {
-      setShow(false);
-    }
+    if (isOpen) setTimeout(() => setShow(true), 10);
+    else setShow(false);
   }, [isOpen]);
 
   if (!isOpen) return null;
@@ -27,8 +24,9 @@ export default function ConfirmationModal({
         className={`bg-white p-6 rounded-xl shadow-xl text-center max-w-sm w-full space-y-4 transform transition-all duration-300 ease-out
         ${show ? "scale-100 opacity-100" : "scale-90 opacity-0"}`}
       >
-        <h2 className="font-bold text-primaryBlue text-lg">{message}</h2>
-        <div className="flex justify-center gap-4">
+        {children}
+
+        <div className="flex justify-center gap-4 mt-4">
           <button
             onClick={onCancel}
             className="px-4 py-2 rounded-full border border-gray-300 hover:bg-gray-100 text-sm"

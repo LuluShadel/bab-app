@@ -17,6 +17,7 @@ import { ReactComponent as CatIcon } from '../svg/Cat.svg';
 import { ReactComponent as DogIcon } from '../svg/Dog.svg';
 import { ReactComponent as ChildIcon } from '../svg/Child.svg';
 import { ReactComponent as ArrowRight } from '../svg/Arrow-Right.svg';
+import { ReactComponent as Archive } from '../svg/Archive.svg';
 
 
 const onglets = ['Profil', 'Histoire', 'Santé', 'Documents', 'Historique']; // gère les onglets de la nav
@@ -99,6 +100,7 @@ const archiverAnimal = async (animalId) => {
     className="underline px-4 py-2 flex items-center gap-2 text-sm font-medium"
   >
     Archiver
+    <Archive />
   </button>
 
   <button className="bg-primaryYellow px-4 py-2 rounded-full flex items-center gap-2 shadow text-sm font-medium">
@@ -108,12 +110,15 @@ const archiverAnimal = async (animalId) => {
 
 <ConfirmationModal
   isOpen={showModal}
-  message="Êtes-vous sûr de vouloir archiver cet animal ?"
   confirmText="Archiver"
   cancelText="Annuler"
- onConfirm={() => archiverAnimal(animal.id)} 
+  onConfirm={() => archiverAnimal(animal.id)}
   onCancel={() => setShowModal(false)}
-/>
+>
+  <h2 className="font-bold text-primaryBlue text-lg">
+    Êtes-vous sûr de vouloir archiver cet animal ?
+  </h2>
+</ConfirmationModal>
 
         </div>
 
