@@ -86,7 +86,7 @@ const handleDeleteSelected = async () => {
    <div className="bg-white mt-2 p-6 relative h-[60vh] flex flex-col">
 
   {/* Barre d'action */}
-<div className={`mb-4 flex items-center justify-between rounded-xl px-4 py-2 shadow-sm transition 
+<div className={`mb-4 flex items-center justify-between  px-4 py-2  transition 
     ${selectedItems.length > 0 ? "bg-gray-100" : ""}`}>
   {/* À gauche : suppression visible uniquement si des éléments sont sélectionnés */}
   {selectedItems.length > 0 ? (

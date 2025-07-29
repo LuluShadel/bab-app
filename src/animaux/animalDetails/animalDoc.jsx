@@ -7,8 +7,17 @@ import { ReactComponent as Delete } from "../../svg/Delete.svg";
 export default function AnimalDoc({ animal }) {
   const animalId = animal.id;
   const [documents, setDocuments] = useState([]);
-  const [selectedDocs, setSelectedDocs] = useState([]);
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [selectedDocs, setSelectedDocs] = useState([]); // ajouter doc 
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false); // modal suppression
+  const [openMenu, setOpenMenu] = useState(null); // les 3 points verticaux 
+const [, setShowMenuId] = useState(null);// menu 3 points
+const [showRenameModal, setShowRenameModal] = useState(false); // modal renommer
+const [docToRename, setDocToRename] = useState(null); // doc renommé 
+const [newName, setNewName] = useState("");// doc nvx nom 
+
+const menuRef = useRef(null);// ecouteur pour fermer les 3 points 
+
+  
   const fileInputRef = useRef();
 
   const fetchDocuments = useCallback(async () => {
@@ -86,9 +95,12 @@ export default function AnimalDoc({ animal }) {
   docsToDownload.forEach((doc, index) => {
     setTimeout(() => {
       window.open(doc.doc, "_blank");
-    }, index * 300); // petit délai pour ne pas se faire bloquer par le navigateur
+    }, index * 300); // petit délai pour pas se faire bloquer par le navigateur
   });
 };
+
+
+
 
   // mettre date en fr 
   const formatDate = (dateStr) => {
@@ -97,10 +109,26 @@ export default function AnimalDoc({ animal }) {
     return d.toLocaleDateString("fr-FR");
   };
 
+  // pour fermer le menu 3 points si clique sur la page 
+  useEffect(() => {
+  const handleClickOutside = (event) => {
+    if (menuRef.current && !menuRef.current.contains(event.target)) {
+      setOpenMenu(null);
+    }
+  };
+
+  document.addEventListener("mousedown", handleClickOutside);
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, []);
+
+  
+
   return (
     <div className="bg-white mt-2 p-6 relative h-[60vh] flex flex-col">
       <div
-        className={`mb-4 flex items-center justify-between rounded-xl px-4 py-2 shadow-sm transition ${
+        className={`mb-4 flex items-center justify-between  px-4 py-2  transition ${
           selectedDocs.length > 0 ? "bg-gray-100" : ""
         }`}
       >
@@ -148,8 +176,8 @@ export default function AnimalDoc({ animal }) {
       <div className="overflow-auto flex-1 pr-1 scrollbar-custom">
         <ul className="space-y-3">
           <li className="grid grid-cols-[120px_1fr_auto] gap-4 px-2 pb-1 text-sm text-gray-600 font-semibold">
-            <span className="text-primaryBlue">Date</span>
-            <span className="text-primaryBlue">Fichier</span>
+            <h2 className="text-primaryBlue">Date</h2>
+            <h2 className="text-primaryBlue">Fichier</h2>
           </li>
 
           {documents.map((doc) => {
@@ -183,17 +211,81 @@ export default function AnimalDoc({ animal }) {
                   <span>{formatDate(doc.created_at)}</span>
                   <span className="truncate">{doc.nom}</span>
                 </div>
-                <div className="flex justify-end gap-3 pr-2">
-                  <a
-                    href={doc.doc}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-800 hover:text-blue-600"
-                    title="Télécharger"
-                  >
-                    <FiDownload size={18} />
-                  </a>
-                </div>
+                <div className="relative">
+  <button
+    onClick={() => setOpenMenu(doc.id)}
+    className="text-gray-600 hover:text-gray-800"
+  >
+    ⋮
+  </button>
+
+  {openMenu === doc.id && (
+  <div
+    ref={menuRef}
+    className="absolute right-0 mt-2 w-40 bg-white z-10"
+  >
+      <button
+        onClick={() => {
+          window.open(doc.doc, "_blank");
+          setOpenMenu(null);
+        }}
+        className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 w-full text-sm"
+      >
+        <FiDownload />
+        Télécharger
+      </button>
+       <button
+              className="w-full text-left px-4 py-2 hover:bg-gray-100"
+              onClick={() => {
+                setDocToRename(doc);
+                setNewName(doc.nom);
+                setShowRenameModal(true);
+                setShowMenuId(null);
+              }}
+            >
+              ✏️ Renommer
+            </button>
+            <ConfirmationModal
+  isOpen={showRenameModal}
+  onCancel={() => setShowRenameModal(false)}
+  onConfirm={async () => {
+    if (docToRename && newName.trim() !== "") {
+      const { error } = await supabase
+        .from("documents")
+        .update({ nom: newName })
+        .eq("id", docToRename.id);
+      if (!error) {
+        fetchDocuments();
+        setShowRenameModal(false);
+      } else {
+        console.error("Erreur lors du renommage :", error);
+      }
+    }
+  }}
+  confirmText="Renommer"
+  cancelText="Annuler"
+>
+  <h2 className="font-bold text-primaryBlue text-lg">Renommer le document</h2>
+  <input
+    type="text"
+    className="w-full border border-gray-300 rounded px-2 py-1 mt-2"
+    value={newName}
+    onChange={(e) => setNewName(e.target.value)}
+  />
+</ConfirmationModal>
+      <button
+        onClick={() => {
+          setSelectedDocs([doc.id]);
+          setShowDeleteConfirm(true);
+          setOpenMenu(null);
+        }}
+        className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 w-full text-sm text-red-600"
+      >
+        🗑️ Supprimer
+      </button>
+    </div>
+  )}
+</div>
               </li>
             );
           })}
