@@ -123,7 +123,7 @@ const handleDeleteSelected = async () => {
     onClick={() => setShowModal(true)}
     className="flex items-center gap-2 bg-primaryYellow text-black font-medium text-sm px-4 py-2 rounded-full hover:bg-yellow-400 transition"
   >
-    Ajouter des documents
+    Ajouter un événement 
     <FiPlus />
   </button>
 </div>
