@@ -24,10 +24,10 @@ export default function AnimalProfil({ animal }) {
   ];
 
   return (
-    <div className="bg-white mt-12 overflow-hidden">
+    <div className="bg-white md:mt-12 overflow-hidden">
       <ul className="divide-y divide-blue-100 text-sm">
         {infos.map(({ label, value }) => (
-          <li key={label} className="grid grid-cols-[250px_1fr] px-6 py-3">
+          <li key={label} className="grid grid-cols-[150px_1fr] md:grid-cols-[250px_1fr] px-6 py-3">
             <span className="text-blue-900 font-semibold">{label} :</span>
             <span className="text-gray-800">{value}</span>
           </li>
