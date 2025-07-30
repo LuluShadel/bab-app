@@ -78,7 +78,7 @@ const optionsStatutBesoin = [
   return (
  <div className="flex flex-col  md:px-12 md:py-8 md:gap-8   md:grid md:grid-cols-3 p-4">
   {/* Bloc Titre */}
-  <div className="  w-full p-4   order-1 md:col-span-2  ">
+  <div className="  w-full md:p-4 mt-12 mb-4 md:mb-0 md:mt-0  order-1 md:col-span-2  ">
     <div className="flex flex-row gap-2">
       <Link to="/animaux/listeAnimals" className="text-gray-600">Animaux</Link>
       <p><ArrowRight /></p>
@@ -124,7 +124,7 @@ const optionsStatutBesoin = [
   </div>
 
   {/* Colonne droite = Photo + tags + localisation */}
-  <div className="  w-full flex flex-col gap-4 bg-white shadow-lg rounded-2xl md:h-screen  order-2 md:row-span-2">
+  <div className="  w-full flex flex-col gap-4 mb-8 pb-4 md:mb-0 bg-white shadow-lg rounded-2xl md:h-screen  order-2 md:row-span-2">
     <div className="relative rounded-2xl overflow-hidden shadow">
       <div className="absolute top-2 left-2 flex flex-wrap gap-2 z-10">
         {animal.pension && <span className="bg-white text-black text-xs font-medium px-3 py-1 rounded-full shadow">En pension</span>}
@@ -180,12 +180,12 @@ const optionsStatutBesoin = [
 
   {/* Contenu (onglets + dynamique) */}
   <div className=" bg-white rounded-xl p-6 shadow-inner relative overflow-visible  order-3 md:col-span-2 md:-mt-12">
-    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10 bg-blue-900 p-1 rounded-full shadow">
+    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10 bg-blue-900 p-1 rounded-full shadow flex justify-center">
       {onglets.map((tab) => (
         <button
           key={tab}
           onClick={() => setOngletActif(tab)}
-          className={`px-4 py-1 rounded-full text-sm transition font-medium ${
+          className={`px-2 md:px-4 py-1 rounded-full text-sm transition font-medium ${
             ongletActif === tab
               ? 'bg-primaryYellow text-black shadow'
               : 'text-white hover:bg-blue-800'
