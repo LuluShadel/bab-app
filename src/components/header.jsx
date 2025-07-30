@@ -96,7 +96,7 @@ export default function Sidebar() {
 
       {/* Mobile hamburger */}
       <div className="md:hidden fixed top-4 left-4 z-50">
-        <button onClick={toggleMenu} className="text-blue-800 bg-white p-2 rounded-md shadow">
+        <button onClick={toggleMenu} className=" bg-primaryYellow p-2 rounded-full shadow">
           {menuOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
         </button>
       </div>

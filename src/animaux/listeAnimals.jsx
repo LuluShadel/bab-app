@@ -695,7 +695,14 @@ const renderEntenteButtons = (type, emoji) => (
       </ul>
       
       
-        
+        {/* Bouton flottant Ajouter (mobile only) */}
+<Link
+  to="/ajouter-animal"
+  className="md:hidden fixed bottom-6 right-6 z-50 bg-primaryYellow text-black w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-yellow-500 transition"
+  aria-label="Ajouter un animal"
+>
+  <span className="text-3xl font-bold">+</span>
+</Link>
      
     </div>
   );
