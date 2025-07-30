@@ -65,7 +65,7 @@ function App() {
   return (
     <Router>
       <Header />
-       <div className="ml-12">
+       <div className="md:ml-12">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="animaux/ListeAnimals" element={<ListeAnimals />} />

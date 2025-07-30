@@ -237,11 +237,11 @@ const renderEntenteButtons = (type, emoji) => (
 
 
   return (
-   <div className="flex flex-col items-start px-12 py-8 bg-bgBlue">
-  <div className="flex flex-wrap justify-between items-center gap-4 w-full mb-6 ">
+   <div className="flex flex-col items-start mt-4 md:mt-0 md:px-12 md:py-8 bg-bgBlue">
+  <div className="flex  flex-col  gap-4 w-full mb-6 ">
     
     {/* Champ de recherche */}
-    <div className="flex items-center border border-gray-300 rounded-full px-4 py-2 bg-white shadow-sm flex-grow max-w-md">
+    <div className="flex items-center border border-gray-300 rounded-full px-4 py-2 bg-white shadow-sm flex-grow max-w-md ml-20 md:ml-0">
       <input
         type="text"
         placeholder="Rechercher"
@@ -253,21 +253,43 @@ const renderEntenteButtons = (type, emoji) => (
       <SearchIcon/>
     </div>
 
-   <div className="relative">
+   <div className=" flex flex-row justify-between items-center px-2 ">
+<div className=' flex gap-6  md:ml-10 '>
+{/* Bouton voir archive */}
+    <Link to={`/animaux/AnimauxArchive`}
+    
+      className="flex items-center gap-2 underline  text-black  hover:text-gray-700 transition"
+    >
+      Voir les animaux archiver 
+     <Archive />
+    </Link>
 
+
+
+  {/* Bouton Ajouter un animal */}
+    <button
+    
+      className=" items-center gap-2 hidden md:flex border border-primaryYellow bg-primaryYellow text-black px-4 py-2 rounded-full
+       hover:bg-white hover:text-black hover:border hover:border-black transition"
+    >
+      Ajouter un animal
+      < MdKeyboardArrowRight className='text-sm font-bold' />
+    </button>
+    </div>
 
 
   {/* Bouton Filtres */}
+  <div className='relative'>
   <button
     onClick={() => setShowFilters(!showFilters)}
-    className=" flex flex-row items-center justify-between bg-primaryYellow text-black px-4 w-[320px] py-2 text-left rounded-lg shadow hover:bg-yellow-500 transition"
+    className=" flex flex-row items-center justify-between bg-primaryYellow text-black px-4 md:w-[320px] py-2 text-left rounded-lg shadow hover:bg-yellow-500 transition"
   >
     Filtres ({nbFiltresActifs}) <span className="ml-1 ">{showFilters ? <MdKeyboardArrowDown /> : < MdKeyboardArrowUp />}</span>
   </button>
 
   {/* Panneau déroulant filtres */}
   {showFilters && (
-  <div className="absolute right-0 w-[320px] bg-white rounded-lg shadow-lg border border-gray-200 z-50 max-h-[80vh] overflow-y-auto scrollbar-custom">
+  <div className="absolute left-[-12rem] md:left-0 w-[320px] bg-white rounded-lg shadow-lg border border-gray-200 z-50 max-h-[80vh] overflow-y-auto scrollbar-custom">
 
     {/* Contenu filtres */}
     <div className="p-4 space-y-6 text-sm text-gray-800">
@@ -553,34 +575,14 @@ const renderEntenteButtons = (type, emoji) => (
 </div>
   </div>
 )}
-
+</div>
 
 </div>
 
 
 
   </div>
-  <div className=' flex gap-6 ml-10 mb-6'>
-{/* Bouton voir archive */}
-    <Link to={`/animaux/AnimauxArchive`}
-    
-      className="flex items-center gap-2 underline  text-black  hover:text-gray-700 transition"
-    >
-      Voir les animaux archiver 
-     <Archive />
-    </Link>
-
-
-
-  {/* Bouton Ajouter un animal */}
-    <button
-    
-      className="flex items-center gap-2 border border-primaryYellow bg-primaryYellow text-black px-4 py-2 rounded-full hover:bg-white hover:text-black hover:border hover:border-black transition"
-    >
-      Ajouter un animal
-      < MdKeyboardArrowRight className='text-sm font-bold' />
-    </button>
-    </div>
+  
 
 
 
@@ -590,10 +592,10 @@ const renderEntenteButtons = (type, emoji) => (
 
   {/* card animal*/ }
         
-      <ul className='flex md:flex-row md:flex-wrap md:gap-6'>
+      <ul className='flex flex-col  md:flex-row md:flex-wrap gap-6'>
         
         {animauxFiltres.map((item) => (
-          <li key={item.id} className="w-[20em] h-[27em] rounded-[16px] bg-white overflow-hidden shadow-md">
+          <li key={item.id} className="md:w-[20em] h-[27em] rounded-[16px] bg-white overflow-hidden shadow-md">
             <Link to={`/animal/${item.id}`} className="block hover:opacity-90 transition">
   <div className="relative">
     <img
