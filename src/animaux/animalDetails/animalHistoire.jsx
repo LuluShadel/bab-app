@@ -1,6 +1,6 @@
 export default function AnimalHistoire({ animal }) {
   return (
-    <div className="bg-white mt-12 p-6  text-sm text-gray-800 space-y-6">
+    <div className="bg-white md:mt-12 p-6  text-sm text-gray-800 space-y-6">
       {/* Histoire */}
       <div>
         <h2 className="text-lg font-bold text-primaryBlue mb-2">Mon histoire</h2>

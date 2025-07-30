@@ -126,7 +126,7 @@ const menuRef = useRef(null);// ecouteur pour fermer les 3 points
   
 
   return (
-    <div className="bg-white mt-2 p-6 relative h-[60vh] flex flex-col">
+    <div className="bg-white md:mt-2 p-6 relative h-[60vh] flex flex-col">
       <div
         className={`mb-4 flex items-center justify-between  px-4 py-2  transition ${
           selectedDocs.length > 0 ? "bg-gray-100" : ""

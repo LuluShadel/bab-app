@@ -24,7 +24,7 @@ export default function AnimalSante({ animal }) {
   ];
 
   return (
-    <div className="bg-white mt-12 overflow-hidden">
+    <div className="bg-white md:mt-12 overflow-hidden">
       <ul className="divide-y divide-blue-100 text-sm">
         {infos.map(({ label, value }) => (
           <li key={label} className="grid grid-cols-[250px_1fr] px-6 py-3">
