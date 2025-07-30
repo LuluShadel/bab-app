@@ -83,10 +83,26 @@ const handleDeleteSelected = async () => {
   };
 
   return (
-   <div className="bg-white mt-2 p-6 relative h-[60vh] flex flex-col">
+   <div className="bg-white mt-2 md:p-6 relative h-[60vh] flex flex-col">
+    <ConfirmationModal
+  isOpen={showDeleteConfirm}
+  onCancel={() => setShowDeleteConfirm(false)}
+  onConfirm={() => {
+    handleDeleteSelected();
+    setShowDeleteConfirm(false);
+  }}
+  confirmText="Supprimer"
+  cancelText="Annuler"
+>
+  <h2 className="font-bold text-primaryBlue text-lg">
+    Êtes-vous sûr de vouloir supprimer les éléments sélectionnés ?
+  </h2>
+</ConfirmationModal>
 
-  {/* Barre d'action */}
-<div className={`mb-4 flex items-center justify-between  px-4 py-2  transition 
+
+
+  {/* Barre d'action desktop */}
+<div className={`mb-4 items-center justify-between  px-4 py-2  transition  hidden md:flex
     ${selectedItems.length > 0 ? "bg-gray-100" : ""}`}>
   {/* À gauche : suppression visible uniquement si des éléments sont sélectionnés */}
   {selectedItems.length > 0 ? (
@@ -103,20 +119,7 @@ const handleDeleteSelected = async () => {
     <span className="text-sm text-gray-500">{/* Espace vide pour équilibrer */}</span>
   )}
 
-  <ConfirmationModal
-  isOpen={showDeleteConfirm}
-  onCancel={() => setShowDeleteConfirm(false)}
-  onConfirm={() => {
-    handleDeleteSelected();
-    setShowDeleteConfirm(false);
-  }}
-  confirmText="Supprimer"
-  cancelText="Annuler"
->
-  <h2 className="font-bold text-primaryBlue text-lg">
-    Êtes-vous sûr de vouloir supprimer les éléments sélectionnés ?
-  </h2>
-</ConfirmationModal>
+  
 
   {/* À droite : bouton ajouter */}
   <button
@@ -131,9 +134,22 @@ const handleDeleteSelected = async () => {
 
   {/* Liste scrollable */}
   <div className="overflow-auto flex-1 pr-1 scrollbar-custom">
+
+    {/* Barre fixe mobile uniquement */}
+{selectedItems.length > 0 && (
+  <div className="fixed bottom-4 left-4 right-4 md:hidden bg-primaryYellow rounded-full shadow-md flex justify-center items-center py-3 px-4 z-50">
+    <button
+      onClick={() => setShowDeleteConfirm(true)}
+      className="text-black font-semibold flex items-center gap-2"
+    >
+      <Delete className="w-4 h-4 text-red-600" />
+      Supprimer
+    </button>
+  </div>
+)}
     <ul className="space-y-3">
       {/* En-tête */}
-      <li className="grid grid-cols-[120px_1fr] gap-4 px-2 pb-1 text-sm text-gray-600 font-semibold ">
+      <li className="grid grid-cols-[80px_1fr] md:grid-cols-[120px_1fr] gap-4 px-2 pb-1 text-sm text-gray-600 font-semibold ">
         <h2 className="text-primaryBlue">Date</h2>
         <h2 className="text-primaryBlue">Contenu</h2>
       </li>
@@ -144,7 +160,7 @@ const handleDeleteSelected = async () => {
         return (
           <li
             key={item.id}
-            className="grid grid-cols-[auto_1fr] items-center gap-4 border-t py-2 text-sm text-primaryBlue group"
+            className="grid grid-cols-[10px_1fr] md:grid-cols-[120px_1fr] items-center justify-center gap-4 border-t py-2 text-sm text-primaryBlue group"
           >
             <div className="relative w-6">
               <input

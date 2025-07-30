@@ -124,7 +124,7 @@ const optionsStatutBesoin = [
   </div>
 
   {/* Colonne droite = Photo + tags + localisation */}
-  <div className="  w-full flex flex-col gap-4 mb-8 pb-4 md:mb-0 bg-white shadow-lg rounded-2xl md:h-screen  order-2 md:row-span-2">
+  <div className="  w-full flex flex-col gap-4 mb-8 pb-20 md:mb-0 bg-white shadow-lg rounded-2xl md:h-screen  order-2 md:row-span-2">
     <div className="relative rounded-2xl overflow-hidden shadow">
       <div className="absolute top-2 left-2 flex flex-wrap gap-2 z-10">
         {animal.pension && <span className="bg-white text-black text-xs font-medium px-3 py-1 rounded-full shadow">En pension</span>}
@@ -179,8 +179,8 @@ const optionsStatutBesoin = [
   </div>
 
   {/* Contenu (onglets + dynamique) */}
-  <div className=" bg-white rounded-xl p-6 shadow-inner relative overflow-visible  order-3 md:col-span-2 md:-mt-12">
-    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10 bg-blue-900 p-1 rounded-full shadow flex justify-center">
+  <div className=" bg-white rounded-b-xl md:rounded-xl shadows-xl  p-6 relative overflow-visible  order-3 md:col-span-2 -mt-12">
+    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10 bg-blue-900 p-1 rounded-full  flex justify-center">
       {onglets.map((tab) => (
         <button
           key={tab}
