@@ -83,7 +83,7 @@ const handleDeleteSelected = async () => {
   };
 
   return (
-   <div className="bg-white mt-2 md:p-6 relative h-[60vh] flex flex-col ">
+   <div className="bg-white mt-2 md:p-6 h-[60vh] flex flex-col ">
     <ConfirmationModal
   isOpen={showDeleteConfirm}
   onCancel={() => setShowDeleteConfirm(false)}
@@ -137,14 +137,21 @@ const handleDeleteSelected = async () => {
 
     {/* Barre fixe mobile uniquement */}
 {selectedItems.length > 0 && (
-  <div className="absolute shadow-xl bottom-0 z-10 left-0 right-4 md:hidden bg-primaryYellow rounded-sm  flex justify-center items-center py-3 px-4 ">
+ <div className="absolute w-full  bottom-0 left-0 right-0 z-10   md:hidden bg-white rounded-t-xl px-4 py-3"
+  style={{
+    boxShadow: '1px -2px 11px -5px rgba(0,0,0,0.75)',
+    WebkitBoxShadow: '1px -2px 11px -5px rgba(0,0,0,0.75)',
+    MozBoxShadow: '1px -2px 11px -5px rgba(0,0,0,0.75)',
+  }}>
+    <div className="flex justify-between items-center gap-4">
     <button
       onClick={() => setShowDeleteConfirm(true)}
-      className="text-black font-semibold  gap-2 flex flex-col items-center justify-center"
+      className="flex flex-col items-center justify-center w-full bg-primaryYellow rounded-lg py-3"
     >
       <Delete className="w-4 h-4 text-black" />
       Supprimer
     </button>
+    </div>
   </div>
 )}
     <ul className="space-y-3">

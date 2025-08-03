@@ -188,6 +188,7 @@ const menuRef = useRef(null);// ecouteur pour fermer les 3 points
     WebkitBoxShadow: '1px -2px 11px -5px rgba(0,0,0,0.75)',
     MozBoxShadow: '1px -2px 11px -5px rgba(0,0,0,0.75)',
   }}>
+    {/* btn supprimer */}
   <div className="flex justify-between items-center gap-4">
     <button
       onClick={() => setShowDeleteConfirm(true)}
@@ -196,6 +197,54 @@ const menuRef = useRef(null);// ecouteur pour fermer les 3 points
       <Delete className="w-5 h-5 text-black mb-1" />
       <span className="text-black text-sm font-medium">Supprimer</span>
     </button>
+
+{/* btn renommé si 1 seul fichier  */}
+{selectedDocs.length === 1 && (
+        <button
+           onClick={() => {
+      const doc = documents.find((d) => d.id === selectedDocs[0]);
+      if (doc) {
+        setDocToRename(doc);
+        setNewName(doc.nom);
+        setShowRenameModal(true);
+      }
+    }}
+          className="flex flex-col items-center justify-center w-1/2 bg-primaryYellow rounded-lg py-3"
+        >
+          ✏️
+          <span className="text-black text-sm font-medium">Renommer</span>
+        </button>
+      )}
+       <ConfirmationModal
+  isOpen={showRenameModal}
+  onCancel={() => setShowRenameModal(false)}
+  onConfirm={async () => {
+    if (docToRename && newName.trim() !== "") {
+      const { error } = await supabase
+        .from("documents")
+        .update({ nom: newName })
+        .eq("id", docToRename.id);
+      if (!error) {
+        fetchDocuments();
+        setShowRenameModal(false);
+      } else {
+        console.error("Erreur lors du renommage :", error);
+      }
+    }
+  }}
+  confirmText="Renommer"
+  cancelText="Annuler"
+>
+  <h2 className="font-bold text-primaryBlue text-lg">Renommer le document</h2>
+  <input
+    type="text"
+    className="w-full border border-gray-300 rounded px-2 py-1 mt-2"
+    value={newName}
+    onChange={(e) => setNewName(e.target.value)}
+  />
+</ConfirmationModal>
+
+{/* btn télécharger */}
     <button
       onClick={downloadSelectedFiles}
       className="flex flex-col items-center justify-center w-1/2 bg-primaryYellow rounded-lg py-3"
