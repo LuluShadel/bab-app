@@ -137,7 +137,7 @@ const handleDeleteSelected = async () => {
 
     {/* Barre fixe mobile uniquement */}
 {selectedItems.length > 0 && (
-  <div className="absolute bottom-0 left-0 right-4 md:hidden bg-primaryYellow rounded-sm shadow-md flex justify-center items-center py-3 px-4 z-50">
+  <div className="absolute shadow-xl bottom-0 z-10 left-0 right-4 md:hidden bg-primaryYellow rounded-sm  flex justify-center items-center py-3 px-4 ">
     <button
       onClick={() => setShowDeleteConfirm(true)}
       className="text-black font-semibold  gap-2 flex flex-col items-center justify-center"
@@ -222,7 +222,7 @@ const handleDeleteSelected = async () => {
   </ConfirmationModal>
 
 {/* Ajouter historique mobile only*/}
-  <div className="md:hidden absolute bottom-6 right-6 z-50 bg-primaryYellow text-black w-10 h-10 rounded-full flex items-center justify-center shadow-lg hover:bg-yellow-500 transition"
+  <div className="md:hidden absolute bottom-6 right-6  bg-primaryYellow text-black w-10 h-10 rounded-full flex items-center justify-center shadow-lg hover:bg-yellow-500 transition"
   aria-label="Ajouter un animal"
 >
   <span className="text-3xl font-bold">+</span>
