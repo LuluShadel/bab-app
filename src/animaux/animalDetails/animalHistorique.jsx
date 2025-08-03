@@ -158,31 +158,40 @@ const handleDeleteSelected = async () => {
       {historiques.map((item) => {
         const isSelected = selectedItems.includes(item.id);
         return (
-          <li
-            key={item.id}
-            className="grid grid-cols-[10px_1fr] md:grid-cols-[120px_1fr] items-center justify-center gap-4 border-t py-2 text-sm text-primaryBlue group"
-          >
-            <div className="relative w-6">
-              <input
-                type="checkbox"
-                checked={isSelected}
-                onChange={(e) => {
-                  if (e.target.checked) {
-                    setSelectedItems((prev) => [...prev, item.id]);
-                  } else {
-                    setSelectedItems((prev) => prev.filter((id) => id !== item.id));
-                  }
-                }}
-                className={`transition-opacity duration-200 ${
-                  isSelected ? "opacity-100" : "opacity-0 group-hover:opacity-100"
-                }`}
-              />
-            </div>
-            <div className="grid grid-cols-[120px_1fr] gap-4 overflow-hidden">
-              <span>{formatDate(item.date)}</span>
-              <span className="break-words">{item.texte}</span>
-            </div>
-          </li>
+         <li
+  key={item.id}
+  className="grid grid-cols-[24px_1fr] md:grid-cols-[120px_1fr] justify-center gap-4 border-t py-2 text-sm text-primaryBlue group"
+>
+  <label className="flex justify-center">
+    <input
+      type="checkbox"
+      checked={isSelected}
+      onChange={(e) => {
+        if (e.target.checked) {
+          setSelectedItems((prev) => [...prev, item.id]);
+        } else {
+          setSelectedItems((prev) => prev.filter((id) => id !== item.id));
+        }
+      }}
+      className="peer hidden"
+    />
+    <span
+      className="relative w-5 h-5 border-2 border-primaryYellow rounded-md flex items-center justify-center
+        before:content-[''] before:w-3 before:h-3
+        before:rounded-sm before:bg-primaryYellow
+        before:scale-0 peer-checked:before:scale-100
+        transition-all duration-150
+
+        md:opacity-0 peer-checked:opacity-100 md:group-hover:opacity-100"
+    />
+  </label>
+
+  <div className="grid grid-cols-[120px_1fr] gap-4 overflow-hidden">
+    <span>{formatDate(item.date)}</span>
+    <span className="break-words">{item.texte}</span>
+  </div>
+</li>
+
         );
       })}
     </ul>
@@ -222,11 +231,13 @@ const handleDeleteSelected = async () => {
   </ConfirmationModal>
 
 {/* Ajouter historique mobile only*/}
-  <div className="md:hidden absolute bottom-6 right-6  bg-primaryYellow text-black w-10 h-10 rounded-full flex items-center justify-center shadow-lg hover:bg-yellow-500 transition"
+  <button 
+  onClick={() => setShowModal(true)}
+  className="md:hidden absolute bottom-6 right-6  bg-primaryYellow text-black w-10 h-10 rounded-full flex items-center justify-center shadow-lg hover:bg-yellow-500 transition"
   aria-label="Ajouter un animal"
 >
   <span className="text-3xl font-bold">+</span>
-  </div>
+  </button>
 </div>
 
   );
