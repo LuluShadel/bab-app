@@ -83,7 +83,7 @@ const handleDeleteSelected = async () => {
   };
 
   return (
-   <div className="bg-white mt-2 md:p-6 h-[60vh] flex flex-col ">
+   <div className="bg-white mt-2 md:p-6 h-[40vh] md:h-[60vh] flex flex-col ">
     <ConfirmationModal
   isOpen={showDeleteConfirm}
   onCancel={() => setShowDeleteConfirm(false)}
@@ -102,7 +102,7 @@ const handleDeleteSelected = async () => {
 
 
   {/* Barre d'action desktop */}
-<div className={`mb-4 items-center justify-between  px-4 py-2  transition  hidden md:flex
+<div className={`mb-4 items-center justify-between  px-4 py-2 rounded-[10px]  transition  hidden md:flex
     ${selectedItems.length > 0 ? "bg-gray-100" : ""}`}>
   {/* À gauche : suppression visible uniquement si des éléments sont sélectionnés */}
   {selectedItems.length > 0 ? (
