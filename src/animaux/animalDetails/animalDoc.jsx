@@ -2,7 +2,10 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import supabase from "../../supabaseClient";
 import { FiPlus, FiDownload } from "react-icons/fi";
 import ConfirmationModal from "../../components/modalConfirm";
+
+//import svg
 import { ReactComponent as Delete } from "../../svg/Delete.svg";
+import { ReactComponent as Download } from '../../svg/download.svg';
 
 export default function AnimalDoc({ animal }) {
   const animalId = animal.id;
@@ -14,6 +17,8 @@ const [, setShowMenuId] = useState(null);// menu 3 points
 const [showRenameModal, setShowRenameModal] = useState(false); // modal renommer
 const [docToRename, setDocToRename] = useState(null); // doc renommé 
 const [newName, setNewName] = useState("");// doc nvx nom 
+
+
 
 const menuRef = useRef(null);// ecouteur pour fermer les 3 points 
 
@@ -126,9 +131,9 @@ const menuRef = useRef(null);// ecouteur pour fermer les 3 points
   
 
   return (
-    <div className="bg-white md:mt-2 p-6 relative h-[60vh] flex flex-col">
+    <div className="bg-white md:mt-2 p-6 h-[60vh] flex flex-col ">
       <div
-        className={`mb-4 flex items-center justify-between  px-4 py-2  transition ${
+        className={`mb-4 hidden md:flex items-center justify-between rounded-[10px]  px-4 py-2  transition ${
           selectedDocs.length > 0 ? "bg-gray-100" : ""
         }`}
       >
@@ -147,7 +152,7 @@ const menuRef = useRef(null);// ecouteur pour fermer les 3 points
       onClick={downloadSelectedFiles}
       className="flex items-center gap-1 text-sm text-black font-medium hover:underline"
     >
-      <FiDownload className="text-blue-600" />
+      <Download  />
       Télécharger
     </button>
   </div>
@@ -156,9 +161,11 @@ const menuRef = useRef(null);// ecouteur pour fermer les 3 points
 )}
         </div>
 
+        
+
         <button
           onClick={() => fileInputRef.current.click()}
-          className="flex items-center gap-2 bg-primaryYellow text-black font-medium text-sm px-4 py-2 rounded-full hover:bg-yellow-400 transition"
+          className="hidden md:flex items-center gap-2 bg-primaryYellow text-black font-medium text-sm px-4 py-2 rounded-full hover:bg-yellow-400 transition"
         >
           Ajouter un document
           <FiPlus />
@@ -172,6 +179,33 @@ const menuRef = useRef(null);// ecouteur pour fermer les 3 points
           className="hidden"
         />
       </div>
+
+       {/* Barre fixe mobile uniquement */}
+{selectedDocs.length > 0 && (
+  <div className="absolute w-full  bottom-0 left-0 right-0 z-10   md:hidden bg-white rounded-t-xl px-4 py-3"
+  style={{
+    boxShadow: '1px -2px 11px -5px rgba(0,0,0,0.75)',
+    WebkitBoxShadow: '1px -2px 11px -5px rgba(0,0,0,0.75)',
+    MozBoxShadow: '1px -2px 11px -5px rgba(0,0,0,0.75)',
+  }}>
+  <div className="flex justify-between items-center gap-4">
+    <button
+      onClick={() => setShowDeleteConfirm(true)}
+      className="flex flex-col items-center justify-center w-1/2 bg-primaryYellow rounded-lg py-3"
+    >
+      <Delete className="w-5 h-5 text-black mb-1" />
+      <span className="text-black text-sm font-medium">Supprimer</span>
+    </button>
+    <button
+      onClick={downloadSelectedFiles}
+      className="flex flex-col items-center justify-center w-1/2 bg-primaryYellow rounded-lg py-3"
+    >
+      <Download className="w-5 h-5 text-black mb-1" />
+      <span className="text-black text-sm font-medium">Télécharger</span>
+    </button>
+  </div>
+</div>
+)}
 
       <div className="overflow-auto flex-1 pr-1 scrollbar-custom">
         <ul className="space-y-3">
@@ -187,26 +221,28 @@ const menuRef = useRef(null);// ecouteur pour fermer les 3 points
                 key={doc.id}
                 className="grid grid-cols-[auto_1fr_auto] items-center gap-4 border-t py-2 text-sm text-primaryBlue group"
               >
-                <div className="relative w-6">
-                  <input
-                    type="checkbox"
-                    checked={isSelected}
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        setSelectedDocs((prev) => [...prev, doc.id]);
-                      } else {
-                        setSelectedDocs((prev) =>
-                          prev.filter((id) => id !== doc.id)
-                        );
-                      }
-                    }}
-                    className={`transition-opacity duration-200 ${
-                      isSelected
-                        ? "opacity-100"
-                        : "opacity-0 group-hover:opacity-100"
-                    }`}
-                  />
-                </div>
+               <label className="flex justify-center">
+  <input
+    type="checkbox"
+    checked={isSelected}
+    onChange={(e) => {
+      if (e.target.checked) {
+        setSelectedDocs((prev) => [...prev, doc.id]);
+      } else {
+        setSelectedDocs((prev) => prev.filter((id) => id !== doc.id));
+      }
+    }}
+    className="peer hidden"
+  />
+  <span
+    className="relative w-5 h-5 border-2 border-primaryYellow rounded-md flex items-center justify-center
+      before:content-[''] before:w-3 before:h-3
+      before:rounded-sm before:bg-primaryYellow
+      before:scale-0 peer-checked:before:scale-100
+      transition-all duration-150
+      md:opacity-0 peer-checked:opacity-100 md:group-hover:opacity-100"
+  />
+</label>
                 <div className="grid grid-cols-[120px_1fr] gap-4 overflow-hidden">
                   <span>{formatDate(doc.created_at)}</span>
                   <span className="truncate">{doc.nom}</span>
@@ -306,6 +342,15 @@ const menuRef = useRef(null);// ecouteur pour fermer les 3 points
           Êtes-vous sûr de vouloir supprimer les documents sélectionnés ?
         </h2>
       </ConfirmationModal>
+
+      {/* Ajouter historique mobile only*/}
+  <button 
+  onClick={() => fileInputRef.current.click()}
+  className="md:hidden absolute bottom-6 right-6  bg-primaryYellow text-black w-10 h-10 rounded-full flex items-center justify-center shadow-lg hover:bg-yellow-500 transition"
+  aria-label="Ajouter un animal"
+>
+  <span className="text-3xl font-bold">+</span>
+  </button>
     </div>
   );
 }
