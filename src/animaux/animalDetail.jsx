@@ -18,6 +18,7 @@ import { ReactComponent as DogIcon } from '../svg/Dog.svg';
 import { ReactComponent as ChildIcon } from '../svg/Child.svg';
 import { ReactComponent as ArrowRight } from '../svg/Arrow-Right.svg';
 import { ReactComponent as Archive } from '../svg/Archive.svg';
+import { ReactComponent as Edit } from '../svg/edit.svg';
 
 
 const onglets = ['Profil', 'Histoire', 'Santé', 'Documents', 'Historique']; // gère les onglets de la nav
@@ -105,7 +106,8 @@ const optionsStatutBesoin = [
         </button>
 
         <button className="bg-primaryYellow px-4 py-2 rounded-full flex items-center gap-2 shadow text-sm font-medium">
-          Modifier
+          <p className='hidden md:block'>Modifier</p>
+          <span ><Edit  /></span>
         </button>
       </div>
 

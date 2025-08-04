@@ -73,8 +73,9 @@ const [filtresEntente, setFiltresEntente] = useState({ // gère le filtre sur le
 const animauxFiltres = animaux.filter((animal) => {
   if (animal.archive) return false; // ⛔ exclure les archivés
 
- 
-  const correspondNom = animal.name.toLowerCase().includes(rechercheNom.toLowerCase());
+ // recherche par nom
+  const correspondNom = animal.name.toLowerCase().includes(rechercheNom.toLowerCase()) ||
+                      (animal.ancienNom?.toLowerCase().includes(rechercheNom.toLowerCase()));
 
   // type
    const correspondEspece = filtreEspece === 'all' || animal.type === filtreEspece;
@@ -213,6 +214,8 @@ const choix = [
   },
 ];
 
+
+// toggle ententes chien chat enfant 
 const renderEntenteButtons = (type, emoji) => (
   <div className="flex gap-2 items-center">
     {choix.map(({ value, label, activeClass, inactiveClass }) => {
@@ -238,7 +241,7 @@ const renderEntenteButtons = (type, emoji) => (
 
   return (
    <div className="flex flex-col items-start mt-4 md:mt-0 md:px-12 md:py-8 bg-bgBlue">
-  <div className="flex  flex-col  gap-4 w-full mb-6 ">
+  <div className="flex  flex-col   gap-4 w-full mb-6 ">
     
     {/* Champ de recherche */}
     <div className="flex items-center border border-gray-300 rounded-full px-4 py-2 bg-white shadow-sm flex-grow max-w-md ml-20 md:ml-0">
@@ -253,7 +256,7 @@ const renderEntenteButtons = (type, emoji) => (
       <SearchIcon/>
     </div>
 
-   <div className=" flex flex-row justify-between items-center px-2 ">
+   <div className=" flex flex-row justify-between  px-2 ">
 <div className=' flex gap-6  md:ml-10 '>
 {/* Bouton voir archive */}
     <Link to={`/animaux/AnimauxArchive`}

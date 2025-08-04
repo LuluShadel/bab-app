@@ -16,6 +16,7 @@ export default function AnimalProfil({ animal }) {
     { label: 'Race', value: animal.race },
     { label: 'Genre', value: animal.sexe },
     { label: 'Date de naissance', value: formatDateFr(animal.ddn) },
+      { label: 'Ancien nom', value: animal.ancienNom },
     { label: 'N° Icad', value: animal.icad },
     { label: 'Stérilisé', value: boolToText(animal.sterilisation) },
     { label: 'Catégorisé', value: animal.categorisation },
