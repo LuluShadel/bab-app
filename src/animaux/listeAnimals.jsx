@@ -240,58 +240,56 @@ const renderEntenteButtons = (type, emoji) => (
 
 
   return (
-   <div className="flex flex-col items-start mt-4 md:mt-0 md:px-12 md:py-8 bg-bgBlue">
-  <div className="flex  flex-col   gap-4 w-full mb-6 ">
+  <div className="flex flex-col items-center mt-4 md:mt-0 md:px-12 md:py-8 bg-bgBlue">
+  {/* Barre de recherche centrée */}
+  <div  className="flex items-center border border-gray-300 rounded-full px-4 py-2 bg-white shadow-sm mb-6 md:w-2/4">
+    <input
+      type="text"
+      placeholder="Rechercher"
+      value={rechercheNom}
+      onChange={(e) => setRechercheNom(e.target.value)}
+      className="outline-none border-none bg-transparent flex-grow"
+    />
+    <SearchIcon />
+  </div>
+
+  {/* Ligne du dessous : archive + ajouter (à gauche) | filtre (à droite) */}
+  <div className="w-full flex flex-row justify-between items-center px-2 mb-2 md:mb-8">
     
-    {/* Champ de recherche */}
-    <div className="flex items-center border border-gray-300 rounded-full px-4 py-2 bg-white shadow-sm flex-grow max-w-md ml-20 md:ml-0">
-      <input
-        type="text"
-        placeholder="Rechercher"
-        value={rechercheNom}
-        onChange={(e) => setRechercheNom(e.target.value)}
-        className="outline-none border-none bg-transparent flex-grow"
-      />
-      
-      <SearchIcon/>
+    {/* Archive + Ajouter (à gauche sur desktop) */}
+    <div className="flex gap-6 mb-4 md:mb-0 md:ml-10">
+      {/* Bouton archive */}
+      <Link
+        to={`/animaux/AnimauxArchive`}
+        className="flex items-center md:gap-2 underline text-black hover:text-gray-700 transition"
+      >
+        Voir les animaux archiver
+        <Archive />
+      </Link>
+
+      {/* Bouton ajouter */}
+      <button
+        className="items-center gap-2 hidden md:flex border border-primaryYellow bg-primaryYellow text-black px-4 py-2 rounded-full hover:bg-white hover:text-black hover:border hover:border-black transition"
+      >
+        Ajouter un animal
+        <MdKeyboardArrowRight className="text-sm font-bold" />
+      </button>
     </div>
 
-   <div className=" flex flex-row justify-between  px-2 ">
-<div className=' flex gap-6  md:ml-10 '>
-{/* Bouton voir archive */}
-    <Link to={`/animaux/AnimauxArchive`}
-    
-      className="flex items-center gap-2 underline  text-black  hover:text-gray-700 transition"
-    >
-      Voir les animaux archiver 
-     <Archive />
-    </Link>
+    {/* Filtres (à droite) */}
+    <div className="relative md:mr-10">
+      <button
+        onClick={() => setShowFilters(!showFilters)}
+        className="flex flex-row items-center justify-between bg-primaryYellow text-black px-4 md:w-[320px] py-2 text-left rounded-lg shadow hover:bg-yellow-500 transition"
+      >
+        Filtres ({nbFiltresActifs}){" "}
+        <span className="ml-1">
+          {showFilters ? <MdKeyboardArrowDown /> : <MdKeyboardArrowUp />}
+        </span>
+      </button>
 
-
-
-  {/* Bouton Ajouter un animal */}
-    <button
-    
-      className=" items-center gap-2 hidden md:flex border border-primaryYellow bg-primaryYellow text-black px-4 py-2 rounded-full
-       hover:bg-white hover:text-black hover:border hover:border-black transition"
-    >
-      Ajouter un animal
-      < MdKeyboardArrowRight className='text-sm font-bold' />
-    </button>
-    </div>
-
-
-  {/* Bouton Filtres */}
-  <div className='relative'>
-  <button
-    onClick={() => setShowFilters(!showFilters)}
-    className=" flex flex-row items-center justify-between bg-primaryYellow text-black px-4 md:w-[320px] py-2 text-left rounded-lg shadow hover:bg-yellow-500 transition"
-  >
-    Filtres ({nbFiltresActifs}) <span className="ml-1 ">{showFilters ? <MdKeyboardArrowDown /> : < MdKeyboardArrowUp />}</span>
-  </button>
-
-  {/* Panneau déroulant filtres */}
-  {showFilters && (
+      {/* Panneau déroulant filtres */}
+      {showFilters && (
   <div className="absolute left-[-12rem] md:left-0 w-[320px] bg-white rounded-lg shadow-lg border border-gray-200 z-50 max-h-[80vh] overflow-y-auto scrollbar-custom">
 
     {/* Contenu filtres */}
@@ -584,10 +582,7 @@ const renderEntenteButtons = (type, emoji) => (
 
 
 
-  </div>
   
-
-
 
 
 
