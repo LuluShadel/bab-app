@@ -443,7 +443,7 @@ const renderEntenteButtons = (type, emoji) => (
 {/* Lieu de vie */}
 <div>
   <p className="font-semibold mb-2">Lieu de vie</p>
-  <div className="space-y-2">
+  <div className="space-y-4">
     {[
       { label: "En famille d'accueil", key: "EnFamilleAccueil" },
       { label: "En pension", key: "pension" },
@@ -473,7 +473,7 @@ const renderEntenteButtons = (type, emoji) => (
   <p className="font-semibold mb-2">Statut</p>
 
   {/* Radios exclusifs */}
-  <div className="space-y-2 mb-4">
+  <div className="space-y-4 mb-6">
     {[
       { label: "À l'adoption", key: "adoption" },
       { label: "Sous réquisition", key: "requisition" },
@@ -504,7 +504,7 @@ const renderEntenteButtons = (type, emoji) => (
   </div>
 
   {/* Checkboxes pour le reste */}
-  <div className="space-y-2 max-h-32 overflow-y-auto pr-2 scrollbar-custom">
+  <div className="space-y-4 max-h-32 overflow-y-auto pr-2 scrollbar-custom">
     {optionsStatut
       .filter(({ key }) => key !== "adoption" && key !== "requisition")
       .map(({ label, key }) => (
@@ -538,9 +538,9 @@ const renderEntenteButtons = (type, emoji) => (
 {/*Conditions d'accueil*/}
 <div>
   <p className="font-semibold mb-2">Conditions d'accueil</p>
-  <div className="space-y-2 max-h-32 overflow-y-auto pr-2">
+  <div className="space-y-4  overflow-y-auto pr-2">
     {optionsStatutBesoin.map(({ label, key }) => (
-      <label key={key} className="flex items-center gap-2 text-sm cursor-pointer">
+      <label key={key} className="flex items-center gap-4 text-sm cursor-pointer">
         <input
           type="checkbox"
           checked={filtreBesoins.includes(key)}

@@ -2,8 +2,22 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   identite: { prenom: "", genre: "", espece:"", photo:null, ancienPrenom:"", icad:"",dateNaissance:"", race:""  },
-  statutBesoins: { statut: "" },
+
+   statutBesoins: {
+    suivi:"",
+    sterilise:false,
+    categorie:false,
+    statut: "",         
+    requisition: false, 
+    adoption: false,
+    rechercheFa: false,
+  rechercheCovoit: false,
+  panierRetraite: false,
+  parrainage: false    
+  },
+
   sante: { vaccins: "" },
+
   histoire: { texte: "" },
 };
 
