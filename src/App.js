@@ -8,6 +8,12 @@ import AnimalDetails from './animaux/animalDetail';
 import ListeAnimals from './animaux/listeAnimals';
 import Header from './components/header';
 import ListeAnimalsArchive from './animaux/animalArchive/listeAnimalsArchive';
+import AjoutNouvelAnimal from './animaux/formAjoutAnimal/FormAjoutAnimal';
+import Identite from './animaux/formAjoutAnimal/détailFormAjout.jsx/Identite';
+import Sante from './animaux/formAjoutAnimal/détailFormAjout.jsx/sante';
+import StatutBesoins from './animaux/formAjoutAnimal/détailFormAjout.jsx/statutBesoins';
+import Documents from './animaux/formAjoutAnimal/détailFormAjout.jsx/document';
+import Histoire from './animaux/formAjoutAnimal/détailFormAjout.jsx/histoire';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -71,6 +77,14 @@ function App() {
           <Route path="animaux/ListeAnimals" element={<ListeAnimals />} />
           <Route path="animaux/AnimauxArchive" element={<ListeAnimalsArchive />} />
           <Route path="/animal/:id" element={<AnimalDetails />} />
+          <Route path="/nouvel-animal" element={<AjoutNouvelAnimal />}>
+            <Route index element={<Identite />} /> {/* étape par défaut */}
+            <Route path="identite" element={<Identite />} />
+            <Route path="statut-besoins" element={<StatutBesoins />} />
+            <Route path="sante" element={<Sante />} />
+            <Route path="histoire" element={<Histoire />} />
+            <Route path="documents" element={<Documents />} />
+          </Route>
         </Routes>
       </div>
     </Router>

@@ -3,6 +3,23 @@
 @tailwind utilities;
 
 
+/* Pour tout élément scrollable */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #ffc013 #ffffff;
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+}
+*::-webkit-scrollbar-track {
+  background: #ffffff;
+  border-radius: 9999px;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: #ffc013;
+  border-radius: 9999px;
+}
 
 
 body {
@@ -14,6 +31,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-family: 'Roboto', sans-serif;
   background-color:#ebf3ff ;
+
+  scrollbar-width: thin;
+  scrollbar-color: #ffc013 #ffffff;
 
 }
 
@@ -41,7 +61,7 @@ code {
   border-radius: 9999px;
 }
 
-/* Pour Firefox */
+
 .scrollbar-custom {
   scrollbar-width: thin;
   scrollbar-color: #ffc013 #ffffff;
