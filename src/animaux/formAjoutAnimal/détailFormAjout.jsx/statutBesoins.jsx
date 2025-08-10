@@ -2,6 +2,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { setStepData } from "../../../store/wizardSlice";
 import { StyledCheckbox, StyledRadio } from "../../../components/styleInput";
 
+//import SVG
+import { ReactComponent as CatIcon } from '../../../svg/Cat.svg'
+import { ReactComponent as DogIcon } from '../../../svg/Dog.svg';
+import { ReactComponent as ChildIcon } from '../../../svg/Child.svg';
+
 export default function StatutBesoins() {
   const { suivi, sterilise, categorie, statut } = useSelector((state) => state.wizard.statutBesoins);
   const dispatch = useDispatch();
@@ -16,6 +21,45 @@ export default function StatutBesoins() {
   };
 
   const statutBesoins = useSelector((state) => state.wizard.statutBesoins);
+
+  // togle ententes 
+  const EntenteToggle = ({ type, emoji, value, onChange }) => {
+  const options = [
+    { value: true, label: "Oui", activeClass: "bg-[#247c4f] text-white", inactiveClass: "border-[#247c4f]" },
+    { value: false, label: "Non", activeClass: "bg-[#cc300f] text-white", inactiveClass: "border-[#cc300f]" },
+    { value: null, label: "Inconnu", activeClass: "bg-[#dc7c00] text-white", inactiveClass: "border-[#dc7c00]" },
+  ];
+
+  return (
+    <div className="flex gap-2 items-center">
+      {options.map(({ value: val, label, activeClass, inactiveClass }) => {
+        const isActive = value === val;
+        return (
+          <button
+            key={label}
+            onClick={() => onChange(type, val)}
+            className={`border px-3 py-1 rounded flex items-center gap-1 transition text-sm ${
+              isActive ? activeClass : inactiveClass
+            }`}
+          >
+            {emoji} {label}
+          </button>
+        );
+      })}
+    </div>
+  );
+};
+
+const { okChat, okChien, okChild} = useSelector((state) => state.wizard.statutBesoins);
+
+const handleEntenteChange = (key, val) => {
+  dispatch(
+    setStepData({
+      step: "statutBesoins",
+      data: { [key]: val },
+    })
+  );
+};
 
   return (
     <div className="flex flex-col md:flex-row md:gap-12">
@@ -129,7 +173,14 @@ export default function StatutBesoins() {
 
       {/* Colonne droite */}
       <div className="flex-1 space-y-6">
-        {/* Tu pourras ajouter tes champs ici */}
+        <div className="space-y-4">
+  <label className="block text-sm font-bold mb-1">Ententes</label>
+  <div className="flex flex-col gap-4">
+    <EntenteToggle type="okChien" emoji={<DogIcon />} value={okChien} onChange={handleEntenteChange} />
+    <EntenteToggle type="okChat" emoji={<CatIcon />} value={okChat} onChange={handleEntenteChange} />
+    <EntenteToggle type="okChild" emoji={<ChildIcon />} value={okChild} onChange={handleEntenteChange} />
+  </div>
+</div>
       </div>
     </div>
   );

@@ -13,7 +13,10 @@ const initialState = {
     rechercheFa: false,
   rechercheCovoit: false,
   panierRetraite: false,
-  parrainage: false    
+  parrainage: false,
+  okChien: null,
+    okChat: null,
+    okChild: null,    
   },
 
   sante: { vaccins: "" },
