@@ -24,7 +24,15 @@ escalier: false,
 congenere  : false,
   },
 
-  sante: { vaccins: "" },
+  sante: { veto: "",
+    poids:"",
+    antecedentMedicaux:"",
+    derniereVisiteVeto:"",
+    vaccin:"",
+    vermifuge:"",
+    traitement:""
+
+   },
 
   histoire: { texte: "" },
 };

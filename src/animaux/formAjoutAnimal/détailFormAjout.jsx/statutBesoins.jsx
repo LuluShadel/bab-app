@@ -8,7 +8,7 @@ import { ReactComponent as DogIcon } from '../../../svg/Dog.svg';
 import { ReactComponent as ChildIcon } from '../../../svg/Child.svg';
 
 export default function StatutBesoins() {
-  const { suivi, sterilise, categorie, statut } = useSelector((state) => state.wizard.statutBesoins);
+ const statutBesoins = useSelector((state) => state.wizard.statutBesoins);
   const dispatch = useDispatch();
 
   const handleChange = (field, value) => {
@@ -20,7 +20,7 @@ export default function StatutBesoins() {
     );
   };
 
-  const statutBesoins = useSelector((state) => state.wizard.statutBesoins);
+ 
 
   // togle ententes 
   const EntenteToggle = ({ type, emoji, value, onChange }) => {
@@ -71,7 +71,7 @@ const handleEntenteChange = (key, val) => {
         <label className="block text-sm font-bold mb-1">Modérateur référent</label>
         <input
           type="text"
-          value={suivi}
+          value={statutBesoins.suivi}
           onChange={(e) => handleChange("suivi", e.target.value)}
           placeholder="Complétez le champ"
           className="border border-gray-300 rounded-md px-3 py-2 w-full"
@@ -88,7 +88,7 @@ const handleEntenteChange = (key, val) => {
                 label={option}
                 name="sterilise"
                 value={option}
-                checked={sterilise === (option === "inconnu" ? null : option)}
+                checked={statutBesoins.sterilise === (option === "inconnu" ? null : option)}
                 onChange={(e) => handleChange("sterilise", e.target.value)}
               />
             ))}
@@ -105,7 +105,7 @@ const handleEntenteChange = (key, val) => {
                 label={option}
                 name="categorie"
                 value={option}
-                checked={categorie === (option === "inconnu" ? null : option)}
+                checked={statutBesoins.categorie === (option === "inconnu" ? null : option)}
                 onChange={(e) => handleChange("categorie", e.target.value)}
               />
             ))}
@@ -125,7 +125,7 @@ const handleEntenteChange = (key, val) => {
                 name="statut"
                 label={option.label}
                 value={option.key}
-                checked={statut === option.key}
+                checked={statutBesoins.statut === option.key}
                 onChange={() =>
                   dispatch(
                     setStepData({
