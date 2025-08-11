@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { setStepData } from "../../../store/wizardSlice";
-import { StyledCheckbox, StyledRadio } from "../../../components/styleInput";
+
 
 
 

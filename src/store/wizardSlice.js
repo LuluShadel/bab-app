@@ -34,7 +34,10 @@ congenere  : false,
 
    },
 
-  histoire: { texte: "" },
+  histoire: { histoire: "",
+    ententes:'',
+    besoins:"",
+   },
 };
 
 const wizardSlice = createSlice({
