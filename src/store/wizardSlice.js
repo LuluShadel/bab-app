@@ -16,7 +16,12 @@ const initialState = {
   parrainage: false,
   okChien: null,
     okChat: null,
-    okChild: null,    
+    okChild: null,  
+endroitCalme: false,
+santéFragile: false,
+jardin: false,
+escalier: false,
+congenere  : false,
   },
 
   sante: { vaccins: "" },

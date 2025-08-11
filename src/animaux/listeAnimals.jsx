@@ -268,14 +268,16 @@ const renderEntenteButtons = (type, emoji) => (
       </Link>
 
       {/* Bouton ajouter */}
+      <Link to={"/nouvel-animal"}>
       <button
         className="items-center gap-2 hidden md:flex border border-primaryYellow bg-primaryYellow text-black px-4 py-2 rounded-full hover:bg-white hover:text-black hover:border hover:border-black transition"
       >
-        <Link to={"/nouvel-animal"}>
+        
         Ajouter un animal
         <MdKeyboardArrowRight className="text-sm font-bold" />
-        </Link>
+        
       </button>
+      </Link>
     </div>
 
     {/* Filtres (à droite) */}

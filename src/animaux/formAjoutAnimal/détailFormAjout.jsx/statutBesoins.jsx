@@ -97,7 +97,7 @@ const handleEntenteChange = (key, val) => {
 
         {/* Catégorisation */}
         <div>
-          <label className="block text-sm font-bold mb-1">Catégorisation</label>
+          <label className="block text-sm font-bold mb-1">Catégorisé</label>
           <div className="flex gap-4 mt-2">
             {["oui", "non", "inconnu"].map((option) => (
               <StyledRadio
@@ -172,6 +172,9 @@ const handleEntenteChange = (key, val) => {
       </div>
 
       {/* Colonne droite */}
+       <div className="flex-1 space-y-4">
+
+      {/* Ententes  */}
       <div className="flex-1 space-y-6">
         <div className="space-y-4">
   <label className="block text-sm font-bold mb-1">Ententes</label>
@@ -182,6 +185,36 @@ const handleEntenteChange = (key, val) => {
   </div>
 </div>
       </div>
+
+{/* Besoins spé */}
+      <div className="mt-8 space-y-4">
+  {[
+    { label: "Besoins d'un environnement calme", key: "endroitCalme" },
+    { label: "Suivi médical", key: "santéFragile" },
+    { label: "Jardin", key: "jardin" },
+    { label: "Lieu sans escalier", key: "escalier" },
+     { label: "Présence de congénères", key: "congenere" },
+  ].map((opt) => (
+    <StyledCheckbox
+      key={opt.key}
+      label={opt.label}
+      checked={!!statutBesoins[opt.key]} // ← fallback en cas de undefined
+      onChange={() =>
+        dispatch(
+          setStepData({
+            step: "statutBesoins",
+            data: {
+              [opt.key]: !statutBesoins[opt.key],
+            },
+          })
+        )
+      }
+    />
+  ))}
+</div>
+</div>
+
+
     </div>
   );
 }
