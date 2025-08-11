@@ -38,6 +38,16 @@ congenere  : false,
     ententes:'',
     besoins:"",
    },
+
+   document: { 
+    pension:false,
+    enFamille:false,
+    nomFa:"",
+    adresse:"",
+    telephone:"",
+    mail:"",
+    document:null,
+   },
 };
 
 const wizardSlice = createSlice({

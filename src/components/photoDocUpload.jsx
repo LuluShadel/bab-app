@@ -9,7 +9,7 @@ export default function PhotoUpload({
   field,
   title = "Ajouter un fichier",
   Icon = null,
-  accept = "image/jpeg, image/jpg, image/png", // Peut être ".pdf", etc.
+  accept = "image/jpeg, image/jpg, image/png, pdf", 
   value,
   onChange,
   removable = true,

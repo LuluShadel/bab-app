@@ -8,6 +8,7 @@ import { ReactComponent as FemelleIcon } from '../../../svg/Femelle.svg'
 import { ReactComponent as CatIcon } from '../../../svg/Cat.svg'
 import { ReactComponent as DogIcon } from '../../../svg/Dog.svg'
 import { ReactComponent as NacIcon } from '../../../svg/NAC.svg'
+import { ReactComponent as Image } from '../../../svg/Image.svg'
 
 // import components 
 import PhotoUpload from "../../../components/photoDocUpload";
@@ -91,7 +92,7 @@ export default function Identite() {
   step="identite"
   field="photo"
   title="Ajouter la photo de l'animal"
-  Icon={MaleIcon}
+  Icon={Image}
 />
 
 
