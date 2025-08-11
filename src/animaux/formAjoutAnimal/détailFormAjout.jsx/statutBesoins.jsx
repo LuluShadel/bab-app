@@ -64,7 +64,7 @@ const handleEntenteChange = (key, val) => {
   return (
     <div className="flex flex-col md:flex-row md:gap-12">
       {/* Colonne gauche */}
-      <div className="flex-1 space-y-4">
+      <div className="flex-1 space-y-6">
 
          {/* Modérateur */}
       <div>
@@ -172,12 +172,12 @@ const handleEntenteChange = (key, val) => {
       </div>
 
       {/* Colonne droite */}
-       <div className="flex-1 space-y-4">
+       <div className="flex-1 space-y-6">
 
       {/* Ententes  */}
-      <div className="flex-1 space-y-6">
-        <div className="space-y-4">
-  <label className="block text-sm font-bold mb-1">Ententes</label>
+      <div className="flex-1 space-y-6 mt-6 md:mt-0">
+        <div>
+  <label className="block text-sm font-bold mb-2">Ententes</label>
   <div className="flex flex-col gap-4">
     <EntenteToggle type="okChien" emoji={<DogIcon />} value={okChien} onChange={handleEntenteChange} />
     <EntenteToggle type="okChat" emoji={<CatIcon />} value={okChat} onChange={handleEntenteChange} />
@@ -187,7 +187,9 @@ const handleEntenteChange = (key, val) => {
       </div>
 
 {/* Besoins spé */}
-      <div className="mt-8 space-y-4">
+<div>
+ <label className="block text-sm font-bold mb-2">Besoins spécifiques</label>
+      <div className=" space-y-4">
   {[
     { label: "Besoins d'un environnement calme", key: "endroitCalme" },
     { label: "Suivi médical", key: "santéFragile" },
@@ -211,6 +213,7 @@ const handleEntenteChange = (key, val) => {
       }
     />
   ))}
+</div>
 </div>
 </div>
 
